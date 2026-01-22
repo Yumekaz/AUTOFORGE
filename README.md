@@ -395,8 +395,9 @@ python integrations/carla_bridge/carla_integration.py --host localhost --port 20
 
 This project is our submission for **TELIPORT Season 3 - Case Study 2**.
 
-**Team**: AUTOFORGE  
+**Team**: Codeinit  
 **Institution**: GRAPHIC ERA HILL UNIVERSITY  
+**Members**: Mihir Swarnkar, Taniya Taragi, Tarun Pathak  
 **Round 1 Submission**: January 2026
 
 ---
