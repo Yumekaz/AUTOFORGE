@@ -15,7 +15,6 @@ venv/
 *.swo
 
 # Output
-output/
 *.log
 
 # OS

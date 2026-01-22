@@ -1,0 +1,119 @@
+{
+    "audit_report": {
+        "trace_id": "TRACE-20231027-BMS-001",
+        "service_name": "BMSDiagnosticService",
+        "timestamp_start": "2026-01-16T10:35:00.000Z",
+        "timestamp_end": "2026-01-16T10:38:47.523Z",
+        "final_status": "ACCEPTED",
+        "total_attempts": 2,
+        "phases": [
+            {
+                "phase_id": 1,
+                "phase_name": "TEST_GENERATION",
+                "status": "SUCCESS",
+                "duration_ms": 2341,
+                "output": {
+                    "file_generated": "tests/test_bms_service.cpp",
+                    "test_count": 5,
+                    "coverage_targets": [
+                        "EvaluateBatteryHealth",
+                        "GetBatteryStatus",
+                        "TriggerAlert",
+                        "InitializeService",
+                        "ShutdownService"
+                    ]
+                },
+                "llm_metadata": {
+                    "model": "gemini-1.5-pro",
+                    "tokens_used": 1847,
+                    "temperature": 0.2
+                }
+            },
+            {
+                "phase_id": 2,
+                "phase_name": "CODE_GENERATION",
+                "status": "SUCCESS",
+                "duration_ms": 3512,
+                "output": {
+                    "file_generated": "services/bms_service.cpp",
+                    "lines_of_code": 287,
+                    "language": "C++",
+                    "protocol": "SOME/IP"
+                },
+                "llm_metadata": {
+                    "model": "gemini-1.5-pro",
+                    "tokens_used": 2956,
+                    "temperature": 0.1
+                }
+            },
+            {
+                "phase_id": 3,
+                "phase_name": "VALIDATION",
+                "attempt": 1,
+                "status": "FAILED",
+                "duration_ms": 1205,
+                "validation_results": {
+                    "syntax_check": "PASS",
+                    "unit_tests": "PASS",
+                    "misra_compliance": "FAIL",
+                    "errors": [
+                        {
+                            "rule": "MISRA Rule 14.3",
+                            "severity": "REQUIRED",
+                            "message": "Boolean expression invariant: condition 'temperature > 60.0f' is always evaluated in the same branch",
+                            "file": "services/bms_service.cpp",
+                            "line": 142,
+                            "suggestion": "Refactor conditional to avoid invariant boolean expression"
+                        }
+                    ]
+                },
+                "action_taken": "RETRY",
+                "error_context_sent_to_llm": true
+            },
+            {
+                "phase_id": 4,
+                "phase_name": "VALIDATION",
+                "attempt": 2,
+                "status": "SUCCESS",
+                "duration_ms": 4127,
+                "validation_results": {
+                    "syntax_check": "PASS",
+                    "unit_tests": "PASS",
+                    "misra_compliance": "PASS",
+                    "aspice_traceability": "PASS"
+                },
+                "regeneration_details": {
+                    "fix_applied": "Refactored temperature threshold check using configurable constant",
+                    "diff_lines_changed": 8
+                }
+            }
+        ],
+        "compliance_summary": {
+            "misra_rules_checked": 143,
+            "misra_violations": 0,
+            "aspice_trace_complete": true,
+            "requirement_coverage": "100%"
+        },
+        "outputs": {
+            "test_file": "output/BMSDiagnosticService/tests/test_bms_service.cpp",
+            "implementation_file": "output/BMSDiagnosticService/services/bms_service.cpp",
+            "trace_matrix": "output/BMSDiagnosticService/trace.yaml",
+            "misra_report": "output/BMSDiagnosticService/misra_report.html"
+        },
+        "requirement_traceability": {
+            "requirement_id": "REQ-BMS-001",
+            "source_document": "input/requirements/bms_diagnostic.yaml",
+            "satisfied_requirements": [
+                "REQ-BMS-SAFETY-001: Critical temperature alert",
+                "REQ-BMS-SAFETY-002: Low SoC warning",
+                "REQ-BMS-FUNC-001: Real-time health monitoring",
+                "REQ-BMS-FUNC-002: SOME/IP event publishing"
+            ]
+        },
+        "signature": {
+            "generated_by": "AUTOFORGE v1.0.0",
+            "pipeline_version": "2026.01",
+            "checksum": "sha256:a3f2b8c9d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0"
+        }
+    }
+}
