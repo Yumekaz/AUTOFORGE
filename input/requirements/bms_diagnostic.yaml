@@ -1,0 +1,92 @@
+# BMS Diagnostic Service Requirement
+# AUTOFORGE Input Format
+
+service:
+  name: BMSDiagnosticService
+  description: Battery Management System diagnostic service for EV vehicles
+  version: "1.0.0"
+  
+  # Target output
+  language: cpp
+  protocol: someip
+  
+  # Service interface
+  interface:
+    service_id: 0x1001
+    instance_id: 0x0001
+    
+    methods:
+      - name: GetBatteryStatus
+        id: 0x0001
+        input: []
+        output:
+          - name: soc
+            type: float
+            description: State of charge (0-100%)
+          - name: voltage
+            type: float
+            description: Battery voltage in volts
+          - name: current
+            type: float
+            description: Battery current in amps
+          - name: temperature
+            type: float
+            description: Battery temperature in celsius
+          - name: health_status
+            type: uint8
+            description: 0=OK, 1=WARNING, 2=CRITICAL
+            
+      - name: GetCellVoltages
+        id: 0x0002
+        input: []
+        output:
+          - name: cell_voltages
+            type: array<float>
+            description: Individual cell voltages
+            
+      - name: GetEstimatedRange
+        id: 0x0003
+        input:
+          - name: driving_mode
+            type: uint8
+            description: 0=ECO, 1=NORMAL, 2=SPORT
+        output:
+          - name: range_km
+            type: float
+            description: Estimated range in kilometers
+            
+    events:
+      - name: BatteryWarning
+        id: 0x8001
+        fields:
+          - name: warning_code
+            type: uint16
+          - name: warning_message
+            type: string
+            
+  # Input signals this service consumes
+  input_signals:
+    - battery_soc
+    - battery_voltage
+    - battery_current
+    - battery_temperature
+    
+  # Business logic rules
+  rules:
+    - name: low_battery_warning
+      condition: "battery_soc < 20"
+      action: "emit BatteryWarning(code=0x0001, msg='Low battery')"
+      
+    - name: high_temp_warning
+      condition: "battery_temperature > 45"
+      action: "emit BatteryWarning(code=0x0002, msg='High temperature')"
+      
+    - name: critical_temp_shutdown
+      condition: "battery_temperature > 60"
+      action: "emit BatteryWarning(code=0x0003, msg='Critical temperature - shutdown required')"
+
+# Traceability
+traceability:
+  requirement_id: REQ-BMS-001
+  aspice_reference: SWE.3
+  misra_compliance: required

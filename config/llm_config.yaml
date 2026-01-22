@@ -1,0 +1,33 @@
+# AUTOFORGE LLM Configuration
+
+# Default LLM provider
+default_provider: gemini
+
+# Provider configurations
+providers:
+  gemini:
+    model: gemini-1.5-flash
+    temperature: 0.2
+    max_tokens: 4096
+    
+  openai:
+    model: gpt-4-turbo-preview
+    temperature: 0.2
+    max_tokens: 4096
+
+# Pipeline settings
+pipeline:
+  max_retries: 3
+  retry_delay_seconds: 2
+  
+# Validation settings
+validation:
+  run_tests: true
+  check_compile: true
+  check_misra: true
+  
+# Output settings
+output:
+  directory: output
+  include_trace: true
+  include_tests: true

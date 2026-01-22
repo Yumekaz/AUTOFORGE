@@ -1,0 +1,143 @@
+# Vehicle Signals Schema for AUTOFORGE
+# All signals that can be used in generated services
+
+signals:
+  # Powertrain
+  - name: vehicle_speed
+    type: float
+    unit: km/h
+    range: [0, 300]
+    
+  - name: engine_rpm
+    type: int
+    unit: rpm
+    range: [0, 8000]
+    
+  - name: throttle_position
+    type: float
+    unit: percent
+    range: [0, 100]
+    
+  - name: brake_pressure
+    type: float
+    unit: bar
+    range: [0, 200]
+    
+  - name: gear_position
+    type: int
+    unit: gear
+    range: [-1, 8]  # -1 = reverse, 0 = neutral
+    
+  - name: steering_angle
+    type: float
+    unit: degrees
+    range: [-540, 540]
+
+  # Battery/EV
+  - name: battery_soc
+    type: float
+    unit: percent
+    range: [0, 100]
+    description: State of Charge
+    
+  - name: battery_voltage
+    type: float
+    unit: volts
+    range: [0, 800]
+    
+  - name: battery_current
+    type: float
+    unit: amps
+    range: [-500, 500]
+    
+  - name: battery_temperature
+    type: float
+    unit: celsius
+    range: [-40, 80]
+    
+  - name: estimated_range
+    type: float
+    unit: km
+    range: [0, 1000]
+
+  # Tire
+  - name: tire_pressure_fl
+    type: float
+    unit: bar
+    range: [0, 5]
+    
+  - name: tire_pressure_fr
+    type: float
+    unit: bar
+    range: [0, 5]
+    
+  - name: tire_pressure_rl
+    type: float
+    unit: bar
+    range: [0, 5]
+    
+  - name: tire_pressure_rr
+    type: float
+    unit: bar
+    range: [0, 5]
+    
+  - name: tire_temperature_fl
+    type: float
+    unit: celsius
+    range: [-40, 120]
+
+  # Motor (EV)
+  - name: motor_temperature
+    type: float
+    unit: celsius
+    range: [-40, 150]
+    
+  - name: motor_torque
+    type: float
+    unit: nm
+    range: [-500, 500]
+    
+  - name: motor_power
+    type: float
+    unit: kw
+    range: [0, 500]
+
+  # Environment
+  - name: ambient_temperature
+    type: float
+    unit: celsius
+    range: [-50, 60]
+    
+  - name: odometer
+    type: float
+    unit: km
+    range: [0, 999999]
+
+# Signal groups for common use cases
+groups:
+  battery_health:
+    - battery_soc
+    - battery_voltage
+    - battery_current
+    - battery_temperature
+    - estimated_range
+    
+  tire_health:
+    - tire_pressure_fl
+    - tire_pressure_fr
+    - tire_pressure_rl
+    - tire_pressure_rr
+    - tire_temperature_fl
+    
+  driving_dynamics:
+    - vehicle_speed
+    - throttle_position
+    - brake_pressure
+    - steering_angle
+    - gear_position
+    
+  motor_health:
+    - motor_temperature
+    - motor_torque
+    - motor_power
+    - battery_current
