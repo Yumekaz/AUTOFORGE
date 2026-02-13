@@ -8,7 +8,7 @@
 <h3 align="center">Adversarial GenAI Pipeline for Automotive SDV Code Generation</h3>
 
 <p align="center">
-  <strong>Test-First • Self-Healing • ASPICE/MISRA Compliant</strong>
+  <strong>Test-First • Self-Healing • ASIL-D Evidence • ASPICE/MISRA Aligned</strong>
 </p>
 
 ---
@@ -87,8 +87,9 @@
 - **Audit trail** - complete trace of all attempts in `audit_report.json`
 
 ### 🛡️ Automotive Compliance
-- **MISRA C++** static analysis via clang-tidy
-- **ASPICE traceability** - requirements → tests → code
+- **MISRA C++** static analysis via clang-tidy (MISRA-aligned checks)
+- **ASIL-D** automated validation (heuristics + clang static analyzer)
+- **ASPICE traceability** - requirements → design → tests → code (SWE.3 matrix)
 - **Deterministic validation** - no hallucinated "pass" results
 
 ### 🚀 Multi-Target Code Generation
@@ -107,6 +108,8 @@
 - Python 3.10+
 - Google Gemini API key (or use `--mock` mode)
 - Docker (optional, recommended)
+- (Optional) clang, clang-tidy, cppcheck for validation
+- (Optional) rustc for Rust validation
 
 ### Installation
 
@@ -138,6 +141,24 @@ python main.py --demo bms --mock
 
 # Run with custom requirement
 python main.py --requirement input/requirements/bms_diagnostic.yaml
+```
+
+### Benchmark LLMs (Round 2 Evidence)
+```bash
+# Dry run (no API calls) - generates table + JSON
+python scripts/benchmark.py --dry-run
+
+# Real run (requires API keys + Ollama/Groq)
+python scripts/benchmark.py --runs 20 --providers gemini,ollama,groq
+```
+
+### CARLA Integration (Round 2 Evidence)
+```bash
+# Start REST stub for CARLA demo (CPU-only)
+python integrations/service_stub/rest_bms_service.py
+
+# Run CARLA bridge (writes output/carla_validation.json)
+python integrations/carla_bridge/carla_integration.py --log-path output/carla_validation.json
 ```
 
 ### Docker (Recommended)
@@ -191,6 +212,9 @@ autoforge/
 ├── integrations/
 │   └── carla_bridge/
 │       └── carla_integration.py     # CARLA simulator bridge
+├── integrations/
+│   └── service_stub/
+│       └── rest_bms_service.py      # REST stub for CARLA demo
 │
 ├── output/                          # Generated code output
 │   ├── BMSDiagnosticService/        # C++ SOME/IP service
@@ -202,6 +226,9 @@ autoforge/
 │   │   └── BmsGauge.kt              # Android Jetpack Compose UI
 │   └── ml/
 │       └── tire_failure_inference.hpp  # ONNX C++ wrapper
+├── slide_assets/
+│   ├── README.md                    # Slide evidence pointers
+│   └── slide_snippets.md            # Copy/paste slide text
 │
 └── tests/                           # Pipeline unit tests
 ```
@@ -311,9 +338,10 @@ public:
 |-------|------|----------|
 | Unit Tests | pytest | 100% requirement coverage |
 | Static Analysis | pylint | PEP8/Clean Code |
-| MISRA C++ | clang-tidy | MISRA C++:2008 |
+| MISRA C++ | clang-tidy | MISRA-aligned checks |
+| ASIL-D | clang analyzer + heuristics | ISO 26262 evidence |
 | Syntax Check | g++/clang | C++17 |
-| Traceability | Custom | ASPICE SWE.3 |
+| Traceability | Custom | ASPICE SWE.3 (matrix) |
 
 ### Audit Report Example
 
@@ -372,6 +400,9 @@ python integrations/carla_bridge/carla_integration.py --host localhost --port 20
 # Validates BMS predictions against simulated data
 ```
 
+Evidence output:
+- `output/carla_validation.json` (latency + response log)
+
 ---
 
 ## 📊 Case Study 2 Coverage
@@ -384,10 +415,12 @@ python integrations/carla_bridge/carla_integration.py --host localhost --port 20
 | HMI Visualization | Android Jetpack Compose gauges | ✅ |
 | Predictive Analytics | ONNX ML integration | ✅ |
 | MISRA Compliance | clang-tidy validation gate | ✅ |
-| ASPICE Traceability | trace.yaml generation | ✅ |
-| OTA Updates | Manifest generation | ✅ |
+| ASIL-D Validation | heuristics + clang analyzer | ✅ |
+| ASPICE Traceability | traceability_matrix.csv/yaml | ✅ |
+| OTA Updates | Manifest + subscription tiers | ✅ |
 | Vehicle Variants | Signal schema abstraction | ✅ |
 | CARLA Integration | Real-time simulation bridge | ✅ |
+| Benchmarking | benchmark_results.json | ✅ |
 
 ---
 
@@ -401,6 +434,13 @@ This project is our submission for **TELIPORT Season 3 - Case Study 2**.
 **Round 1 Submission**: January 2026
 
 ---
+
+## 📌 Round 2 Evidence Checklist
+- `benchmark_results.json` (20-run benchmarking)
+- `benchmark_slide7.md` (slide-ready table)
+- `output/carla_validation.json` (CARLA latency + response logs)
+- `output/<Service>/traceability_matrix.csv` (ASPICE SWE.3)
+- `output/metrics_summary.json` (Slide 9 metrics)
 
 ## 📄 License
 

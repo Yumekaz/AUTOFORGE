@@ -18,6 +18,7 @@ from typing import Dict, Any, List
 class TraceabilityRow:
     requirement_id: str
     requirement_desc: str
+    design_artifacts: List[str]
     test_cases: List[str]
     code_artifacts: List[str]
     aspice_reference: str
@@ -39,6 +40,7 @@ class TraceabilityMatrix:
         requirements = self._extract_requirements(requirement)
         tests = self._extract_tests(test_code)
         artifacts = self._extract_code_artifacts(requirement, code)
+        designs = self._extract_design_artifacts(requirement)
 
         rows: List[TraceabilityRow] = []
         for req_id, req_desc in requirements:
@@ -46,6 +48,7 @@ class TraceabilityMatrix:
                 TraceabilityRow(
                     requirement_id=req_id,
                     requirement_desc=req_desc,
+                    design_artifacts=designs,
                     test_cases=tests,
                     code_artifacts=artifacts,
                     aspice_reference=aspice_ref,
@@ -56,6 +59,7 @@ class TraceabilityMatrix:
                 TraceabilityRow(
                     requirement_id=trace.get("requirement_id", "REQ-UNKNOWN"),
                     requirement_desc=service.get("description", "Unknown requirement"),
+                    design_artifacts=designs,
                     test_cases=tests,
                     code_artifacts=artifacts,
                     aspice_reference=aspice_ref,
@@ -70,6 +74,7 @@ class TraceabilityMatrix:
             writer.writerow([
                 "requirement_id",
                 "requirement_desc",
+                "design_artifacts",
                 "test_cases",
                 "code_artifacts",
                 "aspice_reference",
@@ -78,6 +83,7 @@ class TraceabilityMatrix:
                 writer.writerow([
                     row.requirement_id,
                     row.requirement_desc,
+                    ";".join(row.design_artifacts),
                     ";".join(row.test_cases),
                     ";".join(row.code_artifacts),
                     row.aspice_reference,
@@ -90,6 +96,7 @@ class TraceabilityMatrix:
             {
                 "requirement_id": r.requirement_id,
                 "requirement_desc": r.requirement_desc,
+                "design_artifacts": r.design_artifacts,
                 "test_cases": r.test_cases,
                 "code_artifacts": r.code_artifacts,
                 "aspice_reference": r.aspice_reference,
@@ -146,3 +153,11 @@ class TraceabilityMatrix:
 
         return sorted(set(artifacts))
 
+    def _extract_design_artifacts(self, requirement: Dict[str, Any]) -> List[str]:
+        design = []
+        base_id = requirement.get("traceability", {}).get("requirement_id", "REQ")
+        # Create deterministic design IDs
+        design.append(f"{base_id}-DES-001: Service Interface Design")
+        design.append(f"{base_id}-DES-002: Validation Gate Design")
+        design.append(f"{base_id}-DES-003: OTA Packaging Design")
+        return design

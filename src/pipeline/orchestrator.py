@@ -18,6 +18,7 @@ from pipeline.validation_gate import get_validation_gate
 from pipeline.traceability import TraceabilityMatrix
 from pipeline.audit_logger import AuditLogger
 from pipeline.onnx_wrapper_generator import ONNXWrapperGenerator
+from pipeline.metrics_generator import generate_metrics
 
 
 class PipelinePhase(Enum):
@@ -321,6 +322,10 @@ class Pipeline:
             wrapper_gen = ONNXWrapperGenerator(llm_provider=self.llm_provider)
             wrapper_code = wrapper_gen.generate(requirement)
             self._save_output(service_name, "onnx_wrapper.hpp", wrapper_code)
+
+        # Generate metrics summary artifact for slides
+        metrics_path = self.output_dir / "metrics_summary.json"
+        generate_metrics(metrics_path)
         
     def _save_output(self, service_name: str, filename: str, content: str):
         """Save output file."""

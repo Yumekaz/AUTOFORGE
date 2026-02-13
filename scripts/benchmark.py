@@ -97,6 +97,28 @@ def _markdown_table(summary: Dict[str, Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _slide7_markdown_table(summary: Dict[str, Dict[str, Any]]) -> str:
+    headers = [
+        "LLM", "MISRA Pass", "ASIL-D Checks", "Compilation",
+        "Avg Retries", "Latency"
+    ]
+    lines = ["| " + " | ".join(headers) + " |", "| " + " | ".join(["---"] * len(headers)) + " |"]
+    for provider, stats in summary.items():
+        lines.append(
+            "| "
+            + " | ".join([
+                provider,
+                f\"{int(stats.get('misra_pass_rate', 0) * 100)}%\",
+                f\"{int(stats.get('asil_pass_rate', 0) * 100)}%\",
+                f\"{int(stats.get('compilation_pass_rate', 0) * 100)}%\",
+                str(stats.get("avg_retries", 0)),
+                f\"{stats.get('avg_latency_ms', 0)}ms\",
+            ])
+            + " |"
+        )
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="AUTOFORGE LLM Benchmark")
     parser.add_argument("--requirement", default="input/requirements/bms_diagnostic.yaml")
@@ -104,6 +126,7 @@ def main() -> int:
     parser.add_argument("--providers", default="gemini,ollama,groq")
     parser.add_argument("--output", default="benchmark_results.json")
     parser.add_argument("--markdown-out", default="benchmark_results.md")
+    parser.add_argument("--slide7-out", default="benchmark_slide7.md")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -168,6 +191,7 @@ def main() -> int:
 
     Path(args.output).write_text(json.dumps(output, indent=2))
     Path(args.markdown_out).write_text(_markdown_table(summary))
+    Path(args.slide7_out).write_text(_slide7_markdown_table(summary))
     return 0
 
 

@@ -17,12 +17,14 @@ import json
 from typing import Dict, Any
 import sys
 import os
+from pathlib import Path
 
 # Add AUTOFORGE src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src'))
 sys.path.insert(0, os.path.dirname(__file__))
 
 from service_client import ServiceClient
+from carla_validation_logger import CarlaValidationLogger
 
 
 class CARLABridge:
@@ -131,13 +133,14 @@ class CARLABridge:
         soc = self._simulate_battery_soc()
         return soc * 4.0  # 400km at 100% SOC
     
-    def stream_to_services(self, service_url: str = 'http://bms-service:30509'):
+    def stream_to_services(self, service_url: str = 'http://bms-service:30509', log_path: str = 'output/carla_validation.json'):
         """
         Stream vehicle signals to AUTOFORGE-generated services.
         This demonstrates the full integration loop.
         """
         print(f"[CARLA] Streaming signals to services at {service_url}")
         client = ServiceClient(service_url)
+        logger = CarlaValidationLogger(Path(log_path))
         
         try:
             while True:
@@ -145,16 +148,21 @@ class CARLABridge:
                 signals = self.get_vehicle_signals()
                 
                 # Send to BMS service
+                start = time.time()
                 response = client.send_bms_signals(signals)
+                latency_ms = (time.time() - start) * 1000.0
                 
                 # Log predictions
                 if response:
                     self._log_predictions(signals, response)
+                    logger.log(signals, response, latency_ms)
                 
                 time.sleep(0.1)  # 10Hz update rate
                 
         except KeyboardInterrupt:
             print("\n[CARLA] Bridge stopped by user")
+        finally:
+            logger.save()
     
     def _send_to_bms_service(self, signals: Dict[str, Any]) -> Dict[str, Any]:
         """Deprecated: simulated service response."""
@@ -196,6 +204,8 @@ def main():
     parser.add_argument('--port', type=int, default=2000, help='CARLA port')
     parser.add_argument('--service-url', default='http://bms-service:30509',
                        help='AUTOFORGE service URL')
+    parser.add_argument('--log-path', default='output/carla_validation.json',
+                       help='Path to CARLA validation log JSON')
     
     args = parser.parse_args()
     
@@ -213,7 +223,7 @@ def main():
         print("Vehicle signals streaming to services...")
         print("Press Ctrl+C to stop\n")
         
-        bridge.stream_to_services(args.service_url)
+        bridge.stream_to_services(args.service_url, args.log_path)
         
     except Exception as e:
         print(f"[ERROR] {e}")
