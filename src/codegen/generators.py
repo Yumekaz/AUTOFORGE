@@ -10,6 +10,7 @@ import yaml
 from llm.client import get_client, LLMClient
 from llm.prompts import (
     CPP_SOMEIP_TEMPLATE,
+    RUST_SOMEIP_TEMPLATE,
     CODE_GENERATION_PROMPT,
     VALIDATION_PROMPT
 )
@@ -22,6 +23,7 @@ class BaseCodeGenerator:
         self.llm = llm_client or get_client("gemini")
         self.language = "unknown"
         self.file_extension = ".txt"
+        self.min_service_lines = 200
     
     def generate_service(
         self,
@@ -44,6 +46,15 @@ class BaseCodeGenerator:
             return json.loads(response)
         except json.JSONDecodeError:
             return {"valid": False, "issues": ["Failed to parse validation response"]}
+
+    def _enforce_min_lines(self, code: str) -> None:
+        """Enforce minimum service size for production readiness."""
+        line_count = sum(1 for line in code.splitlines() if line.strip())
+        if line_count < self.min_service_lines:
+            raise ValueError(
+                f"{self.language} service too short: {line_count} lines "
+                f"(minimum {self.min_service_lines} required)"
+            )
 
 
 class CppGenerator(BaseCodeGenerator):
@@ -128,6 +139,9 @@ Ensure all test assertions will pass with proper threshold handling.
         
         # Post-process: ensure vsomeip headers are present
         code = self._ensure_headers(raw_code)
+
+        # Enforce production-quality size
+        self._enforce_min_lines(code)
         
         return code
     
@@ -273,8 +287,62 @@ Output ONLY the Kotlin code with proper package declaration.
         
         raw_code = self.llm.generate(prompt)
         code = self._ensure_imports(raw_code)
+
+        # Enforce production-quality size
+        self._enforce_min_lines(code)
         
         return code
+
+
+class RustGenerator(BaseCodeGenerator):
+    """
+    Rust Code Generator for SOME/IP Services
+
+    Features:
+    - serde serialization
+    - Result/Option patterns
+    - Error handling
+    """
+
+    def __init__(self, llm_client: Optional[LLMClient] = None):
+        super().__init__(llm_client)
+        self.language = "Rust"
+        self.file_extension = ".rs"
+
+    def generate_service(
+        self,
+        requirement: Dict[str, Any],
+        test_code: str
+    ) -> str:
+        service_name = requirement.get("service_name", "UnknownService")
+        service_id = requirement.get("service_id", "0x1234")
+        instance_id = requirement.get("instance_id", "0x5678")
+
+        methods_yaml = yaml.dump(requirement.get("methods", []))
+        events_yaml = yaml.dump(requirement.get("events", []))
+
+        prompt = RUST_SOMEIP_TEMPLATE.format(
+            service_name=service_name,
+            service_id=service_id,
+            instance_id=instance_id,
+            methods_yaml=methods_yaml,
+            events_yaml=events_yaml
+        )
+
+        full_prompt = f"""
+{prompt}
+
+IMPORTANT: The implementation MUST pass these tests:
+```rust
+{test_code}
+```
+
+Ensure all test assertions will pass with proper threshold handling.
+"""
+
+        raw_code = self.llm.generate(full_prompt)
+        self._enforce_min_lines(raw_code)
+        return raw_code
     
     def _ensure_imports(self, code: str) -> str:
         """Ensure all required imports are present."""
@@ -307,6 +375,8 @@ def get_generator(language: str, llm_client: Optional[LLMClient] = None) -> Base
         "c++": CppGenerator,
         "kotlin": KotlinGenerator,
         "kt": KotlinGenerator,
+        "rust": RustGenerator,
+        "rs": RustGenerator,
     }
     
     generator_class = generators.get(language.lower())

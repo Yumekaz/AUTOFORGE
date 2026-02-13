@@ -4,9 +4,12 @@ Supports multiple LLM providers with unified interface
 """
 
 import os
+import json
 from abc import ABC, abstractmethod
 from typing import Optional
 import yaml
+import urllib.request
+import urllib.error
 
 
 class LLMClient(ABC):
@@ -85,6 +88,74 @@ class OpenAIClient(LLMClient):
             max_tokens=4096,
         )
         return response.choices[0].message.content
+
+
+class OllamaClient(LLMClient):
+    """Ollama client for local Llama models."""
+    
+    def __init__(
+        self,
+        model: str = "llama3.1:8b",
+        host: str = "http://localhost:11434",
+        temperature: float = 0.2,
+        max_tokens: int = 4096,
+    ):
+        self.model = model
+        self.host = host.rstrip("/")
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+    
+    def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+        payload = {
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": self.temperature,
+                "num_predict": self.max_tokens,
+            },
+        }
+        if system_prompt:
+            payload["system"] = system_prompt
+        
+        url = f"{self.host}/api/generate"
+        response = _post_json(url, payload)
+        return response.get("response", "")
+
+
+class GroqClient(LLMClient):
+    """Groq client for Llama models via Groq API."""
+    
+    def __init__(
+        self,
+        model: str = "llama-3.1-8b-instant",
+        temperature: float = 0.2,
+        max_tokens: int = 4096,
+        base_url: str = "https://api.groq.com/openai/v1/chat/completions",
+    ):
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.base_url = base_url
+        self.api_key = os.getenv("GROQ_API_KEY")
+        if not self.api_key:
+            raise ValueError("GROQ_API_KEY environment variable not set")
+    
+    def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+        
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
+        }
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+        response = _post_json(self.base_url, payload, headers=headers)
+        return response.get("choices", [{}])[0].get("message", {}).get("content", "")
 
 
 class MockClient(LLMClient):
@@ -216,6 +287,8 @@ def get_client(provider: str = "gemini", **kwargs) -> LLMClient:
     clients = {
         "gemini": GeminiClient,
         "openai": OpenAIClient,
+        "ollama": OllamaClient,
+        "groq": GroqClient,
         "mock": MockClient,
     }
     
@@ -223,3 +296,21 @@ def get_client(provider: str = "gemini", **kwargs) -> LLMClient:
         raise ValueError(f"Unknown provider: {provider}. Available: {list(clients.keys())}")
     
     return clients[provider](**kwargs)
+
+
+def _post_json(url: str, payload: dict, headers: Optional[dict] = None) -> dict:
+    """Post JSON and return parsed JSON response."""
+    data = json.dumps(payload).encode("utf-8")
+    req_headers = {"Content-Type": "application/json"}
+    if headers:
+        req_headers.update(headers)
+    request = urllib.request.Request(url, data=data, headers=req_headers, method="POST")
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8") if e.fp else ""
+        raise RuntimeError(f"HTTPError {e.code}: {body}") from e
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"URLError: {e}") from e

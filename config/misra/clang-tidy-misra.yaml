@@ -1,0 +1,20 @@
+Checks: >
+  -*,
+  cppcoreguidelines-*,
+  bugprone-*,
+  readability-*,
+  misc-*,
+  performance-*,
+  modernize-*
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle: none
+User: autoforge
+CheckOptions:
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoreAllFloatingPointNumbers
+    value: 'false'
+  - key: cppcoreguidelines-pro-type-vararg.IgnoreCommaOperator
+    value: 'false'
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: 'true'

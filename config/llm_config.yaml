@@ -15,6 +15,17 @@ providers:
     temperature: 0.2
     max_tokens: 4096
 
+  ollama:
+    model: llama3.1:8b
+    host: http://localhost:11434
+    temperature: 0.2
+    max_tokens: 4096
+
+  groq:
+    model: llama-3.1-8b-instant
+    temperature: 0.2
+    max_tokens: 4096
+
 # Pipeline settings
 pipeline:
   max_retries: 3

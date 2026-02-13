@@ -49,6 +49,8 @@ Generate {language} code that:
 3. Follows {language} best practices
 4. Includes proper error handling
 5. Is MISRA compliant (for C++)
+6. Is a production-quality service with at least 200 non-empty lines
+7. Includes lifecycle, configuration, logging, and safety checks
 
 TARGET PROTOCOL: {protocol}
 
@@ -74,6 +76,7 @@ Requirements:
 3. Follow MISRA C++ guidelines
 4. Include header guards and includes
 5. Separate .hpp and .cpp files
+6. Minimum 200 non-empty lines of production-quality code
 
 Output format:
 ```hpp
@@ -100,6 +103,7 @@ Requirements:
 2. Include proper error handling
 3. Use serde for serialization
 4. Follow Rust naming conventions
+5. Minimum 200 non-empty lines of production-quality code
 
 Output ONLY the Rust code.
 """
@@ -117,6 +121,7 @@ Requirements:
 2. Follow Android Automotive patterns
 3. Include proper null safety
 4. Use data classes for DTOs
+5. Minimum 200 non-empty lines of production-quality code
 
 Output ONLY the Kotlin code.
 """

@@ -1,5 +1,13 @@
 # AUTOFORGE LLM Module
-from .client import get_client, LLMClient, GeminiClient, OpenAIClient, MockClient
+from .client import (
+    get_client,
+    LLMClient,
+    GeminiClient,
+    OpenAIClient,
+    OllamaClient,
+    GroqClient,
+    MockClient,
+)
 from .prompts import (
     SYSTEM_PROMPT,
     TEST_GENERATION_PROMPT,
@@ -11,6 +19,8 @@ __all__ = [
     "LLMClient", 
     "GeminiClient",
     "OpenAIClient",
+    "OllamaClient",
+    "GroqClient",
     "MockClient",
     "SYSTEM_PROMPT",
     "TEST_GENERATION_PROMPT",

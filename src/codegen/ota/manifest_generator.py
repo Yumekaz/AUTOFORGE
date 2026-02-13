@@ -26,7 +26,8 @@ class OTAManifestGenerator:
         version: str,
         artifacts: Dict[str, Path],
         variants: List[str] = ["ev", "hybrid", "ice"],
-        rollout_strategy: str = "gradual"
+        rollout_strategy: str = "gradual",
+        subscription_tier: str = "standard"
     ) -> Dict[str, Any]:
         """
         Generate OTA manifest for a service.
@@ -55,6 +56,7 @@ class OTAManifestGenerator:
                     "rollout_strategy": rollout_strategy,
                     "rollout_config": self._get_rollout_config(rollout_strategy),
                 },
+                "subscription": self._get_subscription_block(service_name, subscription_tier),
                 "dependencies": self._generate_dependencies(service_name),
                 "safety": {
                     "require_parking": True,
@@ -148,6 +150,29 @@ class OTAManifestGenerator:
             })
         
         return base_deps
+
+    def _get_subscription_block(self, service_name: str, tier: str) -> Dict[str, Any]:
+        """Load subscription tier configuration and return manifest block."""
+        config_path = Path(__file__).resolve().parents[2] / "config" / "subscription_config.yaml"
+        if not config_path.exists():
+            return {
+                "tier": tier,
+                "entitlements": [],
+                "channels": ["stable"],
+                "vin_scope": "all",
+            }
+
+        config = yaml.safe_load(config_path.read_text())
+        tiers = config.get("tiers", {})
+        tier_config = tiers.get(tier, {})
+
+        return {
+            "tier": tier,
+            "entitlements": tier_config.get("entitlements", []),
+            "channels": tier_config.get("channels", ["stable"]),
+            "vin_scope": tier_config.get("vin_scope", "all"),
+            "service": service_name,
+        }
     
     def _generate_signature(
         self,

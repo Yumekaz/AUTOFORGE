@@ -20,6 +20,9 @@ import os
 
 # Add AUTOFORGE src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src'))
+sys.path.insert(0, os.path.dirname(__file__))
+
+from service_client import ServiceClient
 
 
 class CARLABridge:
@@ -134,6 +137,7 @@ class CARLABridge:
         This demonstrates the full integration loop.
         """
         print(f"[CARLA] Streaming signals to services at {service_url}")
+        client = ServiceClient(service_url)
         
         try:
             while True:
@@ -141,7 +145,7 @@ class CARLABridge:
                 signals = self.get_vehicle_signals()
                 
                 # Send to BMS service
-                response = self._send_to_bms_service(signals)
+                response = client.send_bms_signals(signals)
                 
                 # Log predictions
                 if response:
@@ -153,41 +157,8 @@ class CARLABridge:
             print("\n[CARLA] Bridge stopped by user")
     
     def _send_to_bms_service(self, signals: Dict[str, Any]) -> Dict[str, Any]:
-        """Send signals to BMS diagnostic service."""
-        # In production, this would make actual SOME/IP or REST calls
-        # For demo, we'll simulate the service response
-        
-        battery_soc = signals['battery_soc']
-        battery_temp = signals['battery_temperature']
-        
-        response = {
-            'health_status': 0,  # NORMAL
-            'warnings': []
-        }
-        
-        # Simulate service logic (matching BMS requirement)
-        if battery_soc < 20.0:
-            response['health_status'] = 1  # WARNING
-            response['warnings'].append({
-                'code': 0x0001,
-                'message': 'Low battery'
-            })
-        
-        if battery_temp > 45.0:
-            response['health_status'] = 1  # WARNING
-            response['warnings'].append({
-                'code': 0x0002,
-                'message': 'High temperature'
-            })
-        
-        if battery_temp > 60.0:
-            response['health_status'] = 2  # CRITICAL
-            response['warnings'].append({
-                'code': 0x0003,
-                'message': 'Critical temperature - shutdown required'
-            })
-        
-        return response
+        """Deprecated: simulated service response."""
+        return {}
     
     def _log_predictions(self, signals: Dict[str, Any], response: Dict[str, Any]):
         """Log vehicle state and service predictions."""

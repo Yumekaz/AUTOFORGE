@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from enum import Enum
 
-from .client import LLMClient, GeminiClient, OpenAIClient, MockClient
+from .client import LLMClient, GeminiClient, OpenAIClient, OllamaClient, GroqClient, MockClient
 
 
 class AgentRole(Enum):
@@ -121,6 +121,10 @@ def get_auditor(provider: str = "gemini", **kwargs) -> AdversarialLLMClient:
         base = GeminiClient(temperature=0.1, **kwargs)
     elif provider == "openai":
         base = OpenAIClient(temperature=0.1, **kwargs)
+    elif provider == "ollama":
+        base = OllamaClient(temperature=0.1, **kwargs)
+    elif provider == "groq":
+        base = GroqClient(temperature=0.1, **kwargs)
     elif provider == "mock":
         base = MockClient(**kwargs)
     else:
@@ -150,6 +154,10 @@ def get_architect(provider: str = "gemini", **kwargs) -> AdversarialLLMClient:
         base = GeminiClient(temperature=0.3, **kwargs)
     elif provider == "openai":
         base = OpenAIClient(temperature=0.3, **kwargs)
+    elif provider == "ollama":
+        base = OllamaClient(temperature=0.3, **kwargs)
+    elif provider == "groq":
+        base = GroqClient(temperature=0.3, **kwargs)
     elif provider == "mock":
         base = MockClient(**kwargs)
     else:

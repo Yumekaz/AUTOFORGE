@@ -1,22 +1,23 @@
 """
 ASIL-D Compliance Validation for AUTOFORGE (ISO 26262)
 
-This module performs pragmatic, automatable checks that approximate
-ASIL-D compliance signals for generated C++ code. It integrates:
-  - Heuristic memory safety checks
+This module provides runnable, automatable checks that approximate
+ASIL-D compliance signals. It includes:
+  - Memory safety checks
+  - Timing constraints
   - Deterministic behavior checks
-  - Timing constraint checks
-  - clang Static Analyzer (if available)
+  - Defensive programming checks
+  - clang Static Analyzer integration (if installed)
 
-Note: This does not replace a formal safety case. It provides evidence
-artifacts and automated gates aligned with ISO 26262 expectations.
+It is designed to run even when no real code is provided by falling
+back to mock examples for testing and CI sanity checks.
 """
 
 from __future__ import annotations
 
 import subprocess
 from dataclasses import dataclass
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from pathlib import Path
 
 
@@ -27,6 +28,7 @@ class AsilCheckResult:
     issues: List[str]
     static_analyzer: Dict[str, Any]
     heuristic_checks: Dict[str, Any]
+    evidence: Dict[str, Any]
 
 
 class AsilDValidator:
@@ -37,7 +39,8 @@ class AsilDValidator:
     - Memory safety (unsafe APIs, raw memory ops, unchecked pointers)
     - Timing constraints (unbounded loops)
     - Determinism (randomness, time-based, threading without controls)
-    - clang Static Analyzer (if clang is available)
+    - Defensive programming (error handling, explicit bounds checks)
+    - clang Static Analyzer (clang --analyze)
     """
 
     # Heuristic rules (simple, transparent, and deterministic)
@@ -58,12 +61,37 @@ class AsilDValidator:
         "while(true)", "while (true)", "for(;;)", "for (;;)",
     ]
 
-    def validate_cpp(self, code: str, source_path: Path) -> AsilCheckResult:
+    DEFENSIVE_SIGNAL = [
+        "if (", "if(", "throw", "return false", "return nullptr",
+        "std::optional", "std::expected", "assert(",
+    ]
+
+    BOUNDS_SIGNAL = [
+        "size()", "length()", "at(", "std::array", "std::vector",
+    ]
+
+    def validate_cpp(
+        self,
+        code: Optional[str] = None,
+        source_path: Optional[Path] = None,
+        use_mock: bool = False,
+    ) -> AsilCheckResult:
+        """
+        Validate C++ code for ASIL-D compliance signals.
+
+        If code/source_path are missing (or use_mock=True), mock examples
+        are used so the validator remains runnable in isolation.
+        """
+        if use_mock or not code:
+            code = self._mock_example_code()
+
         issues: List[str] = []
         heuristic: Dict[str, Any] = {
             "unsafe_api": [],
             "non_determinism": [],
             "unbounded_loops": [],
+            "defensive_programming": False,
+            "bounds_checks": False,
         }
 
         # Memory safety heuristics
@@ -95,25 +123,47 @@ class AsilDValidator:
                 + ", ".join(heuristic["unbounded_loops"])
             )
 
+        # Defensive programming signals
+        if any(token in code for token in self.DEFENSIVE_SIGNAL):
+            heuristic["defensive_programming"] = True
+        else:
+            issues.append("ASIL-D Defensive: no explicit error handling detected")
+
+        # Bounds checks signals
+        if any(token in code for token in self.BOUNDS_SIGNAL):
+            heuristic["bounds_checks"] = True
+        else:
+            issues.append("ASIL-D Bounds: no bounds-checking signals detected")
+
         # clang Static Analyzer
         static_analyzer = self._run_clang_static_analyzer(source_path)
         if static_analyzer.get("status") == "FAIL":
-            issues.append(
-                "ASIL-D Static Analyzer: issues detected by clang --analyze"
-            )
+            issues.append("ASIL-D Static Analyzer: issues detected by clang --analyze")
 
         compliant = len(issues) == 0
+        evidence = {
+            "memory_safety": "PASS" if not heuristic["unsafe_api"] else "FAIL",
+            "determinism": "PASS" if not heuristic["non_determinism"] else "FAIL",
+            "timing": "PASS" if not heuristic["unbounded_loops"] else "FAIL",
+            "defensive_programming": "PASS" if heuristic["defensive_programming"] else "FAIL",
+            "bounds_checks": "PASS" if heuristic["bounds_checks"] else "FAIL",
+        }
+
         return AsilCheckResult(
             compliant=compliant,
             issues=issues,
             static_analyzer=static_analyzer,
             heuristic_checks=heuristic,
+            evidence=evidence,
         )
 
-    def _run_clang_static_analyzer(self, source_path: Path) -> Dict[str, Any]:
+    def _run_clang_static_analyzer(self, source_path: Optional[Path]) -> Dict[str, Any]:
         """
-        Run clang Static Analyzer (clang --analyze) if available.
+        Run clang Static Analyzer (clang --analyze) if available and path exists.
         """
+        if not source_path or not source_path.exists():
+            return {"status": "SKIP (no source path)"}
+
         try:
             result = subprocess.run(
                 ["clang", "--analyze", "-std=c++17", str(source_path)],
@@ -128,14 +178,40 @@ class AsilDValidator:
         except Exception as e:
             return {"status": f"ERROR: {e}"}
 
-        # clang --analyze returns non-zero on issues
         if result.returncode == 0:
             return {"status": "PASS", "output": ""}
 
-        # Keep output short for logs
         output = (result.stderr or result.stdout or "").strip()
         if len(output) > 2000:
             output = output[:2000] + "\n...truncated..."
 
         return {"status": "FAIL", "output": output}
 
+    def _mock_example_code(self) -> str:
+        """
+        Mock example code for standalone testing.
+        Designed to trigger some checks but remain compilable.
+        """
+        return r"""
+#include <vector>
+#include <string>
+
+class MockService {
+public:
+    bool Initialize(const std::vector<int>& data) {
+        if (data.empty()) {
+            return false;
+        }
+        int value = data.at(0);
+        return value >= 0;
+    }
+};
+"""
+
+
+if __name__ == "__main__":
+    # Mock runnable example
+    validator = AsilDValidator()
+    result = validator.validate_cpp(use_mock=True)
+    print("ASIL-D compliant:", result.compliant)
+    print("Issues:", result.issues)

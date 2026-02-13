@@ -15,6 +15,9 @@ from llm.client import get_client
 from llm.adversarial_client import get_auditor, get_architect
 from llm.prompts import SYSTEM_PROMPT, TEST_GENERATION_PROMPT, CODE_GENERATION_PROMPT
 from pipeline.validation_gate import get_validation_gate
+from pipeline.traceability import TraceabilityMatrix
+from pipeline.audit_logger import AuditLogger
+from pipeline.onnx_wrapper_generator import ONNXWrapperGenerator
 
 
 class PipelinePhase(Enum):
@@ -68,6 +71,7 @@ class Pipeline:
         # CRITICAL: Use SEPARATE agents for adversarial governance
         self.auditor = get_auditor(llm_provider)
         self.architect = get_architect(llm_provider)
+        self.llm_provider = llm_provider
         
         self.max_retries = max_retries
         self.output_dir = Path(output_dir)
@@ -89,26 +93,43 @@ class Pipeline:
             requirement_id="",
             phases_completed=[],
         )
+        audit = AuditLogger(service_name="unknown")
         
         # Phase 1: Parse
         print(f"[PHASE 1] Parsing requirement: {requirement_path}")
         try:
+            phase = audit.start_phase(1, "PARSE")
             requirement = self._parse_requirement(requirement_path)
             result.requirement_id = requirement.get("service", {}).get("name", "unknown")
+            audit.service_name = result.requirement_id
             result.phases_completed.append(PipelinePhase.PARSE)
+            audit.end_phase(phase, "SUCCESS", {
+                "requirement_path": requirement_path,
+                "service_name": result.requirement_id
+            })
         except Exception as e:
             result.errors.append(f"Parse error: {str(e)}")
+            if 'phase' in locals():
+                audit.end_phase(phase, "FAILED", {"error": str(e)})
+            self._save_audit(audit, result.requirement_id)
             return result
             
         # Phase 2: Generate Tests FIRST
         print(f"[PHASE 2] Generating tests for: {result.requirement_id}")
         try:
+            phase = audit.start_phase(2, "TEST_GENERATION")
             test_code = self._generate_tests(requirement)
             result.test_code = test_code
             result.phases_completed.append(PipelinePhase.TEST_GEN)
             self._save_output(result.requirement_id, "tests.py", test_code)
+            audit.end_phase(phase, "SUCCESS", {
+                "test_lines": len(test_code.splitlines())
+            })
         except Exception as e:
             result.errors.append(f"Test generation error: {str(e)}")
+            if 'phase' in locals():
+                audit.end_phase(phase, "FAILED", {"error": str(e)})
+            self._save_audit(audit, result.requirement_id)
             return result
             
         # Phase 3: Generate Code (with retry loop)
@@ -120,33 +141,73 @@ class Pipeline:
             print(f"  Attempt {attempt + 1}/{self.max_retries}")
             
             try:
+                phase = audit.start_phase(3, "CODE_GENERATION")
                 generated_code = self._generate_code(requirement, test_code, language)
                 result.generated_code = generated_code
                 result.phases_completed.append(PipelinePhase.CODE_GEN)
+                audit.end_phase(phase, "SUCCESS", {
+                    "language": language,
+                    "code_lines": len(generated_code.splitlines()),
+                    "attempt": attempt + 1,
+                })
                 
                 # Phase 4: Validate with REAL tools (clang-tidy, pytest, etc.)
                 print(f"[PHASE 4] Validating generated code...")
+                phase_val = audit.start_phase(4, "VALIDATION")
                 validation_result = self._validate(generated_code, test_code, language)
                 
                 if validation_result["valid"]:
                     result.validation_passed = True
                     result.phases_completed.append(PipelinePhase.VALIDATE)
+                    audit.end_phase(phase_val, "SUCCESS", {
+                        "issues": validation_result.get("issues", []),
+                        "misra": validation_result.get("misra_compliance", {}),
+                        "asil_d": validation_result.get("asil_d_compliance", {}),
+                        "static_analysis": validation_result.get("static_analysis", {}),
+                    })
                     break
                 else:
                     print(f"  Validation failed: {validation_result['issues']}")
+                    audit.end_phase(phase_val, "FAILED", {
+                        "issues": validation_result.get("issues", []),
+                        "misra": validation_result.get("misra_compliance", {}),
+                        "asil_d": validation_result.get("asil_d_compliance", {}),
+                        "static_analysis": validation_result.get("static_analysis", {}),
+                    })
                     # Feed errors back for retry
                     test_code = self._enhance_tests_with_errors(test_code, validation_result["issues"])
                     
             except Exception as e:
                 result.errors.append(f"Attempt {attempt + 1} error: {str(e)}")
+                if 'phase' in locals():
+                    audit.end_phase(phase, "FAILED", {"error": str(e), "attempt": attempt + 1})
                 
         # Phase 5: Package
         if result.validation_passed:
             print(f"[PHASE 5] Packaging outputs...")
+            phase = audit.start_phase(5, "PACKAGING")
             self._package_outputs(result, requirement, language)
             result.phases_completed.append(PipelinePhase.PACKAGE)
             result.success = True
+            audit.end_phase(phase, "SUCCESS")
             
+        audit.finalize(
+            final_status="ACCEPTED" if result.success else "REJECTED",
+            total_attempts=result.retry_count,
+            compliance_summary={
+                "validation_passed": result.validation_passed,
+            },
+            outputs={
+                "trace": f"output/{result.requirement_id}/trace.yaml",
+                "audit_report": f"output/{result.requirement_id}/audit_report.json",
+            },
+            requirement_traceability={
+                "requirement_id": requirement.get("traceability", {}).get("requirement_id", "N/A"),
+                "source_document": requirement_path,
+            },
+        )
+        self._save_audit(audit, result.requirement_id)
+
         return result
     
     def _parse_requirement(self, path: str) -> Dict[str, Any]:
@@ -236,10 +297,30 @@ class Pipeline:
             "validation_passed": result.validation_passed,
         }
         self._save_output(service_name, "trace.yaml", yaml.dump(trace))
+
+        # Generate ASPICE traceability matrix
+        matrix = TraceabilityMatrix()
+        rows = matrix.build(requirement, result.test_code or "", result.generated_code or "")
+        service_dir = self.output_dir / service_name
+        matrix.save_csv(rows, service_dir / "traceability_matrix.csv")
+        matrix.save_yaml(rows, service_dir / "traceability_matrix.yaml")
         
         # Generate OTA manifest and variant configs
         print(f"[PHASE 5.1] Generating OTA manifests...")
         self._generate_ota_package(service_name, requirement)
+
+        # CARLA integration config (service endpoint)
+        self._save_output(service_name, "carla_service_config.yaml", yaml.dump({
+            "service_url": f"http://{service_name.lower()}:30509",
+            "notes": "Used by integrations/carla_bridge/service_client.py",
+        }))
+
+        # Generate ONNX wrapper if ML block present
+        if requirement.get("ml"):
+            print(f"[PHASE 5.2] Generating ONNX wrapper...")
+            wrapper_gen = ONNXWrapperGenerator(llm_provider=self.llm_provider)
+            wrapper_code = wrapper_gen.generate(requirement)
+            self._save_output(service_name, "onnx_wrapper.hpp", wrapper_code)
         
     def _save_output(self, service_name: str, filename: str, content: str):
         """Save output file."""
@@ -250,6 +331,13 @@ class Pipeline:
         with open(filepath, 'w') as f:
             f.write(content)
         print(f"  Saved: {filepath}")
+
+    def _save_audit(self, audit: AuditLogger, service_name: str):
+        if not service_name:
+            return
+        service_dir = self.output_dir / service_name
+        audit_path = service_dir / "audit_report.json"
+        audit.save(audit_path)
         
     def _extract_code(self, response: str) -> str:
         """Extract code from LLM response (handles markdown code blocks)."""

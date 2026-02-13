@@ -25,6 +25,8 @@ class ValidationGate:
             'py': self.validate_python,
             'cpp': self.validate_cpp,
             'c++': self.validate_cpp,
+            'rust': self.validate_rust,
+            'rs': self.validate_rust,
         }
     
     def validate(self, code: str, test_code: str, language: str) -> Dict[str, Any]:
@@ -82,6 +84,17 @@ class ValidationGate:
                 result['issues'].append(f"Syntax error: {e}")
                 result['static_analysis']['syntax'] = f'FAIL: {e}'
                 return result  # Don't continue if syntax is broken
+
+            # 1.1 Minimum service size gate (200+ lines)
+            line_count = sum(1 for line in code.splitlines() if line.strip())
+            if line_count < 200:
+                result['valid'] = False
+                result['issues'].append(
+                    f"Service size too small: {line_count} lines (minimum 200 required)"
+                )
+                result['static_analysis']['service_size'] = 'FAIL'
+            else:
+                result['static_analysis']['service_size'] = 'PASS'
             
             # 2. Run pylint for static analysis
             try:
@@ -186,14 +199,34 @@ class ValidationGate:
                 result['static_analysis']['compilation'] = 'SKIP (g++ not installed)'
             except Exception as e:
                 result['static_analysis']['compilation'] = f'ERROR: {e}'
-            
+
+            # 1.1 Minimum service size gate (200+ lines)
+            line_count = sum(1 for line in code.splitlines() if line.strip())
+            if line_count < 200:
+                result['valid'] = False
+                result['issues'].append(
+                    f"Service size too small: {line_count} lines (minimum 200 required)"
+                )
+                result['static_analysis']['service_size'] = 'FAIL'
+            else:
+                result['static_analysis']['service_size'] = 'PASS'
+
             # 2. clang-tidy for MISRA rules
             try:
+                repo_root = Path(__file__).resolve().parents[2]
+                misra_config = repo_root / "config" / "misra" / "clang-tidy-misra.yaml"
+                clang_args = [
+                    'clang-tidy', str(impl_file), '--',
+                    '-std=c++17',
+                ]
+                if misra_config.exists():
+                    clang_args.insert(1, f"--config-file={misra_config}")
+                else:
+                    clang_args.extend(['--checks=-*,readability-*,bugprone-*,cppcoreguidelines-*'])
+
                 # Run clang-tidy with MISRA-relevant checks
                 clang_result = subprocess.run(
-                    ['clang-tidy', str(impl_file), '--',
-                     '-std=c++17',
-                     '--checks=-*,readability-*,bugprone-*,cppcoreguidelines-*'],
+                    clang_args,
                     capture_output=True,
                     text=True,
                     timeout=15
@@ -255,6 +288,7 @@ class ValidationGate:
                     'issues': asil_result.issues,
                     'static_analyzer': asil_result.static_analyzer,
                     'heuristic_checks': asil_result.heuristic_checks,
+                    'evidence': asil_result.evidence,
                 }
                 if not asil_result.compliant:
                     result['valid'] = False
@@ -263,6 +297,52 @@ class ValidationGate:
             except Exception as e:
                 result['asil_d_compliance'] = {'status': f'ERROR: {e}'}
         
+        return result
+
+    def validate_rust(self, code: str, test_code: str) -> Dict[str, Any]:
+        """Validate Rust code with rustc and basic linting."""
+        result = {
+            'valid': True,
+            'issues': [],
+            'test_results': {},
+            'static_analysis': {},
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            impl_file = tmpdir_path / "implementation.rs"
+            impl_file.write_text(code)
+
+            # Minimum size gate
+            line_count = sum(1 for line in code.splitlines() if line.strip())
+            if line_count < 200:
+                result['valid'] = False
+                result['issues'].append(
+                    f"Service size too small: {line_count} lines (minimum 200 required)"
+                )
+                result['static_analysis']['service_size'] = 'FAIL'
+            else:
+                result['static_analysis']['service_size'] = 'PASS'
+
+            # rustc syntax check
+            try:
+                rustc_result = subprocess.run(
+                    ['rustc', '--edition=2021', '--emit=metadata', str(impl_file)],
+                    capture_output=True,
+                    text=True,
+                    timeout=15
+                )
+                if rustc_result.returncode == 0:
+                    result['static_analysis']['rustc'] = 'PASS'
+                else:
+                    result['valid'] = False
+                    result['static_analysis']['rustc'] = 'FAIL'
+                    result['issues'].append(f"Rust compile error: {rustc_result.stderr}")
+            except FileNotFoundError:
+                result['static_analysis']['rustc'] = 'SKIP (rustc not installed)'
+            except Exception as e:
+                result['static_analysis']['rustc'] = f'ERROR: {e}'
+
         return result
     
     def _extract_pytest_failures(self, pytest_output: str) -> List[str]:

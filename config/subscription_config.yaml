@@ -1,0 +1,28 @@
+tiers:
+  trial:
+    entitlements:
+      - diagnostics.basic
+      - alerts.basic
+    channels:
+      - beta
+    vin_scope: "subset"
+
+  standard:
+    entitlements:
+      - diagnostics.basic
+      - alerts.basic
+      - ota.standard
+    channels:
+      - stable
+    vin_scope: "all"
+
+  premium:
+    entitlements:
+      - diagnostics.advanced
+      - alerts.advanced
+      - ml.inference
+      - ota.priority
+    channels:
+      - stable
+      - canary
+    vin_scope: "all"
