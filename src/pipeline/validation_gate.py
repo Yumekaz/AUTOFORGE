@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Dict, List, Any
 import json
 
+from pipeline.asil_validation import AsilDValidator
+
 
 class ValidationGate:
     """
@@ -152,7 +154,8 @@ class ValidationGate:
             'issues': [],
             'test_results': {},
             'static_analysis': {},
-            'misra_compliance': {}
+            'misra_compliance': {},
+            'asil_d_compliance': {}
         }
         
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -242,6 +245,23 @@ class ValidationGate:
                 result['static_analysis']['cppcheck'] = 'SKIP (cppcheck not installed)'
             except Exception as e:
                 result['static_analysis']['cppcheck'] = f'ERROR: {e}'
+
+            # 4. ASIL-D compliance checks (ISO 26262)
+            try:
+                asil_validator = AsilDValidator()
+                asil_result = asil_validator.validate_cpp(code, impl_file)
+                result['asil_d_compliance'] = {
+                    'status': 'PASS' if asil_result.compliant else 'FAIL',
+                    'issues': asil_result.issues,
+                    'static_analyzer': asil_result.static_analyzer,
+                    'heuristic_checks': asil_result.heuristic_checks,
+                }
+                if not asil_result.compliant:
+                    result['valid'] = False
+                    for issue in asil_result.issues:
+                        result['issues'].append(issue)
+            except Exception as e:
+                result['asil_d_compliance'] = {'status': f'ERROR: {e}'}
         
         return result
     
