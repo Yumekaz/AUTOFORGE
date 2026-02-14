@@ -95,7 +95,7 @@
 ### 🚀 Multi-Target Code Generation
 | Output Type | Technologies |
 |-------------|--------------|
-| **Services** | C++ (SOME/IP), Rust, Kotlin |
+| **Services** | C++ (SOME/IP), Rust, Kotlin, Java |
 | **HMI** | Android Jetpack Compose, React |
 | **ML Integration** | ONNX Runtime C++ wrappers |
 | **Deployment** | Docker, OTA manifests |
@@ -110,6 +110,7 @@
 - Docker (optional, recommended)
 - (Optional) clang, clang-tidy, cppcheck for validation
 - (Optional) rustc for Rust validation
+- (Optional) javac for Java validation
 
 ### Installation
 
@@ -150,6 +151,22 @@ python scripts/benchmark.py --dry-run
 
 # Real run (requires API keys + Ollama/Groq)
 python scripts/benchmark.py --runs 20 --providers gemini,ollama,groq
+```
+
+### ML Training Pipeline (Round 2 Evidence)
+```bash
+# Train with synthetic data fallback and export ONNX
+python src/ml/train.py --output models/tire_failure.onnx
+
+# Or train from CSV
+python src/ml/train.py --csv input/vehicle_data.csv --output models/tire_failure.onnx
+```
+
+### SOME/IP Config Generator (Round 2 Evidence)
+```bash
+python src/codegen/protocol_adapter.py \
+  --requirement input/requirements/bms_diagnostic.yaml \
+  --output output/someip_service.json
 ```
 
 ### CARLA Integration (Round 2 Evidence)
@@ -244,8 +261,9 @@ service:
   name: BMSDiagnosticService
   description: Battery Management System diagnostic service
   version: "1.0.0"
-  language: cpp           # cpp, rust, kotlin, python
+  language: cpp           # cpp, rust, kotlin, java, python
   protocol: someip        # someip, dds, rest
+  generate_java_companion: false  # set true when language=kotlin to emit .java companion
 
   interface:
     service_id: 0x1001
@@ -411,7 +429,7 @@ Evidence output:
 |-------------|----------------|--------|
 | SoA Services | SOME/IP C++ skeleton generation | ✅ |
 | Multi-Protocol | SOME/IP, DDS, REST adapters | ✅ |
-| Multi-Language | C++, Rust, Kotlin, Python | ✅ |
+| Multi-Language | C++, Rust, Kotlin, Java, Python | ✅ |
 | HMI Visualization | Android Jetpack Compose gauges | ✅ |
 | Predictive Analytics | ONNX ML integration | ✅ |
 | MISRA Compliance | clang-tidy validation gate | ✅ |

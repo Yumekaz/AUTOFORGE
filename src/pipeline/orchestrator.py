@@ -4,6 +4,7 @@ Test-First GenAI Pipeline for Automotive SDV Code Generation
 """
 
 import os
+import json
 import yaml
 from pathlib import Path
 from dataclasses import dataclass, field
@@ -19,6 +20,7 @@ from pipeline.traceability import TraceabilityMatrix
 from pipeline.audit_logger import AuditLogger
 from pipeline.onnx_wrapper_generator import ONNXWrapperGenerator
 from pipeline.metrics_generator import generate_metrics
+from codegen.protocol_adapter import ProtocolAdapterGenerator
 
 
 class PipelinePhase(Enum):
@@ -283,9 +285,18 @@ class Pipeline:
         service_name = result.requirement_id
         
         # Save implementation
-        ext = {"python": "py", "cpp": "cpp", "rust": "rs", "kotlin": "kt"}.get(language, "txt")
+        language_key = (language or "").lower()
+        ext = {"python": "py", "cpp": "cpp", "rust": "rs", "kotlin": "kt", "java": "java"}.get(language_key, "txt")
         impl_file = f"{service_name.lower()}.{ext}"
         self._save_output(service_name, impl_file, result.generated_code)
+
+        # Optional Java companion generation for Kotlin services.
+        if language_key == "kotlin" and requirement.get("service", {}).get("generate_java_companion", False):
+            try:
+                java_code = self._generate_code(requirement, result.test_code or "", "java")
+                self._save_output(service_name, f"{service_name}.java", java_code)
+            except Exception as e:
+                print(f"  Warning: Java companion generation skipped: {e}")
         
         # Save traceability
         trace = {
@@ -310,6 +321,13 @@ class Pipeline:
         print(f"[PHASE 5.1] Generating OTA manifests...")
         self._generate_ota_package(service_name, requirement)
 
+        # Generate protocol adapter artifact (e.g., SOME/IP config JSON)
+        protocol_gen = ProtocolAdapterGenerator()
+        protocol_config = protocol_gen.generate(requirement)
+        protocol_name = requirement.get("service", {}).get("protocol", "generic").lower()
+        protocol_filename = "someip_service.json" if protocol_name == "someip" else f"{protocol_name}_service.json"
+        self._save_output(service_name, protocol_filename, json.dumps(protocol_config, indent=2))
+
         # CARLA integration config (service endpoint)
         self._save_output(service_name, "carla_service_config.yaml", yaml.dump({
             "service_url": f"http://{service_name.lower()}:30509",
@@ -318,6 +336,18 @@ class Pipeline:
 
         # Generate ONNX wrapper if ML block present
         if requirement.get("ml"):
+            ml_cfg = requirement.get("ml", {})
+            # Optional supervised training path (CPU-compatible) for ONNX artifact generation.
+            if ml_cfg.get("train_model", False):
+                try:
+                    from ml.train import train_and_export
+                    csv_path = ml_cfg.get("training_csv", "")
+                    csv_input = Path(csv_path) if csv_path else None
+                    model_output = Path(ml_cfg.get("model_path", "models/tire_failure.onnx"))
+                    train_and_export(csv_input, model_output)
+                except Exception as e:
+                    print(f"  Warning: ML training/export skipped: {e}")
+
             print(f"[PHASE 5.2] Generating ONNX wrapper...")
             wrapper_gen = ONNXWrapperGenerator(llm_provider=self.llm_provider)
             wrapper_code = wrapper_gen.generate(requirement)
@@ -374,7 +404,7 @@ class Pipeline:
             # Collect artifacts
             artifacts = {}
             for file in service_dir.glob("*"):
-                if file.is_file() and file.suffix in ['.py', '.cpp', '.rs', '.kt']:
+                if file.is_file() and file.suffix in ['.py', '.cpp', '.rs', '.kt', '.java']:
                     artifacts["binary"] = file
                 elif file.name == "trace.yaml":
                     artifacts["trace"] = file

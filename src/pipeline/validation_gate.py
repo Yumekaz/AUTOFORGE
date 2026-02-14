@@ -6,6 +6,7 @@ Implements actual static analysis, test execution, and MISRA checking.
 import subprocess
 import tempfile
 import os
+import re
 from pathlib import Path
 from typing import Dict, List, Any
 import json
@@ -25,6 +26,7 @@ class ValidationGate:
             'py': self.validate_python,
             'cpp': self.validate_cpp,
             'c++': self.validate_cpp,
+            'java': self.validate_java,
             'rust': self.validate_rust,
             'rs': self.validate_rust,
         }
@@ -42,13 +44,14 @@ class ValidationGate:
                 'misra_compliance': Dict (for C++)
             }
         """
-        if language not in self.validators:
+        language_key = (language or "").lower()
+        if language_key not in self.validators:
             return {
                 'valid': False,
                 'issues': [f"Unsupported language: {language}"]
             }
         
-        return self.validators[language](code, test_code)
+        return self.validators[language_key](code, test_code)
     
     def validate_python(self, code: str, test_code: str) -> Dict[str, Any]:
         """Validate Python code with real tools."""
@@ -342,6 +345,52 @@ class ValidationGate:
                 result['static_analysis']['rustc'] = 'SKIP (rustc not installed)'
             except Exception as e:
                 result['static_analysis']['rustc'] = f'ERROR: {e}'
+
+        return result
+
+    def validate_java(self, code: str, test_code: str) -> Dict[str, Any]:
+        """Validate Java code with javac when available."""
+        result = {
+            'valid': True,
+            'issues': [],
+            'test_results': {},
+            'static_analysis': {},
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            class_match = re.search(r"public\s+class\s+([A-Za-z_][A-Za-z0-9_]*)", code)
+            class_name = class_match.group(1) if class_match else "Implementation"
+            impl_file = tmpdir_path / f"{class_name}.java"
+            impl_file.write_text(code)
+
+            line_count = sum(1 for line in code.splitlines() if line.strip())
+            if line_count < 200:
+                result['valid'] = False
+                result['issues'].append(
+                    f"Service size too small: {line_count} lines (minimum 200 required)"
+                )
+                result['static_analysis']['service_size'] = 'FAIL'
+            else:
+                result['static_analysis']['service_size'] = 'PASS'
+
+            try:
+                javac_result = subprocess.run(
+                    ['javac', str(impl_file)],
+                    capture_output=True,
+                    text=True,
+                    timeout=15
+                )
+                if javac_result.returncode == 0:
+                    result['static_analysis']['javac'] = 'PASS'
+                else:
+                    result['valid'] = False
+                    result['static_analysis']['javac'] = 'FAIL'
+                    result['issues'].append(f"Java compile error: {javac_result.stderr}")
+            except FileNotFoundError:
+                result['static_analysis']['javac'] = 'SKIP (javac not installed)'
+            except Exception as e:
+                result['static_analysis']['javac'] = f'ERROR: {e}'
 
         return result
     
