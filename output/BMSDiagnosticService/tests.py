@@ -1,19 +1,18 @@
-
 import pytest
+from unittest.mock import MagicMock, patch
 
-def test_get_battery_status():
-    """Test GetBatteryStatus returns valid data."""
-    service = BMSDiagnosticService()
-    status = service.get_battery_status()
-    
-    assert 0 <= status.soc <= 100
-    assert status.voltage > 0
-    assert status.health_status in [0, 1, 2]
-
-def test_low_battery_warning():
-    """Test warning emitted when SOC < 20%."""
-    service = BMSDiagnosticService()
-    service.set_battery_soc(15)
-    
-    warnings = service.get_warnings()
-    assert any(w.code == 0x0001 for w in warnings)
+# Mock class for the BMSDiagnosticService
+# This mock will simulate the behavior of the service based on its internal state
+# and emit events.
+class MockBMSDiagnosticService:
+    """
+    A mock implementation of the BMSDiagnosticService for testing purposes.
+    It simulates internal battery state and event emission logic.
+    """
+    def __init__(self):
+        self._battery_soc = 0.0
+        self._battery_voltage = 0.0
+        self._battery_current = 0.0
+        self._battery_temperature = 0.0
+        self._cell_voltages = []
+        self.emitted_events = []

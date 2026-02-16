@@ -1,0 +1,97 @@
+{
+  "protocol": "someip",
+  "service": {
+    "name": "BMSDiagnosticService",
+    "version": "1.0.0",
+    "service_id": 4097,
+    "instance_id": 1
+  },
+  "methods": [
+    {
+      "name": "GetBatteryStatus",
+      "id": 1,
+      "input": [],
+      "output": [
+        {
+          "name": "soc",
+          "type": "float",
+          "description": "State of charge (0-100%)"
+        },
+        {
+          "name": "voltage",
+          "type": "float",
+          "description": "Battery voltage in volts"
+        },
+        {
+          "name": "current",
+          "type": "float",
+          "description": "Battery current in amps"
+        },
+        {
+          "name": "temperature",
+          "type": "float",
+          "description": "Battery temperature in celsius"
+        },
+        {
+          "name": "health_status",
+          "type": "uint8",
+          "description": "0=OK, 1=WARNING, 2=CRITICAL"
+        }
+      ]
+    },
+    {
+      "name": "GetCellVoltages",
+      "id": 2,
+      "input": [],
+      "output": [
+        {
+          "name": "cell_voltages",
+          "type": "array<float>",
+          "description": "Individual cell voltages"
+        }
+      ]
+    },
+    {
+      "name": "GetEstimatedRange",
+      "id": 3,
+      "input": [
+        {
+          "name": "driving_mode",
+          "type": "uint8",
+          "description": "0=ECO, 1=NORMAL, 2=SPORT"
+        }
+      ],
+      "output": [
+        {
+          "name": "range_km",
+          "type": "float",
+          "description": "Estimated range in kilometers"
+        }
+      ]
+    }
+  ],
+  "event_groups": [
+    {
+      "name": "default_event_group",
+      "events": [
+        "BatteryWarning"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "BatteryWarning",
+      "id": 32769,
+      "fields": [
+        {
+          "name": "warning_code",
+          "type": "uint16"
+        },
+        {
+          "name": "warning_message",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

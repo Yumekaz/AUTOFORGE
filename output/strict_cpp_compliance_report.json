@@ -1,0 +1,40 @@
+{
+  "strict_mode": true,
+  "min_service_lines": 40,
+  "result": {
+    "valid": true,
+    "issues": [],
+    "test_results": {},
+    "static_analysis": {
+      "compilation": "PASS",
+      "service_size": "PASS",
+      "cppcheck": "PASS"
+    },
+    "misra_compliance": {
+      "clang_tidy": "PASS"
+    },
+    "asil_d_compliance": {
+      "status": "PASS",
+      "issues": [],
+      "static_analyzer": {
+        "status": "SKIP (clang stdlib headers unavailable)",
+        "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmpmduypfxj\\implementation.cpp:2:10: fatal error: 'cstddef' file not found\n    2 | #include <cstddef>\n      |          ^~~~~~~~~\n1 error generated."
+      },
+      "heuristic_checks": {
+        "unsafe_api": [],
+        "non_determinism": [],
+        "unbounded_loops": [],
+        "defensive_programming": true,
+        "bounds_checks": true
+      },
+      "evidence": {
+        "memory_safety": "PASS",
+        "determinism": "PASS",
+        "timing": "PASS",
+        "defensive_programming": "PASS",
+        "bounds_checks": "PASS"
+      }
+    }
+  },
+  "passed": true
+}

@@ -1,0 +1,80 @@
+# BMS Diagnostic Service Requirement with ML block for ONNX wrapper generation
+
+service:
+  name: BMSDiagnosticServiceML
+  description: Battery Management System diagnostic service for EV vehicles with ML inference wrapper
+  version: "1.0.0"
+  language: cpp
+  protocol: someip
+
+  interface:
+    service_id: 0x1001
+    instance_id: 0x0001
+
+    methods:
+      - name: GetBatteryStatus
+        id: 0x0001
+        input: []
+        output:
+          - name: soc
+            type: float
+          - name: voltage
+            type: float
+          - name: current
+            type: float
+          - name: temperature
+            type: float
+          - name: health_status
+            type: uint8
+      - name: GetEstimatedRange
+        id: 0x0003
+        input:
+          - name: driving_mode
+            type: uint8
+        output:
+          - name: range_km
+            type: float
+
+    events:
+      - name: BatteryWarning
+        id: 0x8001
+        fields:
+          - name: warning_code
+            type: uint16
+          - name: warning_message
+            type: string
+
+  input_signals:
+    - battery_soc
+    - battery_voltage
+    - battery_current
+    - battery_temperature
+
+  rules:
+    - name: low_battery_warning
+      condition: "battery_soc < 20"
+      action: "emit BatteryWarning(code=0x0001, msg='Low battery')"
+    - name: high_temp_warning
+      condition: "battery_temperature > 45"
+      action: "emit BatteryWarning(code=0x0002, msg='High temperature')"
+    - name: critical_temp_shutdown
+      condition: "battery_temperature > 60"
+      action: "emit BatteryWarning(code=0x0003, msg='Critical temperature - shutdown required')"
+
+ml:
+  model_name: tire_failure.onnx
+  model_path: models/tire_failure.onnx
+  inputs:
+    - tire_pressure_fl
+    - tire_pressure_fr
+    - tire_pressure_rl
+    - tire_pressure_rr
+    - vehicle_speed_kmh
+    - ambient_temperature_c
+  outputs:
+    - failure_score
+
+traceability:
+  requirement_id: REQ-BMS-ML-001
+  aspice_reference: SWE.3
+  misra_compliance: required

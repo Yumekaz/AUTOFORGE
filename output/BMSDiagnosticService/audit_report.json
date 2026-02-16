@@ -1,119 +1,117 @@
 {
-    "audit_report": {
-        "trace_id": "TRACE-20231027-BMS-001",
-        "service_name": "BMSDiagnosticService",
-        "timestamp_start": "2026-01-16T10:35:00.000Z",
-        "timestamp_end": "2026-01-16T10:38:47.523Z",
-        "final_status": "ACCEPTED",
-        "total_attempts": 2,
-        "phases": [
-            {
-                "phase_id": 1,
-                "phase_name": "TEST_GENERATION",
-                "status": "SUCCESS",
-                "duration_ms": 2341,
-                "output": {
-                    "file_generated": "tests/test_bms_service.cpp",
-                    "test_count": 5,
-                    "coverage_targets": [
-                        "EvaluateBatteryHealth",
-                        "GetBatteryStatus",
-                        "TriggerAlert",
-                        "InitializeService",
-                        "ShutdownService"
-                    ]
-                },
-                "llm_metadata": {
-                    "model": "gemini-1.5-pro",
-                    "tokens_used": 1847,
-                    "temperature": 0.2
-                }
-            },
-            {
-                "phase_id": 2,
-                "phase_name": "CODE_GENERATION",
-                "status": "SUCCESS",
-                "duration_ms": 3512,
-                "output": {
-                    "file_generated": "services/bms_service.cpp",
-                    "lines_of_code": 287,
-                    "language": "C++",
-                    "protocol": "SOME/IP"
-                },
-                "llm_metadata": {
-                    "model": "gemini-1.5-pro",
-                    "tokens_used": 2956,
-                    "temperature": 0.1
-                }
-            },
-            {
-                "phase_id": 3,
-                "phase_name": "VALIDATION",
-                "attempt": 1,
-                "status": "FAILED",
-                "duration_ms": 1205,
-                "validation_results": {
-                    "syntax_check": "PASS",
-                    "unit_tests": "PASS",
-                    "misra_compliance": "FAIL",
-                    "errors": [
-                        {
-                            "rule": "MISRA Rule 14.3",
-                            "severity": "REQUIRED",
-                            "message": "Boolean expression invariant: condition 'temperature > 60.0f' is always evaluated in the same branch",
-                            "file": "services/bms_service.cpp",
-                            "line": 142,
-                            "suggestion": "Refactor conditional to avoid invariant boolean expression"
-                        }
-                    ]
-                },
-                "action_taken": "RETRY",
-                "error_context_sent_to_llm": true
-            },
-            {
-                "phase_id": 4,
-                "phase_name": "VALIDATION",
-                "attempt": 2,
-                "status": "SUCCESS",
-                "duration_ms": 4127,
-                "validation_results": {
-                    "syntax_check": "PASS",
-                    "unit_tests": "PASS",
-                    "misra_compliance": "PASS",
-                    "aspice_traceability": "PASS"
-                },
-                "regeneration_details": {
-                    "fix_applied": "Refactored temperature threshold check using configurable constant",
-                    "diff_lines_changed": 8
-                }
-            }
-        ],
-        "compliance_summary": {
-            "misra_rules_checked": 143,
-            "misra_violations": 0,
-            "aspice_trace_complete": true,
-            "requirement_coverage": "100%"
-        },
-        "outputs": {
-            "test_file": "output/BMSDiagnosticService/tests/test_bms_service.cpp",
-            "implementation_file": "output/BMSDiagnosticService/services/bms_service.cpp",
-            "trace_matrix": "output/BMSDiagnosticService/trace.yaml",
-            "misra_report": "output/BMSDiagnosticService/misra_report.html"
-        },
-        "requirement_traceability": {
-            "requirement_id": "REQ-BMS-001",
-            "source_document": "input/requirements/bms_diagnostic.yaml",
-            "satisfied_requirements": [
-                "REQ-BMS-SAFETY-001: Critical temperature alert",
-                "REQ-BMS-SAFETY-002: Low SoC warning",
-                "REQ-BMS-FUNC-001: Real-time health monitoring",
-                "REQ-BMS-FUNC-002: SOME/IP event publishing"
-            ]
-        },
-        "signature": {
-            "generated_by": "AUTOFORGE v1.0.0",
-            "pipeline_version": "2026.01",
-            "checksum": "sha256:a3f2b8c9d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0"
+  "audit_report": {
+    "trace_id": "TRACE-20260216162647",
+    "service_name": "BMSDiagnosticService",
+    "timestamp_start": "2026-02-16T16:26:47.835866+00:00",
+    "timestamp_end": "2026-02-16T16:27:30.985859+00:00",
+    "final_status": "ACCEPTED",
+    "total_attempts": 1,
+    "phases": [
+      {
+        "phase_id": 1,
+        "phase_name": "PARSE",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:26:47.835866+00:00",
+        "timestamp_end": "2026-02-16T16:26:47.840871+00:00",
+        "duration_ms": 5,
+        "details": {
+          "requirement_path": "input/requirements/bms_diagnostic.yaml",
+          "service_name": "BMSDiagnosticService"
         }
+      },
+      {
+        "phase_id": 2,
+        "phase_name": "TEST_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:26:47.840871+00:00",
+        "timestamp_end": "2026-02-16T16:27:09.551199+00:00",
+        "duration_ms": 21710,
+        "details": {
+          "test_lines": 18
+        }
+      },
+      {
+        "phase_id": 3,
+        "phase_name": "CODE_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:27:09.551199+00:00",
+        "timestamp_end": "2026-02-16T16:27:30.851127+00:00",
+        "duration_ms": 21299,
+        "details": {
+          "language": "cpp",
+          "code_lines": 21,
+          "attempt": 1
+        }
+      },
+      {
+        "phase_id": 4,
+        "phase_name": "VALIDATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:27:30.851127+00:00",
+        "timestamp_end": "2026-02-16T16:27:30.970363+00:00",
+        "duration_ms": 119,
+        "details": {
+          "issues": [
+            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmph1mu1s_3\\implementation.cpp:4:10: fatal error: 'string' file not found\n    4 | #include <string>\n      |          ^~~~~~~~\n1 error generated.\n",
+            "cppcheck: C:\\Users\\patha\\AppData\\Local\\Temp\\tmph1mu1s_3\\implementation.cpp:21:28: error: Unmatched '{'. Configuration: ''. [syntaxError]",
+            "cppcheck: nofile:0:0: information: Active checkers: There was critical errors (use --checkers-report=<filename> to see details) [checkersReport]"
+          ],
+          "misra": {
+            "clang_tidy": "PASS"
+          },
+          "asil_d": {
+            "status": "WARN",
+            "issues": [
+              "ASIL-D Defensive: no explicit error handling detected",
+              "ASIL-D Bounds: no bounds-checking signals detected",
+              "ASIL-D Static Analyzer: issues detected by clang --analyze"
+            ],
+            "static_analyzer": {
+              "status": "FAIL",
+              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmph1mu1s_3\\implementation.cpp:4:10: fatal error: 'string' file not found\n    4 | #include <string>\n      |          ^~~~~~~~\n1 error generated."
+            },
+            "heuristic_checks": {
+              "unsafe_api": [],
+              "non_determinism": [],
+              "unbounded_loops": [],
+              "defensive_programming": false,
+              "bounds_checks": false
+            },
+            "evidence": {
+              "memory_safety": "PASS",
+              "determinism": "PASS",
+              "timing": "PASS",
+              "defensive_programming": "FAIL",
+              "bounds_checks": "FAIL"
+            }
+          },
+          "static_analysis": {
+            "compilation": "WARN (dev mode - continuing despite compiler failure)",
+            "service_size": "WARN",
+            "cppcheck": "FAIL"
+          }
+        }
+      },
+      {
+        "phase_id": 5,
+        "phase_name": "PACKAGING",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:27:30.970363+00:00",
+        "timestamp_end": "2026-02-16T16:27:30.985859+00:00",
+        "duration_ms": 15,
+        "details": {}
+      }
+    ],
+    "compliance_summary": {
+      "validation_passed": true
+    },
+    "outputs": {
+      "trace": "output/BMSDiagnosticService/trace.yaml",
+      "audit_report": "output/BMSDiagnosticService/audit_report.json"
+    },
+    "requirement_traceability": {
+      "requirement_id": "REQ-BMS-001",
+      "source_document": "input/requirements/bms_diagnostic.yaml"
     }
+  }
 }

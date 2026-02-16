@@ -12,6 +12,7 @@ import argparse
 import sys
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Add src to path
 src_path = Path(__file__).parent / "src"
@@ -24,18 +25,10 @@ from llm.client import get_client
 def print_banner():
     """Print AUTOFORGE banner."""
     banner = """
-    ╔═══════════════════════════════════════════════════════════════════╗
-    ║                                                                   ║
-    ║     █████╗ ██╗   ██╗████████╗ ██████╗ ███████╗ ██████╗ ██████╗   ║
-    ║    ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗██╔════╝██╔═══██╗██╔══██╗  ║
-    ║    ███████║██║   ██║   ██║   ██║   ██║█████╗  ██║   ██║██████╔╝  ║
-    ║    ██╔══██║██║   ██║   ██║   ██║   ██║██╔══╝  ██║   ██║██╔══██╗  ║
-    ║    ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║     ╚██████╔╝██║  ██║  ║
-    ║    ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚═════╝ ╚═╝  ╚═╝  ║
-    ║                                                                   ║
-    ║        Test-First GenAI for Automotive SDV Code Generation        ║
-    ║                                                                   ║
-    ╚═══════════════════════════════════════════════════════════════════╝
+    ====================================================================
+                                AUTOFORGE
+             Test-First GenAI for Automotive SDV Code Generation
+    ====================================================================
     """
     print(banner)
 
@@ -89,6 +82,9 @@ def run_demo(demo_name: str, use_mock: bool = False):
 
 
 def main():
+    # Load environment variables from .env when present.
+    load_dotenv()
+
     parser = argparse.ArgumentParser(
         description="AUTOFORGE - Test-First GenAI Pipeline"
     )

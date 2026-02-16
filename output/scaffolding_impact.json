@@ -1,0 +1,33 @@
+{
+  "mode": "aggregate",
+  "service_dirs": [
+    "output/BMSDiagnosticService",
+    "output/BMSDiagnosticServiceJava",
+    "output/BMSDiagnosticServiceKotlin"
+  ],
+  "include_tests": false,
+  "file_count": 4,
+  "generated_scaffold_loc": 151,
+  "manual_loc_needed_for_80pct": 755,
+  "manual_baseline_loc": null,
+  "actual_reduction_percent": null,
+  "meets_80pct_claim": null,
+  "files": [
+    {
+      "path": "output/BMSDiagnosticServiceJava/bmsdiagnosticservicejava.java",
+      "loc": 50
+    },
+    {
+      "path": "output/BMSDiagnosticServiceKotlin/BMSDiagnosticServiceKotlin.java",
+      "loc": 59
+    },
+    {
+      "path": "output/BMSDiagnosticServiceKotlin/bmsdiagnosticservicekotlin.kt",
+      "loc": 29
+    },
+    {
+      "path": "output/BMSDiagnosticService/bmsdiagnosticservice.cpp",
+      "loc": 13
+    }
+  ]
+}

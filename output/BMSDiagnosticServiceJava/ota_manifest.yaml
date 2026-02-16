@@ -1,0 +1,65 @@
+ota_update:
+  manifest_version: 1.0.0
+  service:
+    name: BMSDiagnosticServiceJava
+    version: 1.0.0
+    timestamp: '2026-02-16T16:29:47.709279Z'
+  artifacts:
+  - type: binary
+    filename: tests.py
+    size_bytes: 3872
+    checksum:
+      algorithm: sha256
+      value: 03b4ab8d866ffa4f3f96c64f546f55249293fc68eb87fd83a344a849792e5701
+    compression: gzip
+  - type: trace
+    filename: trace.yaml
+    size_bytes: 253
+    checksum:
+      algorithm: sha256
+      value: 7fd384d4b7537181e97ab83ed88f16fe7445a3634f81b92202d26bc15c13d062
+    compression: none
+  deployment:
+    vehicle_variants:
+    - ev
+    - hybrid
+    - ice
+    rollout_strategy: gradual
+    rollout_config:
+      target_percentage: 100
+      rollout_phases:
+      - phase: 1
+        percentage: 10
+        duration_hours: 24
+      - phase: 2
+        percentage: 50
+        duration_hours: 48
+      - phase: 3
+        percentage: 100
+        duration_hours: 72
+  subscription:
+    tier: standard
+    entitlements: []
+    channels:
+    - stable
+    vin_scope: all
+  dependencies:
+  - name: vsomeip
+    version: '>=3.4.0'
+    required: true
+  - name: onnxruntime
+    version: '>=1.16.0'
+    required: false
+  - name: battery-manager
+    version: '>=2.0.0'
+    required: true
+  safety:
+    require_parking: true
+    require_battery_level: 30
+    rollback_enabled: true
+    validation_required: true
+  signature:
+    algorithm: RSA-SHA256
+    keyid: autoforge-release-key-2026
+    value: 333802063c61725a70b3f19d85e476072e80f1cd31e18721fb5f34d9415f8545
+    timestamp: '2026-02-16T16:29:47.710276Z'

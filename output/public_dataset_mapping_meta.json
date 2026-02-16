@@ -1,0 +1,22 @@
+{
+  "source": "public",
+  "source_dataset": "Automotive_Diagnostics (OBD-II-Dataset)",
+  "source_path": "data\\public\\Automotive_Diagnostics\\OBD-II-Dataset",
+  "output_csv": "input\\vehicle_data.csv",
+  "rows": 200000,
+  "rows_before_cap": 2693824,
+  "columns": [
+    "tire_pressure_fl",
+    "tire_pressure_fr",
+    "tire_pressure_rl",
+    "tire_pressure_rr",
+    "vehicle_speed_kmh",
+    "ambient_temperature_c",
+    "failure_score"
+  ],
+  "notes": [
+    "Secondary fallback path when CARLA live telemetry is unavailable.",
+    "Tire pressure and failure_score are engineered proxies from public OBD signals.",
+    "Must be labeled as public mapped fallback in reports/slides."
+  ]
+}

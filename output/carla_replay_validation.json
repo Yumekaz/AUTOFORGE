@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "total_samples": 2,
+    "avg_latency_ms": 2072.94,
+    "p95_latency_ms": 2057.13
+  },
+  "records": [
+    {
+      "timestamp_s": 2.089,
+      "signals": {
+        "vehicle_speed": 30,
+        "battery_soc": 18,
+        "battery_temperature": 48,
+        "tire_pressure_fl": 2.4,
+        "tire_pressure_fr": 2.4,
+        "tire_pressure_rl": 2.3,
+        "tire_pressure_rr": 2.3
+      },
+      "response": {
+        "health_status": 1,
+        "warnings": [
+          {
+            "code": 1,
+            "message": "Low battery"
+          },
+          {
+            "code": 2,
+            "message": "High temperature"
+          }
+        ]
+      },
+      "latency_ms": 2088.75
+    },
+    {
+      "timestamp_s": 4.198,
+      "signals": {
+        "vehicle_speed": 55,
+        "battery_soc": 65,
+        "battery_temperature": 30,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2057.13
+    }
+  ]
+}

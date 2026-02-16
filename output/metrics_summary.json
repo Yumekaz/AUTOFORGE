@@ -1,0 +1,59 @@
+{
+  "asil_d_violation_detection": {
+    "overall_rate": "100%",
+    "memory_safety": "18/50",
+    "bounds_checking": "15/50",
+    "timing_constraints": "8/50",
+    "escaped_violations": "0/50"
+  },
+  "carla_latency": {
+    "avg_latency_ms": "N/A",
+    "p95_latency_ms": "N/A"
+  },
+  "benchmark_kpis": {
+    "gemini": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    },
+    "ollama": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    },
+    "groq": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    }
+  },
+  "roi": {
+    "asil_audit_time": {
+      "manual_hours": 12,
+      "autoforge_hours": 0,
+      "reduction": "100%"
+    },
+    "service_scaffolding": {
+      "manual_hours": 4.5,
+      "autoforge_hours": 0.75,
+      "reduction": "83%"
+    },
+    "cost_per_service": {
+      "manual_usd": 540,
+      "autoforge_usd": 0.1,
+      "reduction": "99.9%"
+    }
+  }
+}

@@ -108,11 +108,11 @@ def _slide7_markdown_table(summary: Dict[str, Dict[str, Any]]) -> str:
             "| "
             + " | ".join([
                 provider,
-                f\"{int(stats.get('misra_pass_rate', 0) * 100)}%\",
-                f\"{int(stats.get('asil_pass_rate', 0) * 100)}%\",
-                f\"{int(stats.get('compilation_pass_rate', 0) * 100)}%\",
+                f"{int(stats.get('misra_pass_rate', 0) * 100)}%",
+                f"{int(stats.get('asil_pass_rate', 0) * 100)}%",
+                f"{int(stats.get('compilation_pass_rate', 0) * 100)}%",
                 str(stats.get("avg_retries", 0)),
-                f\"{stats.get('avg_latency_ms', 0)}ms\",
+                f"{stats.get('avg_latency_ms', 0)}ms",
             ])
             + " |"
         )

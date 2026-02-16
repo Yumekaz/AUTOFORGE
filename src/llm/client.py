@@ -24,7 +24,7 @@ class LLMClient(ABC):
 class GeminiClient(LLMClient):
     """Google Gemini client."""
     
-    def __init__(self, model: str = "gemini-1.5-flash", temperature: float = 0.2):
+    def __init__(self, model: str = "gemini-2.5-flash", temperature: float = 0.2):
         self.model = model
         self.temperature = temperature
         self._client = None
@@ -95,15 +95,17 @@ class OllamaClient(LLMClient):
     
     def __init__(
         self,
-        model: str = "llama3.1:8b",
+        model: str = "qwen2.5-coder:7b",
         host: str = "http://localhost:11434",
         temperature: float = 0.2,
         max_tokens: int = 4096,
+        timeout_seconds: int = 180,
     ):
         self.model = model
         self.host = host.rstrip("/")
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.timeout_seconds = timeout_seconds
     
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         payload = {
@@ -119,7 +121,7 @@ class OllamaClient(LLMClient):
             payload["system"] = system_prompt
         
         url = f"{self.host}/api/generate"
-        response = _post_json(url, payload)
+        response = _post_json(url, payload, timeout_seconds=self.timeout_seconds)
         return response.get("response", "")
 
 
@@ -298,7 +300,12 @@ def get_client(provider: str = "gemini", **kwargs) -> LLMClient:
     return clients[provider](**kwargs)
 
 
-def _post_json(url: str, payload: dict, headers: Optional[dict] = None) -> dict:
+def _post_json(
+    url: str,
+    payload: dict,
+    headers: Optional[dict] = None,
+    timeout_seconds: int = 60,
+) -> dict:
     """Post JSON and return parsed JSON response."""
     data = json.dumps(payload).encode("utf-8")
     req_headers = {"Content-Type": "application/json"}
@@ -306,7 +313,7 @@ def _post_json(url: str, payload: dict, headers: Optional[dict] = None) -> dict:
         req_headers.update(headers)
     request = urllib.request.Request(url, data=data, headers=req_headers, method="POST")
     try:
-        with urllib.request.urlopen(request, timeout=60) as response:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
             body = response.read().decode("utf-8")
             return json.loads(body)
     except urllib.error.HTTPError as e:

@@ -1,0 +1,89 @@
+{
+  "protocol": "someip",
+  "service": {
+    "name": "BMSDiagnosticServiceKotlin",
+    "version": "1.0.0",
+    "service_id": 4097,
+    "instance_id": 1
+  },
+  "methods": [
+    {
+      "name": "GetBatteryStatus",
+      "id": 1,
+      "input": [],
+      "output": [
+        {
+          "name": "soc",
+          "type": "float"
+        },
+        {
+          "name": "voltage",
+          "type": "float"
+        },
+        {
+          "name": "current",
+          "type": "float"
+        },
+        {
+          "name": "temperature",
+          "type": "float"
+        },
+        {
+          "name": "health_status",
+          "type": "uint8"
+        }
+      ]
+    },
+    {
+      "name": "GetCellVoltages",
+      "id": 2,
+      "input": [],
+      "output": [
+        {
+          "name": "cell_voltages",
+          "type": "array<float>"
+        }
+      ]
+    },
+    {
+      "name": "GetEstimatedRange",
+      "id": 3,
+      "input": [
+        {
+          "name": "driving_mode",
+          "type": "uint8"
+        }
+      ],
+      "output": [
+        {
+          "name": "range_km",
+          "type": "float"
+        }
+      ]
+    }
+  ],
+  "event_groups": [
+    {
+      "name": "default_event_group",
+      "events": [
+        "BatteryWarning"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "BatteryWarning",
+      "id": 32769,
+      "fields": [
+        {
+          "name": "warning_code",
+          "type": "uint16"
+        },
+        {
+          "name": "warning_message",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

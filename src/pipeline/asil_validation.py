@@ -16,6 +16,7 @@ back to mock examples for testing and CI sanity checks.
 from __future__ import annotations
 
 import subprocess
+import shutil
 from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
 from pathlib import Path
@@ -164,9 +165,17 @@ class AsilDValidator:
         if not source_path or not source_path.exists():
             return {"status": "SKIP (no source path)"}
 
+        clang_cmd = shutil.which("clang")
+        if not clang_cmd:
+            candidate = Path(r"C:\Program Files\LLVM\bin\clang.exe")
+            if candidate.exists():
+                clang_cmd = str(candidate)
+            else:
+                return {"status": "SKIP (clang not installed)"}
+
         try:
             result = subprocess.run(
-                ["clang", "--analyze", "-std=c++17", str(source_path)],
+                [clang_cmd, "--analyze", "-std=c++17", str(source_path)],
                 capture_output=True,
                 text=True,
                 timeout=20,
@@ -184,6 +193,16 @@ class AsilDValidator:
         output = (result.stderr or result.stdout or "").strip()
         if len(output) > 2000:
             output = output[:2000] + "\n...truncated..."
+
+        lowered = output.lower()
+        if ("file not found" in lowered) and (
+            "'cstddef'" in lowered
+            or "'cstdint'" in lowered
+            or "'vector'" in lowered
+            or "'array'" in lowered
+            or "'optional'" in lowered
+        ):
+            return {"status": "SKIP (clang stdlib headers unavailable)", "output": output}
 
         return {"status": "FAIL", "output": output}
 

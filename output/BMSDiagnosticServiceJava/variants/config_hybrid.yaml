@@ -1,0 +1,15 @@
+features:
+  battery_monitoring: true
+  engine_integration: true
+  fast_charging: false
+  range_estimation: true
+  regenerative_braking: true
+service_name: BMSDiagnosticServiceJava
+signals:
+- battery_soc
+- battery_voltage
+- engine_rpm
+- fuel_level
+- motor_temperature
+variant: hybrid
+version: 1.0.0

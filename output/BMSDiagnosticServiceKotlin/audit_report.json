@@ -1,0 +1,85 @@
+{
+  "audit_report": {
+    "trace_id": "TRACE-20260216162947",
+    "service_name": "BMSDiagnosticServiceKotlin",
+    "timestamp_start": "2026-02-16T16:29:47.880010+00:00",
+    "timestamp_end": "2026-02-16T16:31:37.807908+00:00",
+    "final_status": "ACCEPTED",
+    "total_attempts": 1,
+    "phases": [
+      {
+        "phase_id": 1,
+        "phase_name": "PARSE",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:29:47.880010+00:00",
+        "timestamp_end": "2026-02-16T16:29:47.880010+00:00",
+        "duration_ms": 0,
+        "details": {
+          "requirement_path": "input/requirements/bms_diagnostic_kotlin.yaml",
+          "service_name": "BMSDiagnosticServiceKotlin"
+        }
+      },
+      {
+        "phase_id": 2,
+        "phase_name": "TEST_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:29:47.880010+00:00",
+        "timestamp_end": "2026-02-16T16:30:37.762096+00:00",
+        "duration_ms": 49882,
+        "details": {
+          "test_lines": 75
+        }
+      },
+      {
+        "phase_id": 3,
+        "phase_name": "CODE_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:30:37.762096+00:00",
+        "timestamp_end": "2026-02-16T16:31:12.454574+00:00",
+        "duration_ms": 34692,
+        "details": {
+          "language": "kotlin",
+          "code_lines": 40,
+          "attempt": 1
+        }
+      },
+      {
+        "phase_id": 4,
+        "phase_name": "VALIDATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:31:12.454574+00:00",
+        "timestamp_end": "2026-02-16T16:31:12.454574+00:00",
+        "duration_ms": 0,
+        "details": {
+          "issues": [],
+          "misra": {},
+          "asil_d": {},
+          "static_analysis": {
+            "service_size": "WARN",
+            "kotlin": "SKIP (kotlinc validation not configured)"
+          }
+        }
+      },
+      {
+        "phase_id": 5,
+        "phase_name": "PACKAGING",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-16T16:31:12.454574+00:00",
+        "timestamp_end": "2026-02-16T16:31:37.807908+00:00",
+        "duration_ms": 25353,
+        "details": {}
+      }
+    ],
+    "compliance_summary": {
+      "validation_passed": true
+    },
+    "outputs": {
+      "trace": "output/BMSDiagnosticServiceKotlin/trace.yaml",
+      "audit_report": "output/BMSDiagnosticServiceKotlin/audit_report.json"
+    },
+    "requirement_traceability": {
+      "requirement_id": "REQ-BMS-KOTLIN-001",
+      "source_document": "input/requirements/bms_diagnostic_kotlin.yaml"
+    }
+  }
+}

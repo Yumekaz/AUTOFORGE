@@ -1,0 +1,710 @@
+{
+  "meta": {
+    "runs_per_provider": 20,
+    "providers": [
+      "gemini",
+      "ollama",
+      "groq"
+    ],
+    "requirement": "input\\requirements\\bms_diagnostic.yaml",
+    "language": "cpp",
+    "dry_run": true
+  },
+  "results": {
+    "gemini": [
+      {
+        "provider": "gemini",
+        "run": 1,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 900,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 2,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 917,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 3,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 934,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 4,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 951,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 5,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 968,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 6,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 985,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 7,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1002,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 8,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1019,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 9,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1036,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 10,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1053,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 11,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1070,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 12,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1087,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 13,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1104,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 14,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1121,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 15,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1138,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 16,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1155,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 17,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1172,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 18,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1189,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 19,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1206,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "gemini",
+        "run": 20,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1223,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      }
+    ],
+    "ollama": [
+      {
+        "provider": "ollama",
+        "run": 1,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 900,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 2,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 917,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 3,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 934,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 4,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 951,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 5,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 968,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 6,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 985,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 7,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1002,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 8,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1019,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 9,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1036,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 10,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1053,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 11,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1070,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 12,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1087,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 13,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1104,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 14,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1121,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 15,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1138,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 16,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1155,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 17,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1172,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 18,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1189,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 19,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1206,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "ollama",
+        "run": 20,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1223,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      }
+    ],
+    "groq": [
+      {
+        "provider": "groq",
+        "run": 1,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 900,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 2,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 917,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 3,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 934,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 4,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 951,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 5,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 968,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 6,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 985,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 7,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1002,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 8,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1019,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 9,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1036,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 10,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1053,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 11,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1070,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 12,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1087,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 13,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1104,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 14,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1121,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 15,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1138,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 16,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1155,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 17,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1172,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 18,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1189,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 19,
+        "success": true,
+        "retry_count": 0,
+        "latency_ms": 1206,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      },
+      {
+        "provider": "groq",
+        "run": 20,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 1223,
+        "misra_pass": true,
+        "asil_pass": true,
+        "compilation_pass": true,
+        "issues_count": 0
+      }
+    ]
+  },
+  "summary": {
+    "gemini": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    },
+    "ollama": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    },
+    "groq": {
+      "runs": 20,
+      "success_rate": 1.0,
+      "avg_latency_ms": 1061.5,
+      "avg_retries": 0.5,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 1.0,
+      "compilation_pass_rate": 1.0
+    }
+  }
+}

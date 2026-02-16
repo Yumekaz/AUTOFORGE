@@ -6,6 +6,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 .env
 
 # IDE
@@ -16,6 +17,7 @@ venv/
 
 # Output
 *.log
+data/public/
 
 # OS
 .DS_Store
