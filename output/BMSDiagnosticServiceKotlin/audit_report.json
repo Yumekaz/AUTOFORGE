@@ -1,9 +1,9 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260216164224",
+    "trace_id": "TRACE-20260217105001",
     "service_name": "BMSDiagnosticServiceKotlin",
-    "timestamp_start": "2026-02-16T16:42:24.463949+00:00",
-    "timestamp_end": "2026-02-16T16:45:04.572997+00:00",
+    "timestamp_start": "2026-02-17T10:50:01.151123+00:00",
+    "timestamp_end": "2026-02-17T10:55:50.830251+00:00",
     "final_status": "ACCEPTED",
     "total_attempts": 1,
     "phases": [
@@ -11,9 +11,9 @@
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-16T16:42:24.466239+00:00",
-        "timestamp_end": "2026-02-16T16:42:24.467848+00:00",
-        "duration_ms": 1,
+        "timestamp_start": "2026-02-17T10:50:01.152149+00:00",
+        "timestamp_end": "2026-02-17T10:50:01.157672+00:00",
+        "duration_ms": 5,
         "details": {
           "requirement_path": "input/requirements/bms_diagnostic_kotlin.yaml",
           "service_name": "BMSDiagnosticServiceKotlin"
@@ -23,23 +23,23 @@
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-16T16:42:24.467848+00:00",
-        "timestamp_end": "2026-02-16T16:43:20.098020+00:00",
-        "duration_ms": 55630,
+        "timestamp_start": "2026-02-17T10:50:01.157672+00:00",
+        "timestamp_end": "2026-02-17T10:51:32.635701+00:00",
+        "duration_ms": 91478,
         "details": {
-          "test_lines": 58
+          "test_lines": 61
         }
       },
       {
         "phase_id": 3,
         "phase_name": "CODE_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-16T16:43:20.098020+00:00",
-        "timestamp_end": "2026-02-16T16:44:08.520486+00:00",
-        "duration_ms": 48422,
+        "timestamp_start": "2026-02-17T10:51:32.635701+00:00",
+        "timestamp_end": "2026-02-17T10:52:48.716810+00:00",
+        "duration_ms": 76081,
         "details": {
           "language": "kotlin",
-          "code_lines": 52,
+          "code_lines": 55,
           "attempt": 1
         }
       },
@@ -47,9 +47,9 @@
         "phase_id": 4,
         "phase_name": "VALIDATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-16T16:44:08.520486+00:00",
-        "timestamp_end": "2026-02-16T16:44:08.521995+00:00",
-        "duration_ms": 1,
+        "timestamp_start": "2026-02-17T10:52:48.716810+00:00",
+        "timestamp_end": "2026-02-17T10:52:48.716810+00:00",
+        "duration_ms": 0,
         "details": {
           "issues": [],
           "misra": {},
@@ -64,9 +64,9 @@
         "phase_id": 5,
         "phase_name": "PACKAGING",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-16T16:44:08.521995+00:00",
-        "timestamp_end": "2026-02-16T16:45:04.572997+00:00",
-        "duration_ms": 56051,
+        "timestamp_start": "2026-02-17T10:52:48.716810+00:00",
+        "timestamp_end": "2026-02-17T10:55:50.830251+00:00",
+        "duration_ms": 182113,
         "details": {}
       }
     ],

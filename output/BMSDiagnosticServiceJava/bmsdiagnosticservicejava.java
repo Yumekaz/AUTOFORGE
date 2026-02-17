@@ -1,192 +1,84 @@
-import com.vsomeip.vsomeip;
-import com.vsomeip.vsomeip.annotation.*;
-import com.vsomeip.vsomeip.message.MessageType;
-import com.vsomeip.vsomeip.service.ServiceID;
-import com.vsomeip.vsomeip.service.InstanceID;
-import com.vsomeip.vsomeip.service.MethodID;
-import com.vsomeip.vsomeip.service.EventID;
+import java.util.HashMap;
+import java.util.Map;
 
-@Service(
-    service_id = ServiceID.of(4097),
-    instance_id = InstanceID.of(1)
-)
 public class BMSDiagnosticServiceJava {
+    private float battery_soc;
+    private float battery_voltage;
+    private float battery_current;
+    private float battery_temperature;
+    private int health_status;
+    private List<Float> cell_voltages;
+    private boolean isShutdownRequired = false;
 
-    private Application application;
-    private final Event batteryWarningEvent;
-    private final Method getBatteryStatusMethod;
-    private final Method getCellVoltagesMethod;
-    private final Method getEstimatedRangeMethod;
-
-    public BMSDiagnosticServiceJava() {
-        this.application = vsomeip.ApplicationFactory.getApplication("BMSDiagnosticServiceJava");
-        
-        this.batteryWarningEvent = application.createEvent(EventID.of(32769), EventGroupID.of(0));
-        this.batteryWarningEvent.setUnreliable(true);
-        this.batteryWarningEvent.setMulticast(false);
-
-        this.getBatteryStatusMethod = application.createMethod(MethodID.of(1));
-        this.getCellVoltagesMethod = application.createMethod(MethodID.of(2));
-        this.getEstimatedRangeMethod = application.createMethod(MethodID.of(3));
-
-        this.application.registerService();
-        this.application.offerService(ServiceID.of(4097), InstanceID.of(1));
-        this.application.offerEvent(EventID.of(32769), EventGroupID.of(0));
-        
-        this.application.registerEventHandler(EventID.of(32769), this::handleBatteryWarning);
+    public Map<String, Object> GetBatteryStatus() {
+        if (battery_soc < 20) {
+            emitEvent(32769, new HashMap<String, Object>() {{
+                put("warning_code", 0x0001);
+                put("warning_message", "Low battery");
+            }});
+        }
+        if (battery_temperature > 45) {
+            emitEvent(32769, new HashMap<String, Object>() {{
+                put("warning_code", 0x0002);
+                put("warning_message", "High temperature");
+            }});
+        }
+        if (battery_temperature > 60) {
+            isShutdownRequired = true;
+            emitEvent(32769, new HashMap<String, Object>() {{
+                put("warning_code", 0x0003);
+                put("warning_message", "Critical temperature - shutdown required");
+            }});
+        }
+        Map<String, Object> status = new HashMap<>();
+        status.put("soc", battery_soc);
+        status.put("voltage", battery_voltage);
+        status.put("current", battery_current);
+        status.put("temperature", battery_temperature);
+        status.put("health_status", health_status);
+        return status;
     }
 
-    @Message(
-        id = MethodID.of(1),
-        type = MessageType.REQUEST
-    )
-    public void onGetBatteryStatusRequest(Message request) {
+    public List<Float> GetCellVoltages() {
+        return cell_voltages;
+    }
+
+    public Map<String, Object> GetEstimatedRange(int driving_mode) {
+        // Placeholder for actual implementation
+        Map<String, Object> range = new HashMap<>();
+        range.put("range_km", 150.0);
+        return range;
+    }
+
+    private void emitEvent(int eventId, Map<String, Object> fields) {
         try {
-            BatteryStatus batteryStatus = getBatteryStatus();
-            application.sendEvent(batteryWarningEvent, request.get_client(), batteryStatus);
+            some_module.emit_event(eventId, fields);
         } catch (Exception e) {
-            handleException(e);
+            // Handle exception
         }
     }
 
-    @Message(
-        id = MethodID.of(2),
-        type = MessageType.REQUEST
-    )
-    public void onGetCellVoltagesRequest(Message request) {
-        try {
-            float[] cellVoltages = getCellVoltages();
-            application.sendResponse(request, cellVoltages);
-        } catch (Exception e) {
-            handleException(e);
-        }
+    public void setBatterySoc(float battery_soc) {
+        this.battery_soc = battery_soc;
     }
 
-    @Message(
-        id = MethodID.of(3),
-        type = MessageType.REQUEST
-    )
-    public void onGetEstimatedRangeRequest(Message request, byte driving_mode) {
-        try {
-            float range_km = getEstimatedRange(driving_mode);
-            application.sendResponse(request, range_km);
-        } catch (Exception e) {
-            handleException(e);
-        }
+    public void setBatteryVoltage(float battery_voltage) {
+        this.battery_voltage = battery_voltage;
     }
 
-    private BatteryStatus getBatteryStatus() {
-        // Simulate battery status retrieval
-        BatteryStatus batteryStatus = new BatteryStatus();
-        batteryStatus.setSoc(0.5f);
-        batteryStatus.setVoltage(12.6f);
-        batteryStatus.setCurrent(-3.4f);
-        batteryStatus.setTemperature(28.0f);
-        batteryStatus.setHealthStatus((byte) 1);
-
-        // Check for warnings
-        if (batteryStatus.getSoc() < 20) {
-            emitBatteryWarning(0x0001, "Low battery");
-        }
-        if (batteryStatus.getTemperature() > 45) {
-            emitBatteryWarning(0x0002, "High temperature");
-        }
-        if (batteryStatus.getTemperature() > 60) {
-            emitBatteryWarning(0x0003, "Critical temperature - shutdown required");
-        }
-
-        return batteryStatus;
+    public void setBatteryCurrent(float battery_current) {
+        this.battery_current = battery_current;
     }
 
-    private float[] getCellVoltages() {
-        // Simulate cell voltages retrieval
-        return new float[]{3.7f, 3.8f, 3.9f};
+    public void setBatteryTemperature(float battery_temperature) {
+        this.battery_temperature = battery_temperature;
     }
 
-    private float getEstimatedRange(byte driving_mode) {
-        // Simulate estimated range calculation
-        return 200.5f;
-    }
-
-    private void emitBatteryWarning(int code, String message) {
-        BatteryWarning warning = new BatteryWarning();
-        warning.setCode(code);
-        warning.setMessage(message);
-
-        application.sendEvent(batteryWarningEvent, null, warning);
-    }
-
-    private void handleException(Exception e) {
-        System.err.println("Error: " + e.getMessage());
-        System.exit(1);
-    }
-}
-
-class BatteryStatus {
-    private float soc;
-    private float voltage;
-    private float current;
-    private float temperature;
-    private byte health_status;
-
-    public float getSoc() {
-        return soc;
-    }
-
-    public void setSoc(float soc) {
-        this.soc = soc;
-    }
-
-    public float getVoltage() {
-        return voltage;
-    }
-
-    public void setVoltage(float voltage) {
-        this.voltage = voltage;
-    }
-
-    public float getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(float current) {
-        this.current = current;
-    }
-
-    public float getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
-    public byte getHealthStatus() {
-        return health_status;
-    }
-
-    public void setHealthStatus(byte health_status) {
+    public void setHealthStatus(int health_status) {
         this.health_status = health_status;
     }
-}
 
-class BatteryWarning {
-    private int code;
-    private String message;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setCellVoltages(List<Float> cell_voltages) {
+        this.cell_voltages = cell_voltages;
     }
 }

@@ -3,21 +3,21 @@ ota_update:
   service:
     name: BMSDiagnosticService
     version: 1.0.0
-    timestamp: '2026-02-17T04:08:34.910254Z'
+    timestamp: '2026-02-17T10:46:42.719771Z'
   artifacts:
   - type: binary
     filename: tests.py
-    size_bytes: 3456
+    size_bytes: 711
     checksum:
       algorithm: sha256
-      value: 1a8cd15fa46249675ba5e2acf005b831b37162c779938e7e87c1a4460e0b5871
+      value: 78e2bc2041e625a2accd4f0521df097c7ff689e397f9bbb2723fa734658b5aff
     compression: gzip
   - type: trace
     filename: trace.yaml
     size_bytes: 248
     checksum:
       algorithm: sha256
-      value: 8048c9d92b2978055ab3a034513a26e7b33318939cb05f92c2614e71bbd12931
+      value: a738a213e434082c7144fa15637eeedc3963c62dbe9217ba9f5f56a5d3fad1f4
     compression: none
   deployment:
     vehicle_variants:
@@ -62,4 +62,4 @@ ota_update:
     algorithm: RSA-SHA256
     keyid: autoforge-release-key-2026
     value: 96eef5780119770ea59bc6f504058c80528e0d7c3e2db33ef75803a6a55e723b
-    timestamp: '2026-02-17T04:08:34.910254Z'
+    timestamp: '2026-02-17T10:46:42.719771Z'

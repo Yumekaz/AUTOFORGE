@@ -122,6 +122,24 @@ It executes:
 - replay-mode CARLA validation with local REST stub,
 - artifact presence checks.
 
+### 3) One-command live CARLA run (no replay)
+
+Requires:
+- CARLA app already running (`CarlaUE4.exe`)
+- `.venv37` present with `carla==0.9.13` wheel installed
+
+```powershell
+python scripts\run_live_mode.py
+```
+
+Useful options:
+
+```powershell
+python scripts\run_live_mode.py --max-samples 300 --rate-hz 10
+python scripts\run_live_mode.py --provider gemini
+python scripts\run_live_mode.py --carla-python .\.venv37\Scripts\python.exe
+```
+
 ## Core commands
 
 ### Demo runs

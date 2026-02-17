@@ -13,8 +13,6 @@
   - test_low_battery_warning
   code_artifacts: &id003
   - BMSDiagnosticServiceJava
-  - BatteryStatus
-  - BatteryWarning
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
