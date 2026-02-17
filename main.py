@@ -35,7 +35,7 @@ def print_banner():
 
 def print_result(result: PipelineResult):
     """Print pipeline result summary."""
-    status = "✅ SUCCESS" if result.success else "❌ FAILED"
+    status = "SUCCESS" if result.success else "FAILED"
     
     print(f"\n{'='*60}")
     print(f"Pipeline Result: {status}")
@@ -58,7 +58,7 @@ def print_result(result: PipelineResult):
         print(f"    - trace.yaml")
 
 
-def run_demo(demo_name: str, use_mock: bool = False):
+def run_demo(demo_name: str, use_mock: bool = False, plain: bool = False):
     """Run a demo pipeline."""
     demos = {
         "vehicle-health": "input/requirements/bms_diagnostic.yaml",
@@ -72,7 +72,8 @@ def run_demo(demo_name: str, use_mock: bool = False):
         
     requirement_path = demos[demo_name]
     
-    print(f"\n🚗 Running demo: {demo_name}")
+    prefix = "Running demo" if plain else "🚗 Running demo"
+    print(f"\n{prefix}: {demo_name}")
     print(f"   Requirement: {requirement_path}")
     
     provider = "mock" if use_mock else "gemini"
@@ -111,10 +112,16 @@ def main():
         default="output",
         help="Output directory"
     )
+    parser.add_argument(
+        "--plain",
+        action="store_true",
+        help="Use compact/plain terminal output (no banner).",
+    )
     
     args = parser.parse_args()
     
-    print_banner()
+    if not args.plain:
+        print_banner()
     
     # Determine provider
     provider = args.provider
@@ -124,7 +131,7 @@ def main():
     
     # Run demo or requirement
     if args.demo:
-        run_demo(args.demo, use_mock=(provider == "mock"))
+        run_demo(args.demo, use_mock=(provider == "mock"), plain=args.plain)
     elif args.requirement:
         if not Path(args.requirement).exists():
             print(f"❌ Requirement file not found: {args.requirement}")

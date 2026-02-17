@@ -1,43 +1,54 @@
+import com.vsomeip.vsomeip;
+import com.vsomeip.vsomeip.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Service(id = 4097, instance = 1)
 public class BMSDiagnosticServiceKotlin {
+
     private static final Logger logger = LoggerFactory.getLogger(BMSDiagnosticServiceKotlin.class);
-    
-    public float[] GetBatteryStatus() {
-        float soc = 20.5f;
-        float voltage = 12.3f;
-        float current = -1.2f;
-        float temperature = 25f;
-        int health_status = 1;
-        
-        checkBatteryWarning(soc, voltage, current, temperature);
-        
-        return new float[]{soc, voltage, current, temperature, health_status};
+
+    @Event(event_id = 32769)
+    public void BatteryWarning(uint16 warning_code, String warning_message) {
+        // Emit the battery warning event
+        logger.warn("Battery Warning: Code={}, Message={}", warning_code, warning_message);
     }
-    
-    public float[] GetCellVoltages() {
-        return new float[]{12.0f, 12.1f, 12.2f};
+
+    @Method(id = 1)
+    public void GetBatteryStatus(@Out float[] soc, @Out float[] voltage, @Out float[] current, @Out float[] temperature, @Out byte[] health_status) {
+        // Implement logic to get battery status
+        soc[0] = 0.25f;
+        voltage[0] = 420.0f;
+        current[0] = 10.0f;
+        temperature[0] = 30.0f;
+        health_status[0] = 1;
     }
-    
-    public float GetEstimatedRange(int driving_mode) {
-        return 100.5f;
+
+    @Method(id = 2)
+    public void GetCellVoltages(@Out float[] cell_voltages) {
+        // Implement logic to get cell voltages
+        cell_voltages[0] = 420.5f;
+        cell_voltages[1] = 421.0f;
+        cell_voltages[2] = 421.5f;
     }
-    
-    private void checkBatteryWarning(float soc, float voltage, float current, float temperature) {
-        if (soc < 20) {
-            logger.error("Low battery");
-            throw new RuntimeException("Low battery");
+
+    @Method(id = 3)
+    public void GetEstimatedRange(@In byte driving_mode, @Out float[] range_km) {
+        // Implement logic to get estimated range based on driving mode
+        if (driving_mode == 1) {
+            range_km[0] = 150.0f;
+        } else {
+            range_km[0] = 0.0f; // Default value for unknown driving mode
         }
-        
-        if (temperature > 45) {
-            logger.warn("High temperature");
-            throw new RuntimeException("High temperature");
-        }
-        
-        if (temperature > 60) {
-            logger.error("Critical temperature - shutdown required");
-            throw new RuntimeException("Critical temperature - shutdown required");
-        }
+    }
+
+    @Lifecycle(startup_complete = true)
+    public void onStartupComplete() {
+        logger.info("BMSDiagnosticServiceKotlin started");
+    }
+
+    @Lifecycle(shutdown_complete = true)
+    public void onShutdownComplete() {
+        logger.info("BMSDiagnosticServiceKotlin stopped");
     }
 }

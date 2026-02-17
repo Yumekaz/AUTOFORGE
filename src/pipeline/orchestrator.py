@@ -98,14 +98,18 @@ class Pipeline:
         )
         audit = AuditLogger(service_name="unknown")
         
+        self._print_section("AUTOFORGE PIPELINE START")
+        self._print_kv("Requirement", requirement_path)
+
         # Phase 1: Parse
-        print(f"[PHASE 1] Parsing requirement: {requirement_path}")
+        self._print_step("PHASE 1", "INPUT", f"Parsing requirement: {requirement_path}")
         try:
             phase = audit.start_phase(1, "PARSE")
             requirement = self._parse_requirement(requirement_path)
             result.requirement_id = requirement.get("service", {}).get("name", "unknown")
             audit.service_name = result.requirement_id
             result.phases_completed.append(PipelinePhase.PARSE)
+            self._print_kv("Service", result.requirement_id)
             audit.end_phase(phase, "SUCCESS", {
                 "requirement_path": requirement_path,
                 "service_name": result.requirement_id
@@ -118,7 +122,7 @@ class Pipeline:
             return result
             
         # Phase 2: Generate Tests FIRST
-        print(f"[PHASE 2] Generating tests for: {result.requirement_id}")
+        self._print_step("PHASE 2", "AUDITOR", f"Generating tests for: {result.requirement_id}")
         try:
             phase = audit.start_phase(2, "TEST_GENERATION")
             test_code = self._generate_tests(requirement)
@@ -136,12 +140,12 @@ class Pipeline:
             return result
             
         # Phase 3: Generate Code (with retry loop)
-        print(f"[PHASE 3] Generating implementation...")
+        self._print_step("PHASE 3", "ARCHITECT", "Generating implementation...")
         language = requirement.get("service", {}).get("language", "python")
         
         for attempt in range(self.max_retries):
             result.retry_count = attempt + 1
-            print(f"  Attempt {attempt + 1}/{self.max_retries}")
+            self._print_attempt(attempt + 1, self.max_retries)
             
             try:
                 phase = audit.start_phase(3, "CODE_GENERATION")
@@ -155,13 +159,14 @@ class Pipeline:
                 })
                 
                 # Phase 4: Validate with REAL tools (clang-tidy, pytest, etc.)
-                print(f"[PHASE 4] Validating generated code...")
+                self._print_step("PHASE 4", "VALIDATION GATE", "Running compile/test/static checks...")
                 phase_val = audit.start_phase(4, "VALIDATION")
                 validation_result = self._validate(generated_code, test_code, language)
                 
                 if validation_result["valid"]:
                     result.validation_passed = True
                     result.phases_completed.append(PipelinePhase.VALIDATE)
+                    self._print_status("VALIDATION", "PASS")
                     audit.end_phase(phase_val, "SUCCESS", {
                         "issues": validation_result.get("issues", []),
                         "misra": validation_result.get("misra_compliance", {}),
@@ -170,7 +175,8 @@ class Pipeline:
                     })
                     break
                 else:
-                    print(f"  Validation failed: {validation_result['issues']}")
+                    self._print_status("VALIDATION", "FAIL")
+                    self._print_issues(validation_result.get("issues", []))
                     audit.end_phase(phase_val, "FAILED", {
                         "issues": validation_result.get("issues", []),
                         "misra": validation_result.get("misra_compliance", {}),
@@ -187,7 +193,7 @@ class Pipeline:
                 
         # Phase 5: Package
         if result.validation_passed:
-            print(f"[PHASE 5] Packaging outputs...")
+            self._print_step("PHASE 5", "PACKAGER", "Packaging outputs and evidence...")
             phase = audit.start_phase(5, "PACKAGING")
             self._package_outputs(result, requirement, language)
             result.phases_completed.append(PipelinePhase.PACKAGE)
@@ -211,6 +217,8 @@ class Pipeline:
         )
         self._save_audit(audit, result.requirement_id)
 
+        self._print_section("AUTOFORGE PIPELINE END")
+        self._print_status("RESULT", "SUCCESS" if result.success else "FAILED")
         return result
     
     def _parse_requirement(self, path: str) -> Dict[str, Any]:
@@ -356,6 +364,30 @@ class Pipeline:
         # Generate metrics summary artifact for slides
         metrics_path = self.output_dir / "metrics_summary.json"
         generate_metrics(metrics_path)
+
+    def _print_section(self, title: str):
+        print(f"\n{'=' * 72}")
+        print(f"{title}")
+        print(f"{'=' * 72}")
+
+    def _print_step(self, phase: str, owner: str, message: str):
+        print(f"[{phase}] [{owner}] {message}")
+
+    def _print_attempt(self, current: int, total: int):
+        print(f"  - Attempt {current}/{total}")
+
+    def _print_status(self, label: str, status: str):
+        print(f"  [{label}] {status}")
+
+    def _print_kv(self, key: str, value: str):
+        print(f"{key}: {value}")
+
+    def _print_issues(self, issues: List[str]):
+        if not issues:
+            return
+        print("  Issues:")
+        for issue in issues:
+            print(f"    - {issue}")
         
     def _save_output(self, service_name: str, filename: str, content: str):
         """Save output file."""

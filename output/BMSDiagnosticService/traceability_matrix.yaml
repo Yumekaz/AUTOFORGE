@@ -9,7 +9,6 @@
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
-  - IBatteryWarningEvent
   aspice_reference: SWE.3
 - requirement_id: REQ-BMS-001-API-002
   requirement_desc: Method GetCellVoltages

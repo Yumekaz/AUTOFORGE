@@ -1,8 +1,8 @@
 {
   "summary": {
     "total_samples": 2,
-    "avg_latency_ms": 2072.94,
-    "p95_latency_ms": 2057.13
+    "avg_latency_ms": 2060.24,
+    "p95_latency_ms": 2031.42
   },
   "records": [
     {
@@ -29,10 +29,10 @@
           }
         ]
       },
-      "latency_ms": 2088.75
+      "latency_ms": 2089.05
     },
     {
-      "timestamp_s": 4.198,
+      "timestamp_s": 4.175,
       "signals": {
         "vehicle_speed": 55,
         "battery_soc": 65,
@@ -46,7 +46,7 @@
         "health_status": 0,
         "warnings": []
       },
-      "latency_ms": 2057.13
+      "latency_ms": 2031.42
     }
   ]
 }

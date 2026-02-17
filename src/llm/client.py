@@ -5,11 +5,19 @@ Supports multiple LLM providers with unified interface
 
 import os
 import json
+import warnings
 from abc import ABC, abstractmethod
 from typing import Optional
 import yaml
 import urllib.request
 import urllib.error
+
+# Suppress noisy upstream deprecation warning from google-generativeai package.
+warnings.filterwarnings(
+    "ignore",
+    message=r".*google\.generativeai.*",
+    category=FutureWarning,
+)
 
 
 class LLMClient(ABC):
@@ -31,7 +39,10 @@ class GeminiClient(LLMClient):
         
     def _get_client(self):
         if self._client is None:
-            import google.generativeai as genai
+            # Suppress upstream deprecation warning noise in CLI output.
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", FutureWarning)
+                import google.generativeai as genai
             api_key = os.getenv("GOOGLE_API_KEY")
             if not api_key:
                 raise ValueError("GOOGLE_API_KEY environment variable not set")

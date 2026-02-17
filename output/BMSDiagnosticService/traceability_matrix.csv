@@ -1,4 +1,4 @@
 requirement_id,requirement_desc,design_artifacts,test_cases,code_artifacts,aspice_reference
-REQ-BMS-001-API-001,Method GetBatteryStatus,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange;IBatteryWarningEvent,SWE.3
-REQ-BMS-001-API-002,Method GetCellVoltages,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange;IBatteryWarningEvent,SWE.3
-REQ-BMS-001-API-003,Method GetEstimatedRange,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange;IBatteryWarningEvent,SWE.3
+REQ-BMS-001-API-001,Method GetBatteryStatus,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange,SWE.3
+REQ-BMS-001-API-002,Method GetCellVoltages,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange,SWE.3
+REQ-BMS-001-API-003,Method GetEstimatedRange,REQ-BMS-001-DES-001: Service Interface Design;REQ-BMS-001-DES-002: Validation Gate Design;REQ-BMS-001-DES-003: OTA Packaging Design,,GetBatteryStatus;GetCellVoltages;GetEstimatedRange,SWE.3

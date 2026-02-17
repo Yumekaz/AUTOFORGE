@@ -1,18 +1,17 @@
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import Mock, call
+import math
 
-# Mock class for the BMSDiagnosticService
-# This mock will simulate the behavior of the service based on its internal state
-# and emit events.
-class MockBMSDiagnosticService:
-    """
-    A mock implementation of the BMSDiagnosticService for testing purposes.
-    It simulates internal battery state and event emission logic.
-    """
-    def __init__(self):
-        self._battery_soc = 0.0
-        self._battery_voltage = 0.0
-        self._battery_current = 0.0
-        self._battery_temperature = 0.0
-        self._cell_voltages = []
-        self.emitted_events = []
+# Define constants for clarity and MISRA compliance (avoiding magic numbers)
+# These would typically be defined in a shared header or configuration file for the actual service.
+BATTERY_SOC_LOW_WARNING_THRESHOLD = 20.0
+BATTERY_TEMP_HIGH_WARNING_THRESHOLD = 45.0
+BATTERY_TEMP_CRITICAL_SHUTDOWN_THRESHOLD = 60.0
+
+HEALTH_STATUS_OK = 0
+HEALTH_STATUS_WARNING = 1
+HEALTH_STATUS_CRITICAL = 2
+
+DRIVING_MODE_ECO = 0
+DRIVING_MODE_NORMAL = 1
+DRIVING_MODE_SPORT = 2

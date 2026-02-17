@@ -69,6 +69,7 @@ def main() -> int:
     load_dotenv(ROOT / ".env")
     env = os.environ.copy()
     env.setdefault("PYTHONIOENCODING", "utf-8")
+    env.setdefault("PYTHONWARNINGS", "ignore::FutureWarning")
 
     # 1) Public-data fallback CSV
     run([PY, "scripts/prepare_public_vehicle_data.py"], env=env)
@@ -90,17 +91,23 @@ def main() -> int:
     )
 
     # 4) Core Ollama run
-    run([PY, "main.py", "--demo", "bms", "--provider", "ollama"], env=env)
+    run([PY, "main.py", "--plain", "--demo", "bms", "--provider", "ollama"], env=env)
 
     # 5) Optional Gemini run
     if env.get("GOOGLE_API_KEY"):
-        run([PY, "main.py", "--demo", "bms", "--provider", "gemini"], env=env)
+        run([PY, "main.py", "--plain", "--demo", "bms", "--provider", "gemini"], env=env)
     else:
         print("[INFO] GOOGLE_API_KEY not set. Skipping Gemini run.")
 
     # 6) Java + Kotlin runs
-    run([PY, "main.py", "--requirement", "input/requirements/bms_diagnostic_java.yaml", "--provider", "ollama"], env=env)
-    run([PY, "main.py", "--requirement", "input/requirements/bms_diagnostic_kotlin.yaml", "--provider", "ollama"], env=env)
+    run(
+        [PY, "main.py", "--plain", "--requirement", "input/requirements/bms_diagnostic_java.yaml", "--provider", "ollama"],
+        env=env,
+    )
+    run(
+        [PY, "main.py", "--plain", "--requirement", "input/requirements/bms_diagnostic_kotlin.yaml", "--provider", "ollama"],
+        env=env,
+    )
 
     # 7) Replay mode with local REST stub
     replay_seed = ROOT / "output" / "replay_seed.json"
