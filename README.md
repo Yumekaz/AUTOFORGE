@@ -62,6 +62,7 @@ Working:
 - Gemini + Ollama pipeline runs
 - C++/Java/Kotlin generation (Kotlin + Java companion path)
 - SOME/IP config generation
+- Protocol Abstraction with SOME/IP code generation (vsomeip skeleton + mapping artifacts)
 - OTA + variants (ICE/Hybrid/EV)
 - Traceability and audit artifacts
 - Public-data fallback ML path (`input/vehicle_data.csv`) + ONNX export
@@ -167,6 +168,12 @@ python main.py --plain --requirement input/requirements/bms_diagnostic_with_ml.y
 python src/codegen/protocol_adapter.py --requirement input/requirements/bms_diagnostic.yaml --output output/someip_service.json
 ```
 
+Protocol abstraction artifacts:
+
+```powershell
+python src/codegen/protocol_adapter.py --requirement input/requirements/bms_diagnostic.yaml --output output/someip_service.json --abstraction-dir output/someip_abstraction
+```
+
 ### ML train + ONNX export
 
 ```powershell
@@ -207,6 +214,17 @@ python scripts/benchmark.py --runs 20 --providers gemini,ollama --output benchma
 python scripts/scaffolding_impact.py --auto-services
 python scripts/scaffolding_impact.py --auto-services --manual-baseline-loc 1000
 ```
+
+### OTA delta evidence (v1.0 -> v1.1)
+
+```powershell
+python scripts/generate_ota_delta.py --service BMSDiagnosticService --base-version 1.0.0 --target-version 1.1.0 --base-image autoforge/bms:1.0.0 --target-image autoforge/bms:1.1.0 --base-file output/ota_v1_0.txt --target-file output/ota_v1_1.txt --output-dir output/ota_delta/BMSDiagnosticService_v1.0.0_to_v1.1.0
+```
+
+Outputs:
+- `delta_manifest.json`
+- `delta_chunks.json`
+- `verification.json`
 
 ## CARLA integration modes
 

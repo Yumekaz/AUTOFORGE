@@ -1,0 +1,3 @@
+BMSDiagnosticService v1.0
+feature.subscription=false
+rollout=gradual
