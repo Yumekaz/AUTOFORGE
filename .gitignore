@@ -27,3 +27,9 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+.venv/
+.venv37/
+venv/
+env/
+__pycache__/
+*.pyc
