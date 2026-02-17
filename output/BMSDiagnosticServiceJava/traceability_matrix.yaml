@@ -16,6 +16,7 @@
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
+  - SystemExitException
   aspice_reference: SWE.3
 - requirement_id: REQ-BMS-JAVA-001-API-002
   requirement_desc: Method GetCellVoltages

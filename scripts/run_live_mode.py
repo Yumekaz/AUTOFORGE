@@ -42,6 +42,9 @@ def main() -> int:
     parser.add_argument("--rate-hz", type=float, default=10.0, help="CARLA sample rate")
     parser.add_argument("--carla-python", default=str(DEFAULT_CARLA_PY), help="Python executable for CARLA bridge")
     parser.add_argument("--skip-gemini", action="store_true", help="Skip Gemini run even when GOOGLE_API_KEY exists")
+    parser.add_argument("--with-hmi-dashboard", action="store_true", help="Start live web HMI dashboard")
+    parser.add_argument("--hmi-host", default="127.0.0.1", help="HMI dashboard bind host")
+    parser.add_argument("--hmi-port", type=int, default=30600, help="HMI dashboard port")
     args = parser.parse_args()
 
     load_dotenv(ROOT / ".env")
@@ -93,10 +96,29 @@ def main() -> int:
         env=env,
     )
 
-    # 7) Start local stub + 8) run live CARLA bridge
+    # 7) Start local stub + optional dashboard + 8) run live CARLA bridge
     stub = subprocess.Popen([PY, "integrations/service_stub/rest_bms_service.py"], cwd=ROOT, env=env)
+    dashboard = None
     try:
         time.sleep(1.5)
+        if args.with_hmi_dashboard:
+            dashboard = subprocess.Popen(
+                [
+                    PY,
+                    "scripts/live_hmi_dashboard.py",
+                    "--host",
+                    args.hmi_host,
+                    "--port",
+                    str(args.hmi_port),
+                    "--service-url",
+                    "http://localhost:30509",
+                ],
+                cwd=ROOT,
+                env=env,
+            )
+            time.sleep(0.7)
+            print(f"[HMI] Open dashboard: http://{args.hmi_host}:{args.hmi_port}")
+
         run(
             [
                 str(carla_py),
@@ -119,6 +141,12 @@ def main() -> int:
             env=env,
         )
     finally:
+        if dashboard:
+            dashboard.terminate()
+            try:
+                dashboard.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                dashboard.kill()
         stub.terminate()
         try:
             stub.wait(timeout=5)

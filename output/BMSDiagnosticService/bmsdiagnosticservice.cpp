@@ -1,12 +1,14 @@
 #include <cstdint>
-#include <string>
 #include <vector>
-#include <functional>
-#include <iostream> // For basic logging, replace with a proper logging library in production
-#include <algorithm> // For std::min, std::max
-#include <cmath>     // For std::fabs, std::isnan, std::isinf
-#include <chrono>    // For potential timestamping/freshness checks
-#include <limits>    // For std::numeric_limits
+#include <string>
+#include <memory>
+#include <algorithm>
+#include <iostream>
+#include <stdexcept> // For std::runtime_error, used sparingly for critical internal errors
+#include <cmath>     // For std::fabs
 
-// MISRA C++ 2012 Rule 0-1-1: A project shall not contain unreachable code.
-// MISRA C++ 2012 Rule 0-1-2: A project shall not contain
+// MISRA C++ 2012 Rule 0-1-2: The value of an object with a non-trivial constructor or destructor shall not be used before it has been initialized.
+// All member variables are initialized in the constructor initializer list.
+
+// MISRA C++ 2012 Rule 0-1-4: A pointer or reference shall not be used unless it has been initialized.
+// Smart pointers

@@ -138,7 +138,11 @@ Useful options:
 python scripts\run_live_mode.py --max-samples 300 --rate-hz 10
 python scripts\run_live_mode.py --provider gemini
 python scripts\run_live_mode.py --carla-python .\.venv37\Scripts\python.exe
+python scripts\run_live_mode.py --with-hmi-dashboard --hmi-host 127.0.0.1 --hmi-port 30600
 ```
+
+Live dashboard URL (when enabled):
+- `http://127.0.0.1:30600`
 
 ## Core commands
 

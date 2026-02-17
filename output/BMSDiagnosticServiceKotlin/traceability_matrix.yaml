@@ -13,7 +13,6 @@
   - test_low_battery_warning
   code_artifacts: &id003
   - BMSDiagnosticServiceKotlin
-  - BatteryStatus
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
