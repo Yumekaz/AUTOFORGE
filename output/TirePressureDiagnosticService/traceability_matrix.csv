@@ -1,0 +1,2 @@
+requirement_id,requirement_desc,design_artifacts,test_cases,code_artifacts,aspice_reference
+REQ-TIRE-001-API-001,Method GetTireStatus,REQ-TIRE-001-DES-001: Service Interface Design;REQ-TIRE-001-DES-002: Validation Gate Design;REQ-TIRE-001-DES-003: OTA Packaging Design,test_get_tire_status;test_get_tire_status_empty_values;test_get_tire_status_negative_values;test_get_tire_status_null_inputs;test_get_tire_status_overflow_values;test_get_tire_status_race_conditions;test_imbalance_warning;test_low_pressure_warning,GetTireStatus;TirePressureDiagnosticService,SWE.3

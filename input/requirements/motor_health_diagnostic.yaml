@@ -1,0 +1,54 @@
+# Motor Health Diagnostic Service Requirement
+
+service:
+  name: MotorHealthDiagnosticService
+  description: EV motor thermal and torque health monitoring service
+  version: "1.0.0"
+  language: cpp
+  protocol: someip
+
+  interface:
+    service_id: 0x1201
+    instance_id: 0x0001
+
+    methods:
+      - name: GetMotorHealth
+        id: 0x0001
+        input: []
+        output:
+          - name: motor_temperature
+            type: float
+          - name: motor_torque
+            type: float
+          - name: motor_power
+            type: float
+          - name: health_status
+            type: uint8
+
+    events:
+      - name: MotorWarning
+        id: 0x8201
+        fields:
+          - name: warning_code
+            type: uint16
+          - name: warning_message
+            type: string
+
+  input_signals:
+    - motor_temperature
+    - motor_torque
+    - motor_power
+    - vehicle_speed
+
+  rules:
+    - name: high_temp_warning
+      condition: "motor_temperature > 85"
+      action: "emit MotorWarning(code=0x0201, msg='Motor temperature high')"
+    - name: critical_temp_warning
+      condition: "motor_temperature > 100"
+      action: "emit MotorWarning(code=0x0202, msg='Motor critical temperature')"
+
+traceability:
+  requirement_id: REQ-MOTOR-001
+  aspice_reference: SWE.3
+  misra_compliance: required

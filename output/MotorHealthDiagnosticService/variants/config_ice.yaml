@@ -1,0 +1,14 @@
+features:
+  battery_monitoring: false
+  engine_integration: true
+  range_estimation: false
+  regenerative_braking: false
+service_name: MotorHealthDiagnosticService
+signals:
+- engine_rpm
+- fuel_level
+- engine_temperature
+- oil_pressure
+- coolant_temperature
+variant: ice
+version: 1.0.0

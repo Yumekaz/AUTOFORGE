@@ -1,0 +1,114 @@
+{
+  "audit_report": {
+    "trace_id": "TRACE-20260217041110",
+    "service_name": "TirePressureDiagnosticService",
+    "timestamp_start": "2026-02-17T04:11:10.104680+00:00",
+    "timestamp_end": "2026-02-17T04:14:06.829452+00:00",
+    "final_status": "ACCEPTED",
+    "total_attempts": 1,
+    "phases": [
+      {
+        "phase_id": 1,
+        "phase_name": "PARSE",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-17T04:11:10.104680+00:00",
+        "timestamp_end": "2026-02-17T04:11:10.112994+00:00",
+        "duration_ms": 8,
+        "details": {
+          "requirement_path": "C:\\Users\\patha\\Desktop\\AUTOFORGE\\input\\requirements\\tire_pressure_diagnostic.yaml",
+          "service_name": "TirePressureDiagnosticService"
+        }
+      },
+      {
+        "phase_id": 2,
+        "phase_name": "TEST_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-17T04:11:10.112994+00:00",
+        "timestamp_end": "2026-02-17T04:13:08.225530+00:00",
+        "duration_ms": 118112,
+        "details": {
+          "test_lines": 149
+        }
+      },
+      {
+        "phase_id": 3,
+        "phase_name": "CODE_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-17T04:13:08.225530+00:00",
+        "timestamp_end": "2026-02-17T04:14:06.539510+00:00",
+        "duration_ms": 58313,
+        "details": {
+          "language": "cpp",
+          "code_lines": 66,
+          "attempt": 1
+        }
+      },
+      {
+        "phase_id": 4,
+        "phase_name": "VALIDATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-17T04:14:06.539510+00:00",
+        "timestamp_end": "2026-02-17T04:14:06.798551+00:00",
+        "duration_ms": 259,
+        "details": {
+          "issues": [
+            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmpo03h8_ku\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated.\n"
+          ],
+          "misra": {
+            "clang_tidy": "PASS"
+          },
+          "asil_d": {
+            "status": "WARN",
+            "issues": [
+              "ASIL-D Bounds: no bounds-checking signals detected",
+              "ASIL-D Static Analyzer: issues detected by clang --analyze"
+            ],
+            "static_analyzer": {
+              "status": "FAIL",
+              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmpo03h8_ku\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated."
+            },
+            "heuristic_checks": {
+              "unsafe_api": [],
+              "non_determinism": [],
+              "unbounded_loops": [],
+              "defensive_programming": true,
+              "bounds_checks": false
+            },
+            "evidence": {
+              "memory_safety": "PASS",
+              "determinism": "PASS",
+              "timing": "PASS",
+              "defensive_programming": "PASS",
+              "bounds_checks": "FAIL"
+            }
+          },
+          "static_analysis": {
+            "compilation": "WARN (dev mode - continuing despite compiler failure)",
+            "service_size": "PASS",
+            "cppcheck": "FAIL"
+          }
+        }
+      },
+      {
+        "phase_id": 5,
+        "phase_name": "PACKAGING",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-17T04:14:06.798551+00:00",
+        "timestamp_end": "2026-02-17T04:14:06.829452+00:00",
+        "duration_ms": 30,
+        "details": {}
+      }
+    ],
+    "compliance_summary": {
+      "validation_passed": true
+    },
+    "outputs": {
+      "trace": "output/TirePressureDiagnosticService/trace.yaml",
+      "audit_report": "output/TirePressureDiagnosticService/audit_report.json"
+    },
+    "requirement_traceability": {
+      "requirement_id": "REQ-TIRE-001",
+      "source_document": "C:\\Users\\patha\\Desktop\\AUTOFORGE\\input\\requirements\\tire_pressure_diagnostic.yaml"
+    }
+  }
+}
