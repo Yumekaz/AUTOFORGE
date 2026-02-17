@@ -336,6 +336,12 @@ class Pipeline:
         protocol_filename = "someip_service.json" if protocol_name == "someip" else f"{protocol_name}_service.json"
         self._save_output(service_name, protocol_filename, json.dumps(protocol_config, indent=2))
 
+        if protocol_name == "someip":
+            abstraction_assets = protocol_gen.generate_someip_abstraction_assets(requirement)
+            abstraction_dir = self.output_dir / service_name / "protocol_abstraction"
+            protocol_gen.save_assets(abstraction_assets, abstraction_dir)
+            print(f"  Saved protocol abstraction assets: {abstraction_dir}")
+
         # CARLA integration config (service endpoint)
         self._save_output(service_name, "carla_service_config.yaml", yaml.dump({
             "service_url": f"http://{service_name.lower()}:30509",

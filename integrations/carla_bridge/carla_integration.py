@@ -116,12 +116,13 @@ class CARLABridge:
         self,
         service_url: str = 'http://localhost:30509',
         log_path: str = 'output/carla_validation.json',
+        transport: str = 'rest',
         max_samples: int = 0,
         rate_hz: float = 10.0,
     ):
         """Stream live CARLA signals to AUTOFORGE service endpoint."""
         print(f"[CARLA] Streaming signals to services at {service_url}")
-        client = ServiceClient(service_url)
+        client = ServiceClient(service_url, transport=transport)
         logger = CarlaValidationLogger(Path(log_path))
 
         period = 1.0 / rate_hz if rate_hz > 0 else 0.1
@@ -205,12 +206,13 @@ def replay_to_services(
     replay_input: Path,
     service_url: str,
     log_path: str,
+    transport: str = "rest",
     max_samples: int = 0,
     rate_hz: float = 10.0,
 ) -> None:
     """Replay recorded signals through the standard service+logger path."""
     print(f"[REPLAY] Loading replay from {replay_input}")
-    client = ServiceClient(service_url)
+    client = ServiceClient(service_url, transport=transport)
     logger = CarlaValidationLogger(Path(log_path))
     period = 1.0 / rate_hz if rate_hz > 0 else 0.1
 
@@ -240,6 +242,12 @@ def main():
     parser.add_argument('--port', type=int, default=2000, help='CARLA port')
     parser.add_argument('--service-url', default='http://localhost:30509',
                         help='AUTOFORGE service URL')
+    parser.add_argument(
+        '--transport',
+        choices=['rest', 'someip'],
+        default='rest',
+        help='Protocol abstraction transport for service call',
+    )
     parser.add_argument('--log-path', default='output/carla_validation.json',
                         help='Path to CARLA validation log JSON')
     parser.add_argument('--replay-input', default='',
@@ -264,6 +272,7 @@ def main():
                 replay_input=Path(args.replay_input),
                 service_url=args.service_url,
                 log_path=args.log_path,
+                transport=args.transport,
                 max_samples=args.max_samples,
                 rate_hz=args.rate_hz,
             )
@@ -281,6 +290,7 @@ def main():
         bridge.stream_to_services(
             service_url=args.service_url,
             log_path=args.log_path,
+            transport=args.transport,
             max_samples=args.max_samples,
             rate_hz=args.rate_hz,
         )

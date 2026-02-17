@@ -1,0 +1,349 @@
+{
+  "summary": {
+    "total_samples": 20,
+    "avg_latency_ms": 2047.67,
+    "p95_latency_ms": 2061.86
+  },
+  "records": [
+    {
+      "timestamp_s": 2.058,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.84078168448061,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2058.35
+    },
+    {
+      "timestamp_s": 4.207,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.81888660848141,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2042.62
+    },
+    {
+      "timestamp_s": 6.345,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.797482064478096,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2029.37
+    },
+    {
+      "timestamp_s": 8.529,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.77604446947575,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2075.36
+    },
+    {
+      "timestamp_s": 10.698,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.75422182347626,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2059.79
+    },
+    {
+      "timestamp_s": 12.864,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.7325345005095,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2056.66
+    },
+    {
+      "timestamp_s": 15.03,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.7109284574911,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2056.74
+    },
+    {
+      "timestamp_s": 17.183,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.689174016490576,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2045.28
+    },
+    {
+      "timestamp_s": 19.349,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.66760522350669,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2057.06
+    },
+    {
+      "timestamp_s": 21.483,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.646049148477616,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2023.63
+    },
+    {
+      "timestamp_s": 23.649,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.62472355648875,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2058.91
+    },
+    {
+      "timestamp_s": 25.788,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.60303355548531,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2030.13
+    },
+    {
+      "timestamp_s": 27.941,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.58163066048175,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2043.99
+    },
+    {
+      "timestamp_s": 30.108,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.56008108150214,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2058.69
+    },
+    {
+      "timestamp_s": 32.278,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.53837802749127,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2061.86
+    },
+    {
+      "timestamp_s": 34.406,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.51665653347969,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2018.56
+    },
+    {
+      "timestamp_s": 36.572,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.49538665749132,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2057.22
+    },
+    {
+      "timestamp_s": 38.726,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.47372129149735,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2045.38
+    },
+    {
+      "timestamp_s": 40.878,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.452198822498325,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2042.65
+    },
+    {
+      "timestamp_s": 43.017,
+      "signals": {
+        "vehicle_speed": 0.0,
+        "battery_soc": 54.43069789748639,
+        "battery_temperature": 25.0,
+        "tire_pressure_fl": 2.5,
+        "tire_pressure_fr": 2.5,
+        "tire_pressure_rl": 2.4,
+        "tire_pressure_rr": 2.4
+      },
+      "response": {
+        "health_status": 0,
+        "warnings": []
+      },
+      "latency_ms": 2031.12
+    }
+  ]
+}

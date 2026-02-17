@@ -1,0 +1,62 @@
+ota_update:
+  manifest_version: 1.0.0
+  service:
+    name: MotorHealthDiagnosticService
+    version: 1.0.0
+    timestamp: '2026-02-17T04:04:55.906500Z'
+  artifacts:
+  - type: binary
+    filename: tests.py
+    size_bytes: 2808
+    checksum:
+      algorithm: sha256
+      value: 29d0f05c1e543f6324ba5ff221ecca2a4d321e5b37c267c363d8f2fb8df29753
+    compression: gzip
+  - type: trace
+    filename: trace.yaml
+    size_bytes: 250
+    checksum:
+      algorithm: sha256
+      value: 35b14cd03f94a4f27817233c96664194bba13c33248d4ca58439f451066186d6
+    compression: none
+  deployment:
+    vehicle_variants:
+    - ev
+    - hybrid
+    - ice
+    rollout_strategy: gradual
+    rollout_config:
+      target_percentage: 100
+      rollout_phases:
+      - phase: 1
+        percentage: 10
+        duration_hours: 24
+      - phase: 2
+        percentage: 50
+        duration_hours: 48
+      - phase: 3
+        percentage: 100
+        duration_hours: 72
+  subscription:
+    tier: standard
+    entitlements: []
+    channels:
+    - stable
+    vin_scope: all
+  dependencies:
+  - name: vsomeip
+    version: '>=3.4.0'
+    required: true
+  - name: onnxruntime
+    version: '>=1.16.0'
+    required: false
+  safety:
+    require_parking: true
+    require_battery_level: 30
+    rollback_enabled: true
+    validation_required: true
+  signature:
+    algorithm: RSA-SHA256
+    keyid: autoforge-release-key-2026
+    value: d38cf47e4a215f3dad85f21c90431e7c8d6a5ff1a5acb01898b0406c6ec93d7e
+    timestamp: '2026-02-17T04:04:55.906500Z'

@@ -1,54 +1,84 @@
-import com.vsomeip.vsomeip;
-import com.vsomeip.vsomeip.annotation.*;
+import com.visteon.someip.SomeIP;
+import com.visteon.someip.Service;
+import com.visteon.someip.Method;
+import com.visteon.someip.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Service(id = 4097, instance = 1)
-public class BMSDiagnosticServiceKotlin {
-
+public class BMSDiagnosticServiceKotlin implements Service {
     private static final Logger logger = LoggerFactory.getLogger(BMSDiagnosticServiceKotlin.class);
+    private SomeIP someIP;
+    private Event batteryWarningEvent;
 
-    @Event(event_id = 32769)
-    public void BatteryWarning(uint16 warning_code, String warning_message) {
-        // Emit the battery warning event
-        logger.warn("Battery Warning: Code={}, Message={}", warning_code, warning_message);
+    public BMSDiagnosticServiceKotlin(SomeIP someIP) {
+        this.someIP = someIP;
+        initialize();
     }
 
-    @Method(id = 1)
-    public void GetBatteryStatus(@Out float[] soc, @Out float[] voltage, @Out float[] current, @Out float[] temperature, @Out byte[] health_status) {
-        // Implement logic to get battery status
-        soc[0] = 0.25f;
-        voltage[0] = 420.0f;
-        current[0] = 10.0f;
-        temperature[0] = 30.0f;
-        health_status[0] = 1;
-    }
+    private void initialize() {
+        try {
+            someIP.registerService(4097, 1);
+            Method getBatteryStatusMethod = new Method(1, (params) -> getBatteryStatus());
+            Method getCellVoltagesMethod = new Method(2, (params) -> getCellVoltages());
+            Method getEstimatedRangeMethod = new Method(3, (params) -> getEstimatedRange((int) params[0]));
+            batteryWarningEvent = new Event(32769, (params) -> emitBatteryWarning(params));
 
-    @Method(id = 2)
-    public void GetCellVoltages(@Out float[] cell_voltages) {
-        // Implement logic to get cell voltages
-        cell_voltages[0] = 420.5f;
-        cell_voltages[1] = 421.0f;
-        cell_voltages[2] = 421.5f;
-    }
+            someIP.registerMethod(getBatteryStatusMethod);
+            someIP.registerMethod(getCellVoltagesMethod);
+            someIP.registerMethod(getEstimatedRangeMethod);
+            someIP.registerEvent(batteryWarningEvent);
 
-    @Method(id = 3)
-    public void GetEstimatedRange(@In byte driving_mode, @Out float[] range_km) {
-        // Implement logic to get estimated range based on driving mode
-        if (driving_mode == 1) {
-            range_km[0] = 150.0f;
-        } else {
-            range_km[0] = 0.0f; // Default value for unknown driving mode
+            logger.info("BMSDiagnosticServiceKotlin initialized successfully");
+        } catch (Exception e) {
+            logger.error("Failed to initialize BMSDiagnosticServiceKotlin", e);
+            throw new RuntimeException("Initialization failed", e);
         }
     }
 
-    @Lifecycle(startup_complete = true)
-    public void onStartupComplete() {
-        logger.info("BMSDiagnosticServiceKotlin started");
+    @Override
+    public void start() {
+        // Start the service
     }
 
-    @Lifecycle(shutdown_complete = true)
-    public void onShutdownComplete() {
-        logger.info("BMSDiagnosticServiceKotlin stopped");
+    @Override
+    public void stop() {
+        // Stop the service
+    }
+
+    private Object[] getBatteryStatus() {
+        float soc = 20.5f;
+        float voltage = 12.6f;
+        float current = -3.4f;
+        float temperature = 25f;
+        int healthStatus = 1;
+
+        checkBatteryWarnings(soc, voltage, current, temperature);
+
+        return new Object[]{soc, voltage, current, temperature, healthStatus};
+    }
+
+    private List<Float> getCellVoltages() {
+        return Arrays.asList(3.6f, 3.7f, 3.8f);
+    }
+
+    private float getEstimatedRange(int drivingMode) {
+        // Implement logic to calculate estimated range based on driving mode
+        return 150.0f;
+    }
+
+    private void checkBatteryWarnings(float soc, float voltage, float current, float temperature) {
+        if (soc < 20) {
+            emitBatteryWarning(new Object[]{0x0001, "Low battery"});
+        }
+        if (temperature > 45) {
+            emitBatteryWarning(new Object[]{0x0002, "High temperature"});
+        }
+        if (temperature > 60) {
+            emitBatteryWarning(new Object[]{0x0003, "Critical temperature - shutdown required"});
+        }
+    }
+
+    private void emitBatteryWarning(Object[] params) {
+        batteryWarningEvent.emit(params);
     }
 }

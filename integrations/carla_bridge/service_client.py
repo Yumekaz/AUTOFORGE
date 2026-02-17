@@ -1,39 +1,35 @@
 """
 Service Client for AUTOFORGE CARLA Integration
 
-Supports REST (default) and mock SOME/IP placeholder.
+Protocol Abstraction:
+- REST transport (default, active validation path)
+- SOME/IP transport placeholder (generated middleware mapping path)
 """
 
 from __future__ import annotations
 
-import json
+import os
+import sys
 from typing import Dict, Any
-import urllib.request
-import urllib.error
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from transport import RestTransport, SomeIpTransport, Transport
 
 
 class ServiceClient:
     """Lightweight client to call generated services."""
 
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, transport: str = "rest"):
         self.base_url = base_url.rstrip("/")
+        self.transport_name = transport.lower()
+        self.transport: Transport = self._init_transport(self.transport_name)
+
+    def _init_transport(self, transport: str) -> Transport:
+        if transport == "someip":
+            return SomeIpTransport(self.base_url)
+        return RestTransport(self.base_url)
 
     def send_bms_signals(self, signals: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Send signals to a REST BMS endpoint.
-        Expected endpoint: POST {base_url}/bms/diagnostics
-        """
-        url = f"{self.base_url}/bms/diagnostics"
-        payload = json.dumps(signals).encode("utf-8")
-        request = urllib.request.Request(
-            url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
-        )
-        try:
-            with urllib.request.urlopen(request, timeout=5) as response:
-                body = response.read().decode("utf-8")
-                return json.loads(body)
-        except urllib.error.HTTPError as e:
-            body = e.read().decode("utf-8") if e.fp else ""
-            return {"error": f"HTTP {e.code}", "details": body}
-        except urllib.error.URLError as e:
-            return {"error": "Connection failed", "details": str(e)}
+        """Send signals using configured transport adapter."""
+        return self.transport.send_bms_signals(signals)

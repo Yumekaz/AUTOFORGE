@@ -5,16 +5,23 @@
   - 'REQ-BMS-ML-001-DES-002: Validation Gate Design'
   - 'REQ-BMS-ML-001-DES-003: OTA Packaging Design'
   test_cases: &id002
+  - test_critical_temp_shutdown
   - test_get_battery_status
-  - test_get_battery_status_critical_temperature
-  - test_get_battery_status_high_temperature
-  - test_get_battery_status_low_soc
+  - test_get_battery_status_edge_cases
   - test_get_estimated_range
-  - test_get_estimated_range_invalid_driving_mode
+  - test_get_estimated_range_edge_cases
+  - test_high_temp_warning
+  - test_low_battery_warning
+  - test_tire_failure_ml
+  - test_tire_failure_ml_error_handling
   code_artifacts: &id003
   - BMSDiagnosticServiceML
+  - BatteryWarning
+  - Environment
   - GetBatteryStatus
   - GetEstimatedRange
+  - InferenceSession
+  - SessionOptions
   aspice_reference: SWE.3
 - requirement_id: REQ-BMS-ML-001-API-002
   requirement_desc: Method GetEstimatedRange

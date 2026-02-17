@@ -1,0 +1,62 @@
+{
+  "protocol": "someip",
+  "service": {
+    "name": "TirePressureDiagnosticService",
+    "version": "1.0.0",
+    "service_id": 4353,
+    "instance_id": 1
+  },
+  "methods": [
+    {
+      "name": "GetTireStatus",
+      "id": 1,
+      "input": [],
+      "output": [
+        {
+          "name": "tire_pressure_fl",
+          "type": "float"
+        },
+        {
+          "name": "tire_pressure_fr",
+          "type": "float"
+        },
+        {
+          "name": "tire_pressure_rl",
+          "type": "float"
+        },
+        {
+          "name": "tire_pressure_rr",
+          "type": "float"
+        },
+        {
+          "name": "failure_risk",
+          "type": "float"
+        }
+      ]
+    }
+  ],
+  "event_groups": [
+    {
+      "name": "default_event_group",
+      "events": [
+        "TireWarning"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "TireWarning",
+      "id": 33025,
+      "fields": [
+        {
+          "name": "warning_code",
+          "type": "uint16"
+        },
+        {
+          "name": "warning_message",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

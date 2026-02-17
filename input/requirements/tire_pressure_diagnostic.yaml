@@ -1,0 +1,58 @@
+# Tire Pressure Diagnostic Service Requirement
+
+service:
+  name: TirePressureDiagnosticService
+  description: Tire pressure and early failure trend diagnostic service
+  version: "1.0.0"
+  language: cpp
+  protocol: someip
+
+  interface:
+    service_id: 0x1101
+    instance_id: 0x0001
+
+    methods:
+      - name: GetTireStatus
+        id: 0x0001
+        input: []
+        output:
+          - name: tire_pressure_fl
+            type: float
+          - name: tire_pressure_fr
+            type: float
+          - name: tire_pressure_rl
+            type: float
+          - name: tire_pressure_rr
+            type: float
+          - name: failure_risk
+            type: float
+
+    events:
+      - name: TireWarning
+        id: 0x8101
+        fields:
+          - name: warning_code
+            type: uint16
+          - name: warning_message
+            type: string
+
+  input_signals:
+    - tire_pressure_fl
+    - tire_pressure_fr
+    - tire_pressure_rl
+    - tire_pressure_rr
+    - vehicle_speed
+    - ambient_temperature
+
+  rules:
+    - name: low_pressure_warning
+      condition: "tire_pressure_fl < 2.0 or tire_pressure_fr < 2.0 or tire_pressure_rl < 2.0 or tire_pressure_rr < 2.0"
+      action: "emit TireWarning(code=0x0101, msg='Low tire pressure')"
+    - name: imbalance_warning
+      condition: "abs(tire_pressure_fl - tire_pressure_fr) > 0.4 or abs(tire_pressure_rl - tire_pressure_rr) > 0.4"
+      action: "emit TireWarning(code=0x0102, msg='Tire pressure imbalance')"
+
+traceability:
+  requirement_id: REQ-TIRE-001
+  aspice_reference: SWE.3
+  misra_compliance: required

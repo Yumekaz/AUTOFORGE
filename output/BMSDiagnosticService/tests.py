@@ -1,12 +1,12 @@
 import pytest
-from unittest.mock import Mock, call
-import math
+from unittest.mock import MagicMock, patch
 
-# Define constants for clarity and MISRA compliance (avoiding magic numbers)
-# These would typically be defined in a shared header or configuration file for the actual service.
-BATTERY_SOC_LOW_WARNING_THRESHOLD = 20.0
+# Define constants for clarity and MISRA-like fixed values in tests
+BATTERY_SOC_MIN = 0.0
+BATTERY_SOC_MAX = 100.0
 BATTERY_TEMP_HIGH_WARNING_THRESHOLD = 45.0
-BATTERY_TEMP_CRITICAL_SHUTDOWN_THRESHOLD = 60.0
+BATTERY_TEMP_CRITICAL_THRESHOLD = 60.0
+BATTERY_SOC_LOW_WARNING_THRESHOLD = 20.0
 
 HEALTH_STATUS_OK = 0
 HEALTH_STATUS_WARNING = 1

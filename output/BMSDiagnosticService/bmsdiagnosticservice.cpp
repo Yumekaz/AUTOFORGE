@@ -1,15 +1,14 @@
-#include <string>
-#include <vector>
 #include <cstdint>
-#include <functional>
-#include <iostream> // For basic logging, replace with actual logger in production
-#include <algorithm> // For std::clamp
-#include <cmath>     // For std::fabs, std::isnan, std::isinf
+#include <vector>
+#include <string>
+#include <memory>
+#include <algorithm>
+#include <iostream>
+#include <stdexcept> // For std::runtime_error, used sparingly for critical internal errors
+#include <cmath>     // For std::fabs
 
-// MISRA C++: Rule A.3.1.1: The global namespace shall not be polluted.
-// Use a dedicated namespace for the service.
-namespace bms_diagnostic_service
-{
+// MISRA C++ 2012 Rule 0-1-2: The value of an object with a non-trivial constructor or destructor shall not be used before it has been initialized.
+// All member variables are initialized in the constructor initializer list.
 
-// MISRA C++: Rule M.3.2.1: All declarations of an object or function shall use the same names and types for their parameters.
-// MISRA C++: Rule
+// MISRA C++ 2012 Rule 0-1-4: A pointer or reference shall not be used unless it has been initialized.
+// Smart pointers

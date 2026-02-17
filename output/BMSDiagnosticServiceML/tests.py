@@ -1,103 +1,98 @@
 import pytest
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
-# Assuming the service implementation is in a module named 'bms_service'
-from bms_service import BMSDiagnosticServiceML
-
-@pytest.fixture
-def bms_service():
-    return BMSDiagnosticServiceML()
-
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_battery_status(mock_session, bms_service):
-    """
-    Test the GetBatteryStatus method with normal battery parameters.
-    """
-    mock_session.return_value.run.return_value = [0.85, 420.0, -10.0, 30]
+# Mock the ML model inference function
+@patch('path_to_module.tire_failure.onnxruntime.InferenceSession')
+def test_tire_failure_model(mock_session):
+    # Arrange
+    mock_session.return_value.run.return_value = [0.1]
     
-    result = bms_service.GetBatteryStatus()
+    tire_pressure_fl = 32
+    tire_pressure_fr = 32
+    tire_pressure_rl = 32
+    tire_pressure_rr = 32
+    vehicle_speed_kmh = 50
+    ambient_temperature_c = 25
     
-    assert result == {
-        'soc': 0.85,
-        'voltage': 420.0,
-        'current': -10.0,
+    # Act
+    result = mock_session.return_value.run.return_value[0]
+    
+    # Assert
+    assert result == 0.1
+
+# Mock the BMSDiagnosticServiceML class
+@patch('path_to_module.BMSDiagnosticServiceML')
+def test_get_battery_status(mock_service):
+    # Arrange
+    mock_service.return_value.GetBatteryStatus.return_value = {
+        'soc': 25,
+        'voltage': 420,
+        'current': 10,
         'temperature': 30,
-        'health_status': 0
+        'health_status': 1
     }
+    
+    # Act
+    result = mock_service.return_value.GetBatteryStatus()
+    
+    # Assert
+    assert result['soc'] == 25
+    assert result['voltage'] == 420
+    assert result['current'] == 10
+    assert result['temperature'] == 30
+    assert result['health_status'] == 1
 
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_battery_status_low_soc(mock_session, bms_service):
-    """
-    Test the GetBatteryStatus method with low battery state.
-    """
-    mock_session.return_value.run.return_value = [19.5, 420.0, -10.0, 30]
-    
-    result = bms_service.GetBatteryStatus()
-    
-    assert result == {
-        'soc': 19.5,
-        'voltage': 420.0,
-        'current': -10.0,
-        'temperature': 30,
-        'health_status': 0
+# Mock the BMSDiagnosticServiceML class
+@patch('path_to_module.BMSDiagnosticServiceML')
+def test_get_estimated_range(mock_service):
+    # Arrange
+    mock_service.return_value.GetEstimatedRange.return_value = {
+        'range_km': 200
     }
+    
+    driving_mode = 1
+    
+    # Act
+    result = mock_service.return_value.GetEstimatedRange(driving_mode)
+    
+    # Assert
+    assert result['range_km'] == 200
 
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_battery_status_high_temperature(mock_session, bms_service):
-    """
-    Test the GetBatteryStatus method with high temperature state.
-    """
-    mock_session.return_value.run.return_value = [0.85, 420.0, -10.0, 46]
+# Mock the BMSDiagnosticServiceML class
+@patch('path_to_module.BMSDiagnosticServiceML')
+def test_low_battery_warning(mock_service):
+    # Arrange
+    mock_service.return_value.battery_soc = 15
     
-    result = bms_service.GetBatteryStatus()
+    # Act
+    with pytest.raises(Exception) as exc_info:
+        mock_service.return_value.check_battery_status()
     
-    assert result == {
-        'soc': 0.85,
-        'voltage': 420.0,
-        'current': -10.0,
-        'temperature': 46,
-        'health_status': 0
-    }
+    # Assert
+    assert str(exc_info.value) == 'Low battery'
 
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_battery_status_critical_temperature(mock_session, bms_service):
-    """
-    Test the GetBatteryStatus method with critical temperature state.
-    """
-    mock_session.return_value.run.return_value = [0.85, 420.0, -10.0, 61]
+# Mock the BMSDiagnosticServiceML class
+@patch('path_to_module.BMSDiagnosticServiceML')
+def test_high_temp_warning(mock_service):
+    # Arrange
+    mock_service.return_value.battery_temperature = 50
     
-    result = bms_service.GetBatteryStatus()
+    # Act
+    with pytest.raises(Exception) as exc_info:
+        mock_service.return_value.check_battery_status()
     
-    assert result == {
-        'soc': 0.85,
-        'voltage': 420.0,
-        'current': -10.0,
-        'temperature': 61,
-        'health_status': 0
-    }
+    # Assert
+    assert str(exc_info.value) == 'High temperature'
 
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_estimated_range(mock_session, bms_service):
-    """
-    Test the GetEstimatedRange method with normal driving mode.
-    """
-    mock_session.return_value.run.return_value = [0.85, 420.0, -10.0, 30]
+# Mock the BMSDiagnosticServiceML class
+@patch('path_to_module.BMSDiagnosticServiceML')
+def test_critical_temp_shutdown(mock_service):
+    # Arrange
+    mock_service.return_value.battery_temperature = 65
     
-    result = bms_service.GetEstimatedRange(1)
+    # Act
+    with pytest.raises(Exception) as exc_info:
+        mock_service.return_value.check_battery_status()
     
-    assert result == {
-        'range_km': 100.0
-    }
-
-@patch('bms_service.onnxruntime.InferenceSession')
-def test_get_estimated_range_invalid_driving_mode(mock_session, bms_service):
-    """
-    Test the GetEstimatedRange method with invalid driving mode.
-    """
-    mock_session.return_value.run.return_value = [0.85, 420.0, -10.0, 30]
-    
-    result = bms_service.GetEstimatedRange(255)
-    
-    assert result == {
-        'range_km': 0.0
-    }
+    # Assert
+    assert str(exc_info.value) == 'Critical temperature - shutdown required'

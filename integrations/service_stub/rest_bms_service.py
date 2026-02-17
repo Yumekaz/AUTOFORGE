@@ -11,6 +11,8 @@ This stub is deterministic and can run on a CPU-only machine.
 from __future__ import annotations
 
 import json
+import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Dict, Any
 
@@ -34,7 +36,44 @@ def _evaluate_bms(signals: Dict[str, Any]) -> Dict[str, Any]:
     return {"health_status": health_status, "warnings": warnings}
 
 
+_latest_lock = threading.Lock()
+_latest_payload: Dict[str, Any] = {
+    "timestamp_unix": 0.0,
+    "signals": {},
+    "response": {"health_status": 0, "warnings": []},
+}
+
+
+def _set_latest(signals: Dict[str, Any], response: Dict[str, Any]) -> None:
+    with _latest_lock:
+        _latest_payload["timestamp_unix"] = time.time()
+        _latest_payload["signals"] = signals
+        _latest_payload["response"] = response
+
+
+def _get_latest() -> Dict[str, Any]:
+    with _latest_lock:
+        return dict(_latest_payload)
+
+
 class BmsHandler(BaseHTTPRequestHandler):
+    def do_GET(self):  # noqa: N802
+        if self.path == "/health":
+            payload = {"status": "ok"}
+        elif self.path == "/bms/latest":
+            payload = _get_latest()
+        else:
+            self.send_response(404)
+            self.end_headers()
+            return
+
+        response_bytes = json.dumps(payload).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(response_bytes)))
+        self.end_headers()
+        self.wfile.write(response_bytes)
+
     def do_POST(self):  # noqa: N802
         if self.path != "/bms/diagnostics":
             self.send_response(404)
@@ -51,6 +90,7 @@ class BmsHandler(BaseHTTPRequestHandler):
             return
 
         response = _evaluate_bms(payload)
+        _set_latest(payload, response)
         response_bytes = json.dumps(response).encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", "application/json")

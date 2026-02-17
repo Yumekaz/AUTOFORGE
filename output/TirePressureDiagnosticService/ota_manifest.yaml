@@ -1,0 +1,62 @@
+ota_update:
+  manifest_version: 1.0.0
+  service:
+    name: TirePressureDiagnosticService
+    version: 1.0.0
+    timestamp: '2026-02-17T04:14:06.804408Z'
+  artifacts:
+  - type: binary
+    filename: tirepressurediagnosticservice.cpp
+    size_bytes: 2068
+    checksum:
+      algorithm: sha256
+      value: c4f72cdc75aaff4e3be8fd5448f2e1fae3ba941740faedffcb300f750ab63223
+    compression: gzip
+  - type: trace
+    filename: trace.yaml
+    size_bytes: 249
+    checksum:
+      algorithm: sha256
+      value: 79eca1c3a43f0db2df254f23076e02aa17a2bbfcce89211b0f4c7e7688c275be
+    compression: none
+  deployment:
+    vehicle_variants:
+    - ev
+    - hybrid
+    - ice
+    rollout_strategy: gradual
+    rollout_config:
+      target_percentage: 100
+      rollout_phases:
+      - phase: 1
+        percentage: 10
+        duration_hours: 24
+      - phase: 2
+        percentage: 50
+        duration_hours: 48
+      - phase: 3
+        percentage: 100
+        duration_hours: 72
+  subscription:
+    tier: standard
+    entitlements: []
+    channels:
+    - stable
+    vin_scope: all
+  dependencies:
+  - name: vsomeip
+    version: '>=3.4.0'
+    required: true
+  - name: onnxruntime
+    version: '>=1.16.0'
+    required: false
+  safety:
+    require_parking: true
+    require_battery_level: 30
+    rollback_enabled: true
+    validation_required: true
+  signature:
+    algorithm: RSA-SHA256
+    keyid: autoforge-release-key-2026
+    value: 7e637311bdfc2226c00b14cc2e8905fae524164a8cc91d37c069c3c5a5aad2ad
+    timestamp: '2026-02-17T04:14:06.812423Z'

@@ -1,0 +1,15 @@
+features:
+  battery_monitoring: true
+  fast_charging: true
+  range_estimation: true
+  regenerative_braking: true
+service_name: TirePressureDiagnosticService
+signals:
+- battery_soc
+- battery_voltage
+- battery_current
+- battery_temperature
+- motor_temperature
+- motor_torque
+variant: ev
+version: 1.0.0

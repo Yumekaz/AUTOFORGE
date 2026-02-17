@@ -2,51 +2,48 @@ import java.util.logging.Logger
 
 class BMSDiagnosticServiceKotlin {
     private val logger = Logger.getLogger(BMSDiagnosticServiceKotlin::class.java.name)
-    private var batterySOC: Float = 0.0f
-    private var batteryVoltage: Float = 0.0f
-    private var batteryCurrent: Float = 0.0f
-    private var batteryTemperature: Float = 0.0f
-    private var healthStatus: Byte = 1
 
-    fun GetBatteryStatus(): Map<String, Any> {
-        checkBatteryState()
-        return mapOf(
-            "soc" to batterySOC,
-            "voltage" to batteryVoltage,
-            "current" to batteryCurrent,
-            "temperature" to batteryTemperature,
-            "health_status" to healthStatus
-        )
+    fun GetBatteryStatus(): Triple<Float, Float, Float, Int, Byte> {
+        val (soc, voltage, current, temperature, healthStatus) = getBatteryData()
+        emitWarning(soc, voltage, current, temperature)
+        return Triple(soc, voltage, current, temperature, healthStatus)
     }
 
     fun GetCellVoltages(): List<Float> {
-        // Simulate cell voltages for demonstration purposes
-        return listOf(420.5f, 421.0f, 421.5f)
+        // Implement cell voltages retrieval logic here
+        return listOf(3.6f, 3.7f, 3.8f)
     }
 
-    fun GetEstimatedRange(drivingMode: Byte): Map<String, Any> {
-        // Simulate estimated range based on driving mode
-        val rangeKM = when (drivingMode) {
-            1 -> 150.0f
-            else -> 100.0f
-        }
-        return mapOf("range_km" to rangeKM)
+    fun GetEstimatedRange(drivingMode: Int): Float {
+        // Implement estimated range calculation logic here
+        return 150.0f
     }
 
-    private fun checkBatteryState() {
-        if (batterySOC < 20) {
-            emitWarning(0x0001, "Low battery")
+    private fun getBatteryData(): Triple<Float, Float, Float, Int, Byte> {
+        // Simulated battery data retrieval
+        val soc = 20.5f
+        val voltage = 12.6f
+        val current = -3.4f
+        val temperature = 25
+        val healthStatus = 1.toByte()
+        return Triple(soc, voltage, current, temperature, healthStatus)
+    }
+
+    private fun emitWarning(soc: Float, voltage: Float, current: Float, temperature: Int) {
+        if (soc < 20) {
+            logger.warning("Low battery")
         }
-        if (batteryTemperature > 45) {
-            emitWarning(0x0002, "High temperature")
+        if (temperature > 45) {
+            logger.warning("High temperature")
         }
-        if (batteryTemperature > 60) {
+        if (temperature > 60) {
             throw RuntimeException("Critical temperature - shutdown required")
         }
     }
 
-    private fun emitWarning(warningCode: Int, warningMessage: String) {
-        logger.warning("$warningCode: $warningMessage")
-        // Simulate emitting a warning event
+    companion object {
+        const val SERVICE_ID = 4097
+        const val INSTANCE_ID = 1
+        const val BATTERY_WARNING_EVENT_ID = 32769
     }
 }
