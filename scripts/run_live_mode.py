@@ -21,6 +21,7 @@ import os
 import subprocess
 import sys
 import time
+import shutil
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -62,7 +63,10 @@ def main() -> int:
     run([PY, "scripts/prepare_public_vehicle_data.py"], env=env)
 
     # 2) ML ONNX training
-    run([PY, "src/ml/train.py", "--csv", "input/vehicle_data.csv", "--output", "models/tire_failure.onnx"], env=env)
+    run([PY, "src/ml/train.py", "--csv", "input/vehicle_data.csv", "--output", "models/tire_failure_bar.onnx"], env=env)
+    # Backward-compatible publish path for existing consumers.
+    shutil.copyfile(ROOT / "models" / "tire_failure_bar.onnx", ROOT / "models" / "tire_failure.onnx")
+    print("[ML] Published compatibility model: models/tire_failure.onnx")
 
     # 3) SOME/IP config
     run(

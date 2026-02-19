@@ -1,9 +1,9 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260217035543",
+    "trace_id": "TRACE-20260218192930",
     "service_name": "BMSDiagnosticServiceML",
-    "timestamp_start": "2026-02-17T03:55:43.842046+00:00",
-    "timestamp_end": "2026-02-17T04:00:09.965567+00:00",
+    "timestamp_start": "2026-02-18T19:29:30.389817+00:00",
+    "timestamp_end": "2026-02-18T19:34:57.855838+00:00",
     "final_status": "ACCEPTED",
     "total_attempts": 1,
     "phases": [
@@ -11,9 +11,9 @@
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T03:55:43.842046+00:00",
-        "timestamp_end": "2026-02-17T03:55:43.851858+00:00",
-        "duration_ms": 9,
+        "timestamp_start": "2026-02-18T19:29:30.389817+00:00",
+        "timestamp_end": "2026-02-18T19:29:30.397687+00:00",
+        "duration_ms": 7,
         "details": {
           "requirement_path": "C:\\Users\\patha\\Desktop\\AUTOFORGE\\input\\requirements\\bms_diagnostic_with_ml.yaml",
           "service_name": "BMSDiagnosticServiceML"
@@ -23,20 +23,20 @@
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T03:55:43.851858+00:00",
-        "timestamp_end": "2026-02-17T03:57:42.364497+00:00",
-        "duration_ms": 118512,
+        "timestamp_start": "2026-02-18T19:29:30.397687+00:00",
+        "timestamp_end": "2026-02-18T19:32:05.919450+00:00",
+        "duration_ms": 155521,
         "details": {
-          "test_lines": 130
+          "test_lines": 192
         }
       },
       {
         "phase_id": 3,
         "phase_name": "CODE_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T03:57:42.364497+00:00",
-        "timestamp_end": "2026-02-17T03:59:13.049699+00:00",
-        "duration_ms": 90685,
+        "timestamp_start": "2026-02-18T19:32:05.919450+00:00",
+        "timestamp_end": "2026-02-18T19:33:43.884175+00:00",
+        "duration_ms": 97964,
         "details": {
           "language": "cpp",
           "code_lines": 99,
@@ -47,12 +47,12 @@
         "phase_id": 4,
         "phase_name": "VALIDATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T03:59:13.049699+00:00",
-        "timestamp_end": "2026-02-17T03:59:13.420305+00:00",
-        "duration_ms": 370,
+        "timestamp_start": "2026-02-18T19:33:43.884175+00:00",
+        "timestamp_end": "2026-02-18T19:33:43.982665+00:00",
+        "duration_ms": 98,
         "details": {
           "issues": [
-            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmp4wy2vea1\\implementation.cpp:1:10: fatal error: 'iostream' file not found\n    1 | #include <iostream>\n      |          ^~~~~~~~~~\n1 error generated.\n"
+            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmpijaa8n_6\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated.\n"
           ],
           "misra": {
             "clang_tidy": "PASS"
@@ -60,25 +60,26 @@
           "asil_d": {
             "status": "WARN",
             "issues": [
+              "ASIL-D Bounds: no bounds-checking signals detected",
               "ASIL-D Static Analyzer: issues detected by clang --analyze"
             ],
             "static_analyzer": {
               "status": "FAIL",
-              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmp4wy2vea1\\implementation.cpp:1:10: fatal error: 'iostream' file not found\n    1 | #include <iostream>\n      |          ^~~~~~~~~~\n1 error generated."
+              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmpijaa8n_6\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated."
             },
             "heuristic_checks": {
               "unsafe_api": [],
               "non_determinism": [],
               "unbounded_loops": [],
               "defensive_programming": true,
-              "bounds_checks": true
+              "bounds_checks": false
             },
             "evidence": {
               "memory_safety": "PASS",
               "determinism": "PASS",
               "timing": "PASS",
               "defensive_programming": "PASS",
-              "bounds_checks": "PASS"
+              "bounds_checks": "FAIL"
             }
           },
           "static_analysis": {
@@ -92,9 +93,9 @@
         "phase_id": 5,
         "phase_name": "PACKAGING",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T03:59:13.420305+00:00",
-        "timestamp_end": "2026-02-17T04:00:09.965567+00:00",
-        "duration_ms": 56545,
+        "timestamp_start": "2026-02-18T19:33:43.982665+00:00",
+        "timestamp_end": "2026-02-18T19:34:57.855838+00:00",
+        "duration_ms": 73873,
         "details": {}
       }
     ],

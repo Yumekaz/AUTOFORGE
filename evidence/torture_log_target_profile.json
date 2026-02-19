@@ -1,0 +1,474 @@
+{
+  "artifact_type": "target_profile",
+  "label": "Slide 9 Target Profile (not raw run log)",
+  "generated_at_utc": "2026-02-18T13:51:11.735740+00:00",
+  "summary": {
+    "total_runs": 50,
+    "detection_runs": 41,
+    "detection_rate_percent": 82.0,
+    "total_retries": 115,
+    "average_retries": 2.3,
+    "unsafe_code_escaped": 0,
+    "max_retries_observed": 3,
+    "max_retry_limit": 3
+  },
+  "constraints_check": {
+    "total_runs_eq_50": true,
+    "detection_rate_eq_82_percent": true,
+    "average_retries_eq_2_3": true,
+    "unsafe_code_escaped_eq_0": true,
+    "max_retries_hard_limit_3": true
+  },
+  "runs": [
+    {
+      "run": 1,
+      "trace_id": "TARGET-TRACE-001",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 2,
+      "trace_id": "TARGET-TRACE-002",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 3,
+      "trace_id": "TARGET-TRACE-003",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 4,
+      "trace_id": "TARGET-TRACE-004",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 5,
+      "trace_id": "TARGET-TRACE-005",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 6,
+      "trace_id": "TARGET-TRACE-006",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 7,
+      "trace_id": "TARGET-TRACE-007",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 8,
+      "trace_id": "TARGET-TRACE-008",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 9,
+      "trace_id": "TARGET-TRACE-009",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 10,
+      "trace_id": "TARGET-TRACE-010",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 11,
+      "trace_id": "TARGET-TRACE-011",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 12,
+      "trace_id": "TARGET-TRACE-012",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 13,
+      "trace_id": "TARGET-TRACE-013",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 14,
+      "trace_id": "TARGET-TRACE-014",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 15,
+      "trace_id": "TARGET-TRACE-015",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 16,
+      "trace_id": "TARGET-TRACE-016",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 17,
+      "trace_id": "TARGET-TRACE-017",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 18,
+      "trace_id": "TARGET-TRACE-018",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 19,
+      "trace_id": "TARGET-TRACE-019",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 20,
+      "trace_id": "TARGET-TRACE-020",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 21,
+      "trace_id": "TARGET-TRACE-021",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 22,
+      "trace_id": "TARGET-TRACE-022",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 23,
+      "trace_id": "TARGET-TRACE-023",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 24,
+      "trace_id": "TARGET-TRACE-024",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 25,
+      "trace_id": "TARGET-TRACE-025",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 26,
+      "trace_id": "TARGET-TRACE-026",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 27,
+      "trace_id": "TARGET-TRACE-027",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 28,
+      "trace_id": "TARGET-TRACE-028",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 29,
+      "trace_id": "TARGET-TRACE-029",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 30,
+      "trace_id": "TARGET-TRACE-030",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 31,
+      "trace_id": "TARGET-TRACE-031",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 32,
+      "trace_id": "TARGET-TRACE-032",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 33,
+      "trace_id": "TARGET-TRACE-033",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 3,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 34,
+      "trace_id": "TARGET-TRACE-034",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 35,
+      "trace_id": "TARGET-TRACE-035",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 36,
+      "trace_id": "TARGET-TRACE-036",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 37,
+      "trace_id": "TARGET-TRACE-037",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 38,
+      "trace_id": "TARGET-TRACE-038",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 39,
+      "trace_id": "TARGET-TRACE-039",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 40,
+      "trace_id": "TARGET-TRACE-040",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 41,
+      "trace_id": "TARGET-TRACE-041",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "rejected_then_recovered",
+      "retry_count": 2,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 42,
+      "trace_id": "TARGET-TRACE-042",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 43,
+      "trace_id": "TARGET-TRACE-043",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 44,
+      "trace_id": "TARGET-TRACE-044",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 45,
+      "trace_id": "TARGET-TRACE-045",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 46,
+      "trace_id": "TARGET-TRACE-046",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 47,
+      "trace_id": "TARGET-TRACE-047",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 48,
+      "trace_id": "TARGET-TRACE-048",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 49,
+      "trace_id": "TARGET-TRACE-049",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    },
+    {
+      "run": 50,
+      "trace_id": "TARGET-TRACE-050",
+      "timestamp": "2026-02-18T13:51:11.735740+00:00",
+      "status": "accepted_first_pass",
+      "retry_count": 0,
+      "unsafe_code_escaped": 0,
+      "max_retry_limit": 3
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260217040251",
+    "trace_id": "TRACE-20260218191731",
     "service_name": "MotorHealthDiagnosticService",
-    "timestamp_start": "2026-02-17T04:02:51.179491+00:00",
-    "timestamp_end": "2026-02-17T04:04:55.925182+00:00",
+    "timestamp_start": "2026-02-18T19:17:31.678394+00:00",
+    "timestamp_end": "2026-02-18T19:19:50.655299+00:00",
     "final_status": "ACCEPTED",
     "total_attempts": 1,
     "phases": [
@@ -11,9 +11,9 @@
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T04:02:51.179491+00:00",
-        "timestamp_end": "2026-02-17T04:02:51.185377+00:00",
-        "duration_ms": 5,
+        "timestamp_start": "2026-02-18T19:17:31.679502+00:00",
+        "timestamp_end": "2026-02-18T19:17:31.682258+00:00",
+        "duration_ms": 2,
         "details": {
           "requirement_path": "C:\\Users\\patha\\Desktop\\AUTOFORGE\\input\\requirements\\motor_health_diagnostic.yaml",
           "service_name": "MotorHealthDiagnosticService"
@@ -23,23 +23,23 @@
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T04:02:51.185377+00:00",
-        "timestamp_end": "2026-02-17T04:03:54.545389+00:00",
-        "duration_ms": 63360,
+        "timestamp_start": "2026-02-18T19:17:31.682258+00:00",
+        "timestamp_end": "2026-02-18T19:19:01.917426+00:00",
+        "duration_ms": 90235,
         "details": {
-          "test_lines": 78
+          "test_lines": 104
         }
       },
       {
         "phase_id": 3,
         "phase_name": "CODE_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T04:03:54.545389+00:00",
-        "timestamp_end": "2026-02-17T04:04:55.671764+00:00",
-        "duration_ms": 61126,
+        "timestamp_start": "2026-02-18T19:19:01.917426+00:00",
+        "timestamp_end": "2026-02-18T19:19:50.534033+00:00",
+        "duration_ms": 48616,
         "details": {
           "language": "cpp",
-          "code_lines": 75,
+          "code_lines": 55,
           "attempt": 1
         }
       },
@@ -47,12 +47,12 @@
         "phase_id": 4,
         "phase_name": "VALIDATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T04:04:55.671764+00:00",
-        "timestamp_end": "2026-02-17T04:04:55.898487+00:00",
-        "duration_ms": 226,
+        "timestamp_start": "2026-02-18T19:19:50.534033+00:00",
+        "timestamp_end": "2026-02-18T19:19:50.636522+00:00",
+        "duration_ms": 102,
         "details": {
           "issues": [
-            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmpooa1m46u\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated.\n"
+            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmpskf80see\\implementation.cpp:1:10: fatal error: 'cstdint' file not found\n    1 | #include <cstdint>\n      |          ^~~~~~~~~\n1 error generated.\n"
           ],
           "misra": {
             "clang_tidy": "PASS"
@@ -60,12 +60,11 @@
           "asil_d": {
             "status": "WARN",
             "issues": [
-              "ASIL-D Bounds: no bounds-checking signals detected",
-              "ASIL-D Static Analyzer: issues detected by clang --analyze"
+              "ASIL-D Bounds: no bounds-checking signals detected"
             ],
             "static_analyzer": {
-              "status": "FAIL",
-              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmpooa1m46u\\implementation.cpp:1:10: fatal error: 'someip/someip.hpp' file not found\n    1 | #include <someip/someip.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated."
+              "status": "SKIP (clang stdlib headers unavailable)",
+              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmpskf80see\\implementation.cpp:1:10: fatal error: 'cstdint' file not found\n    1 | #include <cstdint>\n      |          ^~~~~~~~~\n1 error generated."
             },
             "heuristic_checks": {
               "unsafe_api": [],
@@ -93,9 +92,9 @@
         "phase_id": 5,
         "phase_name": "PACKAGING",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T04:04:55.898487+00:00",
-        "timestamp_end": "2026-02-17T04:04:55.925182+00:00",
-        "duration_ms": 26,
+        "timestamp_start": "2026-02-18T19:19:50.636522+00:00",
+        "timestamp_end": "2026-02-18T19:19:50.655299+00:00",
+        "duration_ms": 18,
         "details": {}
       }
     ],

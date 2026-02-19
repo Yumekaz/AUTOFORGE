@@ -1,66 +1,75 @@
-#include <someip/someip.hpp>
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <stdexcept>
 
 class TirePressureDiagnosticService {
 public:
-    TirePressureDiagnosticService() : service_(std::make_shared<someip::service>(4353, 1)) {
-        service_->register_event(33025);
-        service_->register_method(1);
+    struct TireStatus {
+        float tire_pressure_fl;
+        float tire_pressure_fr;
+        float tire_pressure_rl;
+        float tire_pressure_rr;
+        float failure_risk;
+    };
+
+    struct WarningEvent {
+        uint16_t warning_code;
+        std::string warning_message;
+    };
+
+    TirePressureDiagnosticService() : tire_pressure_fl(0.0), tire_pressure_fr(0.0), tire_pressure_rl(0.0), tire_pressure_rr(0.0) {}
+
+    void setTirePressures(float fl, float fr, float rl, float rr) {
+        tire_pressure_fl = fl;
+        tire_pressure_fr = fr;
+        tire_pressure_rl = rl;
+        tire_pressure_rr = rr;
     }
 
-    void start() {
-        service_->start();
+    TireStatus GetTireStatus() const {
+        TireStatus status;
+        status.tire_pressure_fl = tire_pressure_fl;
+        status.tire_pressure_fr = tire_pressure_fr;
+        status.tire_pressure_rl = tire_pressure_rl;
+        status.tire_pressure_rr = tire_pressure_rr;
+        status.failure_risk = calculateFailureRisk();
+        return status;
     }
 
-    void stop() {
-        service_->stop();
-    }
-
-    void handle_request(const someip::message& request) {
-        if (request.get_function_id() == 1) {
-            handle_get_tire_status(request);
+    WarningEvent emitTireWarning() const {
+        if (tire_pressure_fl < 2.0 || tire_pressure_fr < 2.0 || tire_pressure_rl < 2.0 || tire_pressure_rr < 2.0) {
+            return {0x0101, "Low tire pressure"};
+        } else if (std::abs(tire_pressure_fl - tire_pressure_fr) > 0.4 || std::abs(tire_pressure_rl - tire_pressure_rr) > 0.4) {
+            return {0x0102, "Tire pressure imbalance"};
         }
+        return {};
     }
 
 private:
-    std::shared_ptr<someip::service> service_;
-    float tire_pressure_fl_ = 0.0;
-    float tire_pressure_fr_ = 0.0;
-    float tire_pressure_rl_ = 0.0;
-    float tire_pressure_rr_ = 0.0;
-
-    void handle_get_tire_status(const someip::message& request) {
-        someip::request response = service_->create_response(request);
-        if (tire_pressure_fl_ < 2.0 || tire_pressure_fr_ < 2.0 || tire_pressure_rl_ < 2.0 || tire_pressure_rr_ < 2.0) {
-            emit_warning(0x0101, "Low tire pressure");
-        }
-        if (std::abs(tire_pressure_fl_ - tire_pressure_fr_) > 0.4 || std::abs(tire_pressure_rl_ - tire_pressure_rr_) > 0.4) {
-            emit_warning(0x0102, "Tire pressure imbalance");
-        }
-        response.set_payload({tire_pressure_fl_, tire_pressure_fr_, tire_pressure_rl_, tire_pressure_rr_, calculate_failure_risk()});
-        service_->send(response);
-    }
-
-    void emit_warning(uint16_t code, const std::string& msg) {
-        std::cout << "Warning: " << code << " - " << msg << std::endl;
-    }
-
-    float calculate_failure_risk() {
+    float calculateFailureRisk() const {
         // Placeholder for failure risk calculation
         return 0.0;
     }
+
+    float tire_pressure_fl;
+    float tire_pressure_fr;
+    float tire_pressure_rl;
+    float tire_pressure_rr;
 };
 
 int main() {
     TirePressureDiagnosticService service;
-    service.start();
-    // Simulate SOME/IP request handling
-    someip::message request;
-    request.set_function_id(1);
-    service.handle_request(request);
-    service.stop();
+    service.setTirePressures(3.0, 3.5, 2.8, 2.9);
+    auto status = service.GetTireStatus();
+    std::cout << "Tire Pressure FL: " << status.tire_pressure_fl << std::endl;
+    std::cout << "Tire Pressure FR: " << status.tire_pressure_fr << std::endl;
+    std::cout << "Tire Pressure RL: " << status.tire_pressure_rl << std::endl;
+    std::cout << "Tire Pressure RR: " << status.tire_pressure_rr << std::endl;
+
+    auto warning = service.emitTireWarning();
+    if (warning.warning_code != 0) {
+        std::cout << "Warning Code: " << warning.warning_code << ", Message: " << warning.warning_message << std::endl;
+    }
+
     return 0;
 }

@@ -177,7 +177,7 @@ python src/codegen/protocol_adapter.py --requirement input/requirements/bms_diag
 ### ML train + ONNX export
 
 ```powershell
-python src/ml/train.py --csv input/vehicle_data.csv --output models/tire_failure.onnx
+python src/ml/train.py --csv input/vehicle_data.csv --output models/tire_failure_bar.onnx
 ```
 
 ### Strict compliance proof

@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "runs_per_provider": 5,
+    "providers": [
+      "gemini"
+    ],
+    "requirement": "input\\requirements\\bms_diagnostic.yaml",
+    "effective_requirement": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmp1vom2jog.yaml",
+    "language": "python",
+    "dry_run": false
+  },
+  "note": "",
+  "results": {
+    "gemini": [
+      {
+        "provider": "gemini",
+        "run": 1,
+        "success": false,
+        "retry_count": 3,
+        "latency_ms": 77897,
+        "misra_pass": false,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 2,
+        "success": false,
+        "retry_count": 3,
+        "latency_ms": 76250,
+        "misra_pass": false,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 3,
+        "success": false,
+        "retry_count": 3,
+        "latency_ms": 39674,
+        "misra_pass": false,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 4,
+        "success": false,
+        "retry_count": 3,
+        "latency_ms": 41600,
+        "misra_pass": false,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 5,
+        "success": false,
+        "retry_count": 0,
+        "latency_ms": 526,
+        "misra_pass": false,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 0
+      }
+    ]
+  },
+  "summary": {
+    "gemini": {
+      "runs": 5,
+      "success_rate": 0.0,
+      "avg_latency_ms": 47189.4,
+      "avg_retries": 2.4,
+      "misra_pass_rate": 0.0,
+      "asil_pass_rate": 0.0,
+      "compilation_pass_rate": 0.0
+    }
+  }
+}
