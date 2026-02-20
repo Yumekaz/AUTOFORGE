@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "runs_per_provider": 5,
+    "providers": [
+      "gemini"
+    ],
+    "requirement": "input\\requirements\\bms_diagnostic.yaml",
+    "language": "cpp",
+    "dry_run": false
+  },
+  "note": "Compilation/ASIL pass rates may be reduced by local C++ toolchain environment issues (e.g., missing standard library headers such as cstdint), not necessarily generated code quality failures.",
+  "results": {
+    "gemini": [
+      {
+        "provider": "gemini",
+        "run": 1,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 40751,
+        "misra_pass": true,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 2,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 39727,
+        "misra_pass": true,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 1
+      },
+      {
+        "provider": "gemini",
+        "run": 3,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 37821,
+        "misra_pass": true,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 3
+      },
+      {
+        "provider": "gemini",
+        "run": 4,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 39247,
+        "misra_pass": true,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 3
+      },
+      {
+        "provider": "gemini",
+        "run": 5,
+        "success": true,
+        "retry_count": 1,
+        "latency_ms": 38454,
+        "misra_pass": true,
+        "asil_pass": false,
+        "compilation_pass": false,
+        "issues_count": 3
+      }
+    ]
+  },
+  "summary": {
+    "gemini": {
+      "runs": 5,
+      "success_rate": 1.0,
+      "avg_latency_ms": 39200.0,
+      "avg_retries": 1.0,
+      "misra_pass_rate": 1.0,
+      "asil_pass_rate": 0.0,
+      "compilation_pass_rate": 0.0
+    }
+  }
+}

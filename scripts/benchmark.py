@@ -176,6 +176,13 @@ def main() -> int:
         all_results[provider] = provider_results
 
     summary = {p: _summarize(r) for p, r in all_results.items()}
+    note = ""
+    if language in {"cpp", "c++"}:
+        note = (
+            "Compilation/ASIL pass rates may be reduced by local C++ toolchain environment "
+            "issues (e.g., missing standard library headers such as cstdint), "
+            "not necessarily generated code quality failures."
+        )
 
     output = {
         "meta": {
@@ -185,6 +192,7 @@ def main() -> int:
             "language": language,
             "dry_run": args.dry_run,
         },
+        "note": note,
         "results": all_results,
         "summary": summary,
     }

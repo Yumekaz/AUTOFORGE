@@ -1,0 +1,9 @@
+{
+  "model": "models\\tire_failure.onnx",
+  "input_csv": "input\\vehicle_data_carla.csv",
+  "samples": 200,
+  "pred_min": 0.9653666019439697,
+  "pred_max": 0.9653666019439697,
+  "pred_mean": 0.9653664231300354,
+  "output_csv": "output\\ml\\carla_inference_predictions.csv"
+}

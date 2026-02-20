@@ -21,7 +21,7 @@ class ONNXWrapperGenerator:
 
     def generate(self, requirement: Dict[str, Any]) -> str:
         ml = requirement.get("ml", {})
-        model_name = ml.get("model_name", "model.onnx")
+        model_name = ml.get("model_name", "tire_failure_bar.onnx")
         model_path = ml.get("model_path", f"models/{model_name}")
         inputs = ml.get("inputs", [])
         outputs = ml.get("outputs", [])

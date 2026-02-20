@@ -1,0 +1,628 @@
+{
+  "meta": {
+    "generated_at_utc": "2026-02-18T19:37:59.926378+00:00",
+    "provider": "ollama",
+    "runs": 50,
+    "seed": 42,
+    "requirements": [
+      "input/requirements/bms_diagnostic.yaml",
+      "input/requirements/tire_pressure_diagnostic.yaml",
+      "input/requirements/motor_health_diagnostic.yaml",
+      "input/requirements/bms_diagnostic_with_ml.yaml"
+    ],
+    "total_wall_time_sec": 11387.851
+  },
+  "summary": {
+    "success_count": 39,
+    "fail_count": 11,
+    "success_rate_percent": 78.0,
+    "avg_duration_sec": 227.757,
+    "avg_retry_count": 0.84
+  },
+  "by_requirement": {
+    "input/requirements/bms_diagnostic.yaml": {
+      "runs": 13,
+      "success_rate_percent": 76.92,
+      "avg_duration_sec": 266.374,
+      "avg_retry_count": 0.923
+    },
+    "input/requirements/tire_pressure_diagnostic.yaml": {
+      "runs": 13,
+      "success_rate_percent": 69.23,
+      "avg_duration_sec": 196.638,
+      "avg_retry_count": 0.692
+    },
+    "input/requirements/motor_health_diagnostic.yaml": {
+      "runs": 12,
+      "success_rate_percent": 83.33,
+      "avg_duration_sec": 165.182,
+      "avg_retry_count": 0.833
+    },
+    "input/requirements/bms_diagnostic_with_ml.yaml": {
+      "runs": 12,
+      "success_rate_percent": 83.33,
+      "avg_duration_sec": 282.208,
+      "avg_retry_count": 0.917
+    }
+  },
+  "runs": [
+    {
+      "run_index": 1,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.13,
+      "trace_id": "TRACE-20260218215812",
+      "timestamp": "2026-02-18T21:58:12.074897",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 2,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 2,
+      "duration_sec": 616.085,
+      "trace_id": "TRACE-20260218220114",
+      "timestamp": "2026-02-18T22:01:14.206475",
+      "errors": [
+        "Attempt 1 error: timed out"
+      ]
+    },
+    {
+      "run_index": 3,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.041,
+      "trace_id": "TRACE-20260218221130",
+      "timestamp": "2026-02-18T22:11:30.291631",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 4,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.066,
+      "trace_id": "TRACE-20260218221432",
+      "timestamp": "2026-02-18T22:14:32.332826",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 5,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.04,
+      "trace_id": "TRACE-20260218221734",
+      "timestamp": "2026-02-18T22:17:34.400151",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 6,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 312.945,
+      "trace_id": "TRACE-20260218222036",
+      "timestamp": "2026-02-18T22:20:36.441028",
+      "errors": []
+    },
+    {
+      "run_index": 7,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 121.961,
+      "trace_id": "TRACE-20260218222549",
+      "timestamp": "2026-02-18T22:25:49.386450",
+      "errors": []
+    },
+    {
+      "run_index": 8,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 132.51,
+      "trace_id": "TRACE-20260218222751",
+      "timestamp": "2026-02-18T22:27:51.347824",
+      "errors": []
+    },
+    {
+      "run_index": 9,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 184.027,
+      "trace_id": "TRACE-20260218223003",
+      "timestamp": "2026-02-18T22:30:03.857347",
+      "errors": []
+    },
+    {
+      "run_index": 10,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.081,
+      "trace_id": "TRACE-20260218223307",
+      "timestamp": "2026-02-18T22:33:07.884950",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 11,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 314.814,
+      "trace_id": "TRACE-20260218223609",
+      "timestamp": "2026-02-18T22:36:09.965456",
+      "errors": []
+    },
+    {
+      "run_index": 12,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 164.589,
+      "trace_id": "TRACE-20260218224124",
+      "timestamp": "2026-02-18T22:41:24.782076",
+      "errors": []
+    },
+    {
+      "run_index": 13,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 2,
+      "duration_sec": 477.465,
+      "trace_id": "TRACE-20260218224409",
+      "timestamp": "2026-02-18T22:44:09.368163",
+      "errors": [
+        "Attempt 1 error: timed out"
+      ]
+    },
+    {
+      "run_index": 14,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 250.269,
+      "trace_id": "TRACE-20260218225206",
+      "timestamp": "2026-02-18T22:52:06.833164",
+      "errors": []
+    },
+    {
+      "run_index": 15,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 249.171,
+      "trace_id": "TRACE-20260218225617",
+      "timestamp": "2026-02-18T22:56:17.105476",
+      "errors": []
+    },
+    {
+      "run_index": 16,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 188.018,
+      "trace_id": "TRACE-20260218230026",
+      "timestamp": "2026-02-18T23:00:26.275978",
+      "errors": []
+    },
+    {
+      "run_index": 17,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 178.131,
+      "trace_id": "TRACE-20260218230334",
+      "timestamp": "2026-02-18T23:03:34.293780",
+      "errors": []
+    },
+    {
+      "run_index": 18,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 258.459,
+      "trace_id": "TRACE-20260218230632",
+      "timestamp": "2026-02-18T23:06:32.424367",
+      "errors": []
+    },
+    {
+      "run_index": 19,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 254.393,
+      "trace_id": "TRACE-20260218231050",
+      "timestamp": "2026-02-18T23:10:50.883363",
+      "errors": []
+    },
+    {
+      "run_index": 20,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 239.101,
+      "trace_id": "TRACE-20260218231505",
+      "timestamp": "2026-02-18T23:15:05.276585",
+      "errors": []
+    },
+    {
+      "run_index": 21,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 312.707,
+      "trace_id": "TRACE-20260218231904",
+      "timestamp": "2026-02-18T23:19:04.377657",
+      "errors": []
+    },
+    {
+      "run_index": 22,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.051,
+      "trace_id": "TRACE-20260218232417",
+      "timestamp": "2026-02-18T23:24:17.084379",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 23,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 238.338,
+      "trace_id": "TRACE-20260218232719",
+      "timestamp": "2026-02-18T23:27:19.135074",
+      "errors": []
+    },
+    {
+      "run_index": 24,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 2,
+      "duration_sec": 487.689,
+      "trace_id": "TRACE-20260218233117",
+      "timestamp": "2026-02-18T23:31:17.472726",
+      "errors": [
+        "Attempt 1 error: timed out"
+      ]
+    },
+    {
+      "run_index": 25,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 161.215,
+      "trace_id": "TRACE-20260218233925",
+      "timestamp": "2026-02-18T23:39:25.161719",
+      "errors": []
+    },
+    {
+      "run_index": 26,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 128.618,
+      "trace_id": "TRACE-20260218234206",
+      "timestamp": "2026-02-18T23:42:06.377431",
+      "errors": []
+    },
+    {
+      "run_index": 27,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 229.878,
+      "trace_id": "TRACE-20260218234414",
+      "timestamp": "2026-02-18T23:44:14.994947",
+      "errors": []
+    },
+    {
+      "run_index": 28,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 263.604,
+      "trace_id": "TRACE-20260218234804",
+      "timestamp": "2026-02-18T23:48:04.873300",
+      "errors": []
+    },
+    {
+      "run_index": 29,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 161.964,
+      "trace_id": "TRACE-20260218235228",
+      "timestamp": "2026-02-18T23:52:28.478180",
+      "errors": []
+    },
+    {
+      "run_index": 30,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 190.438,
+      "trace_id": "TRACE-20260218235510",
+      "timestamp": "2026-02-18T23:55:10.441780",
+      "errors": []
+    },
+    {
+      "run_index": 31,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 200.922,
+      "trace_id": "TRACE-20260218235820",
+      "timestamp": "2026-02-18T23:58:20.880103",
+      "errors": []
+    },
+    {
+      "run_index": 32,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 186.317,
+      "trace_id": "TRACE-20260219000141",
+      "timestamp": "2026-02-19T00:01:41.802201",
+      "errors": []
+    },
+    {
+      "run_index": 33,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 278.316,
+      "trace_id": "TRACE-20260219000448",
+      "timestamp": "2026-02-19T00:04:48.119036",
+      "errors": []
+    },
+    {
+      "run_index": 34,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 241.172,
+      "trace_id": "TRACE-20260219000926",
+      "timestamp": "2026-02-19T00:09:26.436558",
+      "errors": []
+    },
+    {
+      "run_index": 35,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 280.09,
+      "trace_id": "TRACE-20260219001327",
+      "timestamp": "2026-02-19T00:13:27.608887",
+      "errors": []
+    },
+    {
+      "run_index": 36,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 170.339,
+      "trace_id": "TRACE-20260219001807",
+      "timestamp": "2026-02-19T00:18:07.698518",
+      "errors": []
+    },
+    {
+      "run_index": 37,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 225.005,
+      "trace_id": "TRACE-20260219002058",
+      "timestamp": "2026-02-19T00:20:58.037385",
+      "errors": []
+    },
+    {
+      "run_index": 38,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.059,
+      "trace_id": "TRACE-20260219002443",
+      "timestamp": "2026-02-19T00:24:43.042239",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 39,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 256.866,
+      "trace_id": "TRACE-20260219002745",
+      "timestamp": "2026-02-19T00:27:45.102186",
+      "errors": []
+    },
+    {
+      "run_index": 40,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.09,
+      "trace_id": "TRACE-20260219003201",
+      "timestamp": "2026-02-19T00:32:01.968320",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 41,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 183.901,
+      "trace_id": "TRACE-20260219003504",
+      "timestamp": "2026-02-19T00:35:04.058470",
+      "errors": []
+    },
+    {
+      "run_index": 42,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 137.195,
+      "trace_id": "TRACE-20260219003807",
+      "timestamp": "2026-02-19T00:38:07.959080",
+      "errors": []
+    },
+    {
+      "run_index": 43,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 171.851,
+      "trace_id": "TRACE-20260219004025",
+      "timestamp": "2026-02-19T00:40:25.154393",
+      "errors": []
+    },
+    {
+      "run_index": 44,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 254.672,
+      "trace_id": "TRACE-20260219004317",
+      "timestamp": "2026-02-19T00:43:17.006268",
+      "errors": []
+    },
+    {
+      "run_index": 45,
+      "requirement": "input/requirements/motor_health_diagnostic.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 138.977,
+      "trace_id": "TRACE-20260219004731",
+      "timestamp": "2026-02-19T00:47:31.678394",
+      "errors": []
+    },
+    {
+      "run_index": 46,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 215.607,
+      "trace_id": "TRACE-20260219004950",
+      "timestamp": "2026-02-19T00:49:50.656586",
+      "errors": []
+    },
+    {
+      "run_index": 47,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.059,
+      "trace_id": "TRACE-20260219005326",
+      "timestamp": "2026-02-19T00:53:26.263670",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 48,
+      "requirement": "input/requirements/tire_pressure_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.066,
+      "trace_id": "TRACE-20260219005628",
+      "timestamp": "2026-02-19T00:56:28.322538",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    },
+    {
+      "run_index": 49,
+      "requirement": "input/requirements/bms_diagnostic_with_ml.yaml",
+      "provider": "ollama",
+      "success": true,
+      "retry_count": 1,
+      "duration_sec": 327.466,
+      "trace_id": "TRACE-20260219005930",
+      "timestamp": "2026-02-19T00:59:30.389817",
+      "errors": []
+    },
+    {
+      "run_index": 50,
+      "requirement": "input/requirements/bms_diagnostic.yaml",
+      "provider": "ollama",
+      "success": false,
+      "retry_count": 0,
+      "duration_sec": 182.07,
+      "trace_id": "TRACE-20260219010457",
+      "timestamp": "2026-02-19T01:04:57.855838",
+      "errors": [
+        "Test generation error: timed out"
+      ]
+    }
+  ]
+}

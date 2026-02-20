@@ -55,6 +55,10 @@ class CARLABridge:
         spawn_point = spawn_points[0] if spawn_points else carla.Transform()
 
         self.vehicle = self.world.spawn_actor(vehicle_bp, spawn_point)
+        try:
+            self.vehicle.set_autopilot(True)
+        except Exception:
+            pass
         print(f"[CARLA] Vehicle spawned: {self.vehicle.type_id}")
 
         self._attach_sensors()

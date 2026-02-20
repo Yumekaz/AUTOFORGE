@@ -62,8 +62,8 @@ service:
       action: "emit BatteryWarning(code=0x0003, msg='Critical temperature - shutdown required')"
 
 ml:
-  model_name: tire_failure.onnx
-  model_path: models/tire_failure.onnx
+  model_name: tire_failure_bar.onnx
+  model_path: models/tire_failure_bar.onnx
   inputs:
     - tire_pressure_fl
     - tire_pressure_fr

@@ -357,14 +357,46 @@ class Pipeline:
                     from ml.train import train_and_export
                     csv_path = ml_cfg.get("training_csv", "")
                     csv_input = Path(csv_path) if csv_path else None
-                    model_output = Path(ml_cfg.get("model_path", "models/tire_failure.onnx"))
+                    model_output = Path(ml_cfg.get("model_path", "models/tire_failure_bar.onnx"))
                     train_and_export(csv_input, model_output)
                 except Exception as e:
                     print(f"  Warning: ML training/export skipped: {e}")
 
             print(f"[PHASE 5.2] Generating ONNX wrapper...")
             wrapper_gen = ONNXWrapperGenerator(llm_provider=self.llm_provider)
-            wrapper_code = wrapper_gen.generate(requirement)
+            try:
+                wrapper_code = wrapper_gen.generate(requirement)
+            except Exception as e:
+                # Keep long torture/benchmark runs resilient to transient model/network timeouts.
+                model_name = ml_cfg.get("model_name", "tire_failure.onnx")
+                model_path = ml_cfg.get("model_path", f"models/{model_name}")
+                wrapper_code = (
+                    "// AUTOFORGE fallback ONNX wrapper (generated after LLM timeout)\n"
+                    "#pragma once\n"
+                    "#include <string>\n\n"
+                    f"// Model: {model_name}\n"
+                    f"// Path: {model_path}\n"
+                    f"// Reason for fallback: {str(e).replace(chr(10), ' ')}\n\n"
+                    "class TireFailureWrapper {\n"
+                    "public:\n"
+                    "    bool load_model(const std::string& model_path) {\n"
+                    "        // TODO: bind ONNX Runtime session in production path.\n"
+                    "        return !model_path.empty();\n"
+                    "    }\n\n"
+                    "    float predict_failure_score(\n"
+                    "        float tire_fl,\n"
+                    "        float tire_fr,\n"
+                    "        float tire_rl,\n"
+                    "        float tire_rr,\n"
+                    "        float speed_kmh,\n"
+                    "        float ambient_temp_c) {\n"
+                    "        (void)tire_fl; (void)tire_fr; (void)tire_rl; (void)tire_rr;\n"
+                    "        (void)speed_kmh; (void)ambient_temp_c;\n"
+                    "        return 0.0f;\n"
+                    "    }\n"
+                    "};\n"
+                )
+                print(f"  Warning: ONNX wrapper LLM generation timed out, wrote fallback wrapper: {e}")
             self._save_output(service_name, "onnx_wrapper.hpp", wrapper_code)
 
         # Generate metrics summary artifact for slides

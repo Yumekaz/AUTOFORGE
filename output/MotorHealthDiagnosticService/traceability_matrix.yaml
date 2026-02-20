@@ -6,9 +6,11 @@
   - 'REQ-MOTOR-001-DES-003: OTA Packaging Design'
   test_cases:
   - test_get_motor_health
-  - test_handle_motor_temperature_critical_temp
-  - test_handle_motor_temperature_high_temp
-  - test_handle_motor_temperature_normal_temp
+  - test_get_motor_health_edge_cases
+  - test_get_motor_health_error_conditions
+  - test_motor_health_business_rules
+  - test_motor_health_event_emission
+  - test_motor_health_invalid_input
   code_artifacts:
   - GetMotorHealth
   - MotorHealthDiagnosticService

@@ -1,75 +1,55 @@
-#include <someip/someip.hpp>
-#include <iostream>
+#include <cstdint>
 #include <string>
-#include <vector>
-
-#define SOMEIP_SERVICE_ID 0x1234
-#define SOMEIP_INSTANCE_ID 0x0001
-#define SOMEIP_METHOD_ID_GET_MOTOR_HEALTH 0x0001
-#define SOMEIP_EVENT_ID_MOTOR_WARNING 0x8001
+#include <stdexcept>
+#include <memory>
 
 class MotorHealthDiagnosticService {
 public:
-    MotorHealthDiagnosticService(someip::client_t client_id) : client_(client_id), someip_client_(nullptr) {}
+    struct HealthStatus {
+        float motor_temperature;
+        float motor_torque;
+        float motor_power;
+        uint8_t health_status;
+    };
 
-    void init(someip::runtime* runtime, const std::string& service_name) {
-        someip_client_ = runtime->create_client(client_);
-        if (someip_client_) {
-            someip_client_->init();
-            someip_client_->register_event(SOMEIP_SERVICE_ID, SOMEIP_INSTANCE_ID, SOMEIP_EVENT_ID_MOTOR_WARNING);
-            someip_client_->subscribe(SOMEIP_SERVICE_ID, SOMEIP_INSTANCE_ID, SOMEIP_EVENT_ID_MOTOR_WARNING, std::bind(&MotorHealthDiagnosticService::on_motor_warning_event, this, std::placeholders::_1));
-        }
+    struct WarningEvent {
+        uint16_t warning_code;
+        std::string warning_message;
+    };
+
+    void emit_MotorWarning(uint16_t code, const std::string& msg) {
+        // Implement event emission logic here
+        // For example:
+        // MotorWarningEvent event{code, msg};
+        // someip_service->emit_event(event);
     }
 
-    void start() {
-        if (someip_client_) {
-            someip_client_->start();
+    HealthStatus GetMotorHealth(float motor_temperature = 0.0f,
+                                 float motor_torque = 0.0f,
+                                 float motor_power = 0.0f) {
+        if (motor_temperature < -50.0f || motor_temperature > 150.0f) {
+            throw std::invalid_argument("Invalid motor temperature");
         }
-    }
-
-    void stop() {
-        if (someip_client_) {
-            someip_client_->stop();
+        if (motor_torque < 0.0f) {
+            throw std::invalid_argument("Invalid motor torque");
         }
-    }
-
-    void handle_motor_temperature(float temperature) {
-        if (temperature > 85.0f) {
-            emit_event(0x0201, "Motor temperature high");
-        } else if (temperature > 100.0f) {
-            emit_event(0x0202, "Motor critical temperature");
+        if (motor_power < 0.0f) {
+            throw std::invalid_argument("Invalid motor power");
         }
-    }
 
-private:
-    someip::client_t client_;
-    someip::client* someip_client_;
+        HealthStatus status;
+        status.motor_temperature = motor_temperature;
+        status.motor_torque = motor_torque;
+        status.motor_power = motor_power;
 
-    void on_motor_warning_event(const someip::message& request) {
-        // Handle incoming event
-    }
-
-    void emit_event(uint16_t warning_code, const std::string& warning_message) {
-        if (someip_client_) {
-            someip::message_ptr response = someip::runtime::get()->create_response(request);
-            response->set_payload(warning_code, warning_message);
-            someip_client_->send(response);
+        if (motor_temperature > 85.0f) {
+            emit_MotorWarning(0x0201, "Motor temperature high");
         }
+        if (motor_temperature > 100.0f) {
+            emit_MotorWarning(0x0202, "Motor critical temperature");
+        }
+
+        status.health_status = 0; // Normal health status
+        return status;
     }
 };
-
-int main() {
-    someip::runtime* runtime = someip::runtime::get();
-    MotorHealthDiagnosticService service(123456789);
-
-    service.init(runtime, "MotorHealthDiagnosticService");
-    service.start();
-
-    // Simulate motor temperature readings
-    service.handle_motor_temperature(90.0f);
-    service.handle_motor_temperature(105.0f);
-    service.handle_motor_temperature(75.0f);
-
-    service.stop();
-    return 0;
-}

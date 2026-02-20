@@ -3,21 +3,21 @@ ota_update:
   service:
     name: TirePressureDiagnosticService
     version: 1.0.0
-    timestamp: '2026-02-17T04:14:06.804408Z'
+    timestamp: '2026-02-18T19:08:07.945813Z'
   artifacts:
   - type: binary
     filename: tirepressurediagnosticservice.cpp
-    size_bytes: 2068
+    size_bytes: 2522
     checksum:
       algorithm: sha256
-      value: c4f72cdc75aaff4e3be8fd5448f2e1fae3ba941740faedffcb300f750ab63223
+      value: d6751cbd8dc7eb14f9cff08cc8339ab45b1da6201fe340c4d4deba9b93c8cd7b
     compression: gzip
   - type: trace
     filename: trace.yaml
     size_bytes: 249
     checksum:
       algorithm: sha256
-      value: 79eca1c3a43f0db2df254f23076e02aa17a2bbfcce89211b0f4c7e7688c275be
+      value: df34a4865a4e46deb2346ff211ea5768709e91f557f18a89ee2b585015fa888a
     compression: none
   deployment:
     vehicle_variants:
@@ -59,4 +59,4 @@ ota_update:
     algorithm: RSA-SHA256
     keyid: autoforge-release-key-2026
     value: 7e637311bdfc2226c00b14cc2e8905fae524164a8cc91d37c069c3c5a5aad2ad
-    timestamp: '2026-02-17T04:14:06.812423Z'
+    timestamp: '2026-02-18T19:08:07.945813Z'
