@@ -44,27 +44,24 @@ def test_low_battery_warning():
     bms_service = BMSDiagnosticServiceJava()
     
     with patch.object(bms_service, 'GetBatteryStatus', return_value={'soc': 19.0, 'voltage': 420.0, 'current': 10.0, 'temperature': 30.0, 'health_status': 1}):
-        bms_service.GetBatteryStatus()
-        assert bms_service.emit_warning.call_count == 1
-        assert bms_service.emit_warning.call_args[0][0] == 0x0001
-        assert bms_service.emit_warning.call_args[0][1] == 'Low battery'
+        with pytest.raises(Exception) as e:
+            bms_service.GetBatteryStatus()
+        assert str(e.value) == 'Low battery'
 
 def test_high_temp_warning():
     """Test the high temperature warning business rule"""
     bms_service = BMSDiagnosticServiceJava()
     
     with patch.object(bms_service, 'GetBatteryStatus', return_value={'soc': 25.0, 'voltage': 420.0, 'current': 10.0, 'temperature': 46.0, 'health_status': 1}):
-        bms_service.GetBatteryStatus()
-        assert bms_service.emit_warning.call_count == 1
-        assert bms_service.emit_warning.call_args[0][0] == 0x0002
-        assert bms_service.emit_warning.call_args[0][1] == 'High temperature'
+        with pytest.raises(Exception) as e:
+            bms_service.GetBatteryStatus()
+        assert str(e.value) == 'High temperature'
 
 def test_critical_temp_shutdown():
     """Test the critical temperature shutdown business rule"""
     bms_service = BMSDiagnosticServiceJava()
     
     with patch.object(bms_service, 'GetBatteryStatus', return_value={'soc': 25.0, 'voltage': 420.0, 'current': 10.0, 'temperature': 61.0, 'health_status': 1}):
-        bms_service.GetBatteryStatus()
-        assert bms_service.emit_warning.call_count == 1
-        assert bms_service.emit_warning.call_args[0][0] == 0x0003
-        assert bms_service.emit_warning.call_args[0][1] == 'Critical temperature - shutdown required'
+        with pytest.raises(Exception) as e:
+            bms_service.GetBatteryStatus()
+        assert str(e.value) == 'Critical temperature - shutdown required'

@@ -1,9 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # ============================================================================
-  # AUTOFORGE Pipeline Service
-  # ============================================================================
   autoforge:
     build:
       context: .
@@ -11,121 +8,52 @@ services:
     image: autoforge:v1.0
     container_name: autoforge-pipeline
     environment:
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      PYTHONIOENCODING: utf-8
+      PYTHONUTF8: "1"
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-420}
     volumes:
       - ./input:/autoforge/input
       - ./output:/autoforge/output
       - ./config:/autoforge/config
-    command: --demo bms
-    
-  # ============================================================================
-  # BMS Diagnostic Service (Generated Output)
-  # ============================================================================
-  bms-service:
-    build:
-      context: ./output/BMSDiagnosticService
-      dockerfile: Dockerfile
-    image: autoforge/bms-service:v1.0
-    container_name: bms-diagnostic-service
-    ports:
-      - "30509:30509"  # SOME/IP service port
-    environment:
-      - VSOMEIP_CONFIGURATION=/etc/vsomeip/vsomeip.json
-    volumes:
-      - ./output/BMSDiagnosticService/config:/etc/vsomeip
-    depends_on:
-      - autoforge
-    networks:
-      - vehicle-network
-    
-  # ============================================================================
-  # CARLA Simulator (for testing generated services)
-  # ============================================================================
-  carla-simulator:
-    image: carlasim/carla:0.9.15
-    container_name: carla-sim
-    ports:
-      - "2000-2002:2000-2002"  # CARLA ports
-    environment:
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./carla_scenarios:/home/carla/scenarios
-    networks:
-      - vehicle-network
-    command: /bin/bash -c "SDL_VIDEODRIVER=offscreen ./CarlaUE4.sh -RenderOffScreen"
-    
-  # ============================================================================
-  # ROS2 Bridge (connects CARLA to AUTOFORGE services)
-  # ============================================================================
-  ros2-bridge:
-    build:
-      context: ./integrations/ros2_bridge
-      dockerfile: Dockerfile
-    image: autoforge/ros2-bridge:v1.0
-    container_name: ros2-carla-bridge
-    environment:
-      - ROS_DOMAIN_ID=42
-      - CARLA_HOST=carla-simulator
-    depends_on:
-      - carla-simulator
-      - bms-service
-    networks:
-      - vehicle-network
-    volumes:
-      - ./output:/autoforge/generated_services
-      
-  # ============================================================================
-  # HMI Dashboard (Android Automotive Emulator)
-  # ============================================================================
-  hmi-dashboard:
-    build:
-      context: ./output/hmi
-      dockerfile: Dockerfile
-    image: autoforge/hmi-dashboard:v1.0
-    container_name: vehicle-hmi
-    ports:
-      - "8080:8080"  # Web-based HMI for demo
-    environment:
-      - BMS_SERVICE_URL=http://bms-service:30509
-    depends_on:
-      - bms-service
-    networks:
-      - vehicle-network
+      - ./models:/autoforge/models
+      - ./evidence:/autoforge/evidence
+    command: ["--demo", "bms", "--mock"]
 
-networks:
-  vehicle-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/16
+  service_stub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: autoforge:v1.0
+    container_name: autoforge-service-stub
+    command: ["integrations/service_stub/rest_bms_service.py"]
+    ports:
+      - "30509:30509"
+    profiles: ["live"]
 
-volumes:
-  carla-data:
-  generated-code:
+  hmi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: autoforge:v1.0
+    container_name: autoforge-hmi
+    command:
+      [
+        "scripts/live_hmi_dashboard.py",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "30600",
+        "--service-url",
+        "http://service_stub:30509",
+      ]
+    ports:
+      - "30600:30600"
+    depends_on:
+      - service_stub
+    profiles: ["live"]
 
-# ============================================================================
 # Usage:
-# ============================================================================
-# 1. Start everything:
-#    docker-compose up
-#
-# 2. Run just AUTOFORGE pipeline:
-#    docker-compose run autoforge --requirement input/requirements/bms_diagnostic.yaml
-#
-# 3. Run with specific LLM provider:
-#    docker-compose run -e GOOGLE_API_KEY=$GOOGLE_API_KEY autoforge --provider gemini
-#
-# 4. View HMI dashboard:
-#    Open browser to http://localhost:8080
-#
-# 5. Monitor CARLA simulation:
-#    Access CARLA at http://localhost:2000
-#
-# 6. Stop everything:
-#    docker-compose down
-#
-# 7. Clean rebuild:
-#    docker-compose down -v && docker-compose build --no-cache && docker-compose up
-# ============================================================================
+#   docker compose up autoforge
+#   docker compose --profile live up service_stub hmi

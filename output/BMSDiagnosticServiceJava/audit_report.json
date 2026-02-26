@@ -1,9 +1,9 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260226103946",
+    "trace_id": "TRACE-20260226135111",
     "service_name": "BMSDiagnosticServiceJava",
-    "timestamp_start": "2026-02-26T10:39:46.386675+00:00",
-    "timestamp_end": "2026-02-26T10:43:28.181376+00:00",
+    "timestamp_start": "2026-02-26T13:51:11.946743+00:00",
+    "timestamp_end": "2026-02-26T13:54:22.741959+00:00",
     "final_status": "ACCEPTED",
     "total_attempts": 1,
     "phases": [
@@ -11,9 +11,9 @@
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-26T10:39:46.387680+00:00",
-        "timestamp_end": "2026-02-26T10:39:46.391250+00:00",
-        "duration_ms": 3,
+        "timestamp_start": "2026-02-26T13:51:11.946743+00:00",
+        "timestamp_end": "2026-02-26T13:51:11.950825+00:00",
+        "duration_ms": 4,
         "details": {
           "requirement_path": "input/requirements/bms_diagnostic_java.yaml",
           "service_name": "BMSDiagnosticServiceJava"
@@ -23,23 +23,23 @@
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-26T10:39:46.391250+00:00",
-        "timestamp_end": "2026-02-26T10:42:00.175362+00:00",
-        "duration_ms": 133784,
+        "timestamp_start": "2026-02-26T13:51:11.950825+00:00",
+        "timestamp_end": "2026-02-26T13:52:59.936451+00:00",
+        "duration_ms": 107985,
         "details": {
-          "test_lines": 70
+          "test_lines": 67
         }
       },
       {
         "phase_id": 3,
         "phase_name": "CODE_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-26T10:42:00.175362+00:00",
-        "timestamp_end": "2026-02-26T10:43:28.161559+00:00",
-        "duration_ms": 87986,
+        "timestamp_start": "2026-02-26T13:52:59.936451+00:00",
+        "timestamp_end": "2026-02-26T13:54:22.720225+00:00",
+        "duration_ms": 82783,
         "details": {
           "language": "java",
-          "code_lines": 59,
+          "code_lines": 86,
           "attempt": 1
         }
       },
@@ -47,8 +47,8 @@
         "phase_id": 4,
         "phase_name": "VALIDATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-26T10:43:28.161559+00:00",
-        "timestamp_end": "2026-02-26T10:43:28.165244+00:00",
+        "timestamp_start": "2026-02-26T13:54:22.720225+00:00",
+        "timestamp_end": "2026-02-26T13:54:22.723749+00:00",
         "duration_ms": 3,
         "details": {
           "issues": [],
@@ -64,9 +64,9 @@
         "phase_id": 5,
         "phase_name": "PACKAGING",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-26T10:43:28.165244+00:00",
-        "timestamp_end": "2026-02-26T10:43:28.181376+00:00",
-        "duration_ms": 16,
+        "timestamp_start": "2026-02-26T13:54:22.723749+00:00",
+        "timestamp_end": "2026-02-26T13:54:22.741959+00:00",
+        "duration_ms": 18,
         "details": {}
       }
     ],

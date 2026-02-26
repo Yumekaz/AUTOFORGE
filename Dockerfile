@@ -1,5 +1,5 @@
-# AUTOFORGE - Production Docker Container
-# Multi-stage build for optimized size
+# AUTOFORGE - Pipeline container
+# Multi-stage build for smaller runtime image
 
 # ============================================================================
 # Stage 1: Build environment with all development tools
@@ -53,37 +53,20 @@ COPY . .
 # Create output directory
 RUN mkdir -p /autoforge/output
 
-# Set environment variables
+# Runtime environment variables
 ENV PYTHONPATH=/autoforge/src
 ENV GOOGLE_API_KEY=""
 ENV OPENAI_API_KEY=""
+ENV PYTHONIOENCODING="utf-8"
+ENV PYTHONUTF8="1"
 
-# Expose output volume
+# Expose key data volumes
 VOLUME ["/autoforge/output", "/autoforge/input"]
 
 # Default command
 ENTRYPOINT ["python3", "main.py"]
 CMD ["--help"]
 
-# ============================================================================
-# Usage Examples:
-# ============================================================================
-# Build:
+# Example:
 #   docker build -t autoforge:v1.0 .
-#
-# Run with demo:
-#   docker run --rm -e GOOGLE_API_KEY=$GOOGLE_API_KEY \
-#     -v $(pwd)/output:/autoforge/output \
-#     autoforge:v1.0 --demo bms
-#
-# Run with custom requirement:
-#   docker run --rm -e GOOGLE_API_KEY=$GOOGLE_API_KEY \
-#     -v $(pwd)/input:/autoforge/input \
-#     -v $(pwd)/output:/autoforge/output \
-#     autoforge:v1.0 --requirement /autoforge/input/my_service.yaml
-#
-# Run with mock LLM (no API key):
-#   docker run --rm \
-#     -v $(pwd)/output:/autoforge/output \
-#     autoforge:v1.0 --demo bms --mock
-# ============================================================================
+#   docker run --rm -v $(pwd)/output:/autoforge/output autoforge:v1.0 --demo bms --mock
