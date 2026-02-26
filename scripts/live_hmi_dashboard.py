@@ -46,6 +46,13 @@ HTML = """<!doctype html>
     .status-good { color: var(--good); }
     .status-warn { color: var(--warn); }
     .status-bad { color: var(--bad); }
+    .status-card-0 { background: rgba(63, 185, 80, 0.2); border-color: rgba(63, 185, 80, 0.6); }
+    .status-card-1 { background: rgba(210, 153, 34, 0.2); border-color: rgba(210, 153, 34, 0.6); }
+    .status-card-2 { background: rgba(248, 81, 73, 0.2); border-color: rgba(248, 81, 73, 0.7); }
+    .warning-flash { animation: warnflash 0.9s step-end infinite; }
+    @keyframes warnflash {
+      50% { border-color: #f85149; box-shadow: 0 0 0 2px rgba(248, 81, 73, 0.35); }
+    }
     ul { margin: 8px 0 0; padding-left: 18px; }
     code { background: #1f2937; padding: 2px 6px; border-radius: 4px; }
   </style>
@@ -58,7 +65,7 @@ HTML = """<!doctype html>
       <div class="card"><div class="k">Battery SOC</div><div id="soc" class="v">--</div></div>
       <div class="card"><div class="k">Battery Temp</div><div id="temp" class="v">--</div></div>
       <div class="card"><div class="k">Vehicle Speed</div><div id="speed" class="v">--</div></div>
-      <div class="card"><div class="k">Health Status</div><div id="health" class="v">--</div></div>
+      <div class="card" id="health_card"><div class="k">Health Status</div><div id="health" class="v">--</div></div>
     </div>
     <div class="grid" style="margin-top:12px;">
       <div class="card"><div class="k">Tire FL</div><div id="tp_fl" class="v">--</div></div>
@@ -66,7 +73,7 @@ HTML = """<!doctype html>
       <div class="card"><div class="k">Tire RL</div><div id="tp_rl" class="v">--</div></div>
       <div class="card"><div class="k">Tire RR</div><div id="tp_rr" class="v">--</div></div>
     </div>
-    <div class="card" style="margin-top:12px;">
+    <div class="card" id="warnings_card" style="margin-top:12px;">
       <div class="k">Warnings</div>
       <ul id="warnings"><li class="muted">No warnings.</li></ul>
     </div>
@@ -82,6 +89,12 @@ HTML = """<!doctype html>
       if (status >= 2) return "status-bad";
       if (status >= 1) return "status-warn";
       return "status-good";
+    }
+
+    function cardClass(status) {
+      if (status >= 2) return "status-card-2";
+      if (status >= 1) return "status-card-1";
+      return "status-card-0";
     }
 
     async function tick() {
@@ -104,6 +117,10 @@ HTML = """<!doctype html>
         const healthEl = document.getElementById("health");
         healthEl.textContent = `${hs}`;
         healthEl.className = `v ${healthClass(hs)}`;
+        const healthCard = document.getElementById("health_card");
+        healthCard.className = `card ${cardClass(hs)}`;
+        const warningsCard = document.getElementById("warnings_card");
+        warningsCard.className = hs >= 2 ? "card warning-flash" : "card";
 
         const wl = document.getElementById("warnings");
         wl.innerHTML = "";

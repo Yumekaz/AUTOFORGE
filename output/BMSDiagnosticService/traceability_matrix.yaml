@@ -6,19 +6,18 @@
   - 'REQ-BMS-001-DES-003: OTA Packaging Design'
   test_cases: &id002
   - test_GetBatteryStatus
-  - test_GetBatteryStatus_critical_temperature
-  - test_GetBatteryStatus_high_temperature
-  - test_GetBatteryStatus_low_soc
   - test_GetCellVoltages
-  - test_GetEstimatedRange_eco_mode
-  - test_GetEstimatedRange_normal_mode
-  - test_GetEstimatedRange_sport_mode
+  - test_GetEstimatedRange_ECO
+  - test_GetEstimatedRange_NORMAL
+  - test_GetEstimatedRange_SPORT
+  - test_critical_temp_shutdown
+  - test_high_temp_warning
+  - test_low_battery_warning
   code_artifacts: &id003
   - BMSDiagnosticService
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
-  - MockSOMEIPClient
   aspice_reference: SWE.3
 - requirement_id: REQ-BMS-001-API-002
   requirement_desc: Method GetCellVoltages

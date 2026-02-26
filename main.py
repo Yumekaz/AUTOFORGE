@@ -58,7 +58,14 @@ def print_result(result: PipelineResult):
         print(f"    - trace.yaml")
 
 
-def run_demo(demo_name: str, use_mock: bool = False, plain: bool = False):
+def run_demo(
+    demo_name: str,
+    use_mock: bool = False,
+    plain: bool = False,
+    provider: str = "gemini",
+    auditor_provider: str | None = None,
+    architect_provider: str | None = None,
+):
     """Run a demo pipeline."""
     demos = {
         "vehicle-health": "input/requirements/bms_diagnostic.yaml",
@@ -76,8 +83,12 @@ def run_demo(demo_name: str, use_mock: bool = False, plain: bool = False):
     print(f"\n{prefix}: {demo_name}")
     print(f"   Requirement: {requirement_path}")
     
-    provider = "mock" if use_mock else "gemini"
-    pipeline = Pipeline(llm_provider=provider)
+    provider = "mock" if use_mock else provider
+    pipeline = Pipeline(
+        llm_provider=provider,
+        auditor_provider=auditor_provider,
+        architect_provider=architect_provider,
+    )
     result = pipeline.run(requirement_path)
     print_result(result)
 
@@ -105,7 +116,15 @@ def main():
     parser.add_argument(
         "--provider", "-p",
         default="gemini",
-        help="LLM provider (gemini, openai, mock)"
+        help="Default LLM provider (gemini, ollama, openai, groq, mock)"
+    )
+    parser.add_argument(
+        "--auditor-provider",
+        help="Override provider for Auditor agent only (e.g. gemini, ollama)"
+    )
+    parser.add_argument(
+        "--architect-provider",
+        help="Override provider for Architect agent only (e.g. gemini, ollama)"
     )
     parser.add_argument(
         "--output", "-o",
@@ -131,7 +150,14 @@ def main():
     
     # Run demo or requirement
     if args.demo:
-        run_demo(args.demo, use_mock=(provider == "mock"), plain=args.plain)
+        run_demo(
+            args.demo,
+            use_mock=(provider == "mock"),
+            plain=args.plain,
+            provider=provider,
+            auditor_provider=args.auditor_provider,
+            architect_provider=args.architect_provider,
+        )
     elif args.requirement:
         if not Path(args.requirement).exists():
             print(f"❌ Requirement file not found: {args.requirement}")
@@ -139,6 +165,8 @@ def main():
             
         pipeline = Pipeline(
             llm_provider=provider,
+            auditor_provider=args.auditor_provider,
+            architect_provider=args.architect_provider,
             output_dir=args.output
         )
         result = pipeline.run(args.requirement)

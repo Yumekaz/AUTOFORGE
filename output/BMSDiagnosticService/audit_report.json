@@ -1,38 +1,113 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260218193457",
+    "trace_id": "TRACE-20260226103552",
     "service_name": "BMSDiagnosticService",
-    "timestamp_start": "2026-02-18T19:34:57.855838+00:00",
-    "timestamp_end": null,
-    "final_status": "UNKNOWN",
-    "total_attempts": 0,
+    "timestamp_start": "2026-02-26T10:35:52.120174+00:00",
+    "timestamp_end": "2026-02-26T10:39:46.200690+00:00",
+    "final_status": "ACCEPTED",
+    "total_attempts": 1,
     "phases": [
       {
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-18T19:34:57.855838+00:00",
-        "timestamp_end": "2026-02-18T19:34:57.855838+00:00",
-        "duration_ms": 0,
+        "timestamp_start": "2026-02-26T10:35:52.120174+00:00",
+        "timestamp_end": "2026-02-26T10:35:52.125746+00:00",
+        "duration_ms": 5,
         "details": {
-          "requirement_path": "C:\\Users\\patha\\Desktop\\AUTOFORGE\\input\\requirements\\bms_diagnostic.yaml",
+          "requirement_path": "input/requirements/bms_diagnostic.yaml",
           "service_name": "BMSDiagnosticService"
         }
       },
       {
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
-        "status": "FAILED",
-        "timestamp_start": "2026-02-18T19:34:57.855838+00:00",
-        "timestamp_end": "2026-02-18T19:37:59.924847+00:00",
-        "duration_ms": 182069,
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-26T10:35:52.125746+00:00",
+        "timestamp_end": "2026-02-26T10:38:45.396154+00:00",
+        "duration_ms": 173270,
         "details": {
-          "error": "timed out"
+          "test_lines": 110
         }
+      },
+      {
+        "phase_id": 3,
+        "phase_name": "CODE_GENERATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-26T10:38:45.396154+00:00",
+        "timestamp_end": "2026-02-26T10:39:45.978658+00:00",
+        "duration_ms": 60582,
+        "details": {
+          "language": "cpp",
+          "code_lines": 55,
+          "attempt": 1
+        }
+      },
+      {
+        "phase_id": 4,
+        "phase_name": "VALIDATION",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-26T10:39:45.978658+00:00",
+        "timestamp_end": "2026-02-26T10:39:46.179880+00:00",
+        "duration_ms": 201,
+        "details": {
+          "issues": [
+            "Compilation error: C:\\Users\\patha\\AppData\\Local\\Temp\\tmp8uz_iv3i\\implementation.cpp:1:10: fatal error: 'someip_client.hpp' file not found\n    1 | #include <someip_client.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated.\n"
+          ],
+          "misra": {
+            "clang_tidy": "PASS"
+          },
+          "asil_d": {
+            "status": "WARN",
+            "issues": [
+              "ASIL-D Static Analyzer: issues detected by clang --analyze"
+            ],
+            "static_analyzer": {
+              "status": "FAIL",
+              "output": "C:\\Users\\patha\\AppData\\Local\\Temp\\tmp8uz_iv3i\\implementation.cpp:1:10: fatal error: 'someip_client.hpp' file not found\n    1 | #include <someip_client.hpp>\n      |          ^~~~~~~~~~~~~~~~~~~\n1 error generated."
+            },
+            "heuristic_checks": {
+              "unsafe_api": [],
+              "non_determinism": [],
+              "unbounded_loops": [],
+              "defensive_programming": true,
+              "bounds_checks": true
+            },
+            "evidence": {
+              "memory_safety": "PASS",
+              "determinism": "PASS",
+              "timing": "PASS",
+              "defensive_programming": "PASS",
+              "bounds_checks": "PASS"
+            }
+          },
+          "static_analysis": {
+            "compilation": "WARN (dev mode - continuing despite compiler failure)",
+            "service_size": "PASS",
+            "cppcheck": "FAIL"
+          }
+        }
+      },
+      {
+        "phase_id": 5,
+        "phase_name": "PACKAGING",
+        "status": "SUCCESS",
+        "timestamp_start": "2026-02-26T10:39:46.179880+00:00",
+        "timestamp_end": "2026-02-26T10:39:46.200690+00:00",
+        "duration_ms": 20,
+        "details": {}
       }
     ],
-    "compliance_summary": {},
-    "outputs": {},
-    "requirement_traceability": {}
+    "compliance_summary": {
+      "validation_passed": true
+    },
+    "outputs": {
+      "trace": "output/BMSDiagnosticService/trace.yaml",
+      "audit_report": "output/BMSDiagnosticService/audit_report.json"
+    },
+    "requirement_traceability": {
+      "requirement_id": "REQ-BMS-001",
+      "source_document": "input/requirements/bms_diagnostic.yaml"
+    }
   }
 }

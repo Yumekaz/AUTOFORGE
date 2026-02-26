@@ -1,9 +1,9 @@
 {
   "audit_report": {
-    "trace_id": "TRACE-20260217111811",
+    "trace_id": "TRACE-20260226104328",
     "service_name": "BMSDiagnosticServiceKotlin",
-    "timestamp_start": "2026-02-17T11:18:11.695122+00:00",
-    "timestamp_end": "2026-02-17T11:22:58.758431+00:00",
+    "timestamp_start": "2026-02-26T10:43:28.361478+00:00",
+    "timestamp_end": "2026-02-26T10:47:50.339290+00:00",
     "final_status": "ACCEPTED",
     "total_attempts": 1,
     "phases": [
@@ -11,9 +11,9 @@
         "phase_id": 1,
         "phase_name": "PARSE",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T11:18:11.696117+00:00",
-        "timestamp_end": "2026-02-17T11:18:11.701446+00:00",
-        "duration_ms": 5,
+        "timestamp_start": "2026-02-26T10:43:28.362485+00:00",
+        "timestamp_end": "2026-02-26T10:43:28.366770+00:00",
+        "duration_ms": 4,
         "details": {
           "requirement_path": "input/requirements/bms_diagnostic_kotlin.yaml",
           "service_name": "BMSDiagnosticServiceKotlin"
@@ -23,23 +23,23 @@
         "phase_id": 2,
         "phase_name": "TEST_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T11:18:11.701446+00:00",
-        "timestamp_end": "2026-02-17T11:20:12.113449+00:00",
-        "duration_ms": 120412,
+        "timestamp_start": "2026-02-26T10:43:28.366770+00:00",
+        "timestamp_end": "2026-02-26T10:45:00.161860+00:00",
+        "duration_ms": 91795,
         "details": {
-          "test_lines": 84
+          "test_lines": 75
         }
       },
       {
         "phase_id": 3,
         "phase_name": "CODE_GENERATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T11:20:12.113449+00:00",
-        "timestamp_end": "2026-02-17T11:21:18.442483+00:00",
-        "duration_ms": 66329,
+        "timestamp_start": "2026-02-26T10:45:00.161860+00:00",
+        "timestamp_end": "2026-02-26T10:46:09.174847+00:00",
+        "duration_ms": 69012,
         "details": {
           "language": "kotlin",
-          "code_lines": 49,
+          "code_lines": 45,
           "attempt": 1
         }
       },
@@ -47,15 +47,15 @@
         "phase_id": 4,
         "phase_name": "VALIDATION",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T11:21:18.442483+00:00",
-        "timestamp_end": "2026-02-17T11:21:18.442483+00:00",
+        "timestamp_start": "2026-02-26T10:46:09.174847+00:00",
+        "timestamp_end": "2026-02-26T10:46:09.175371+00:00",
         "duration_ms": 0,
         "details": {
           "issues": [],
           "misra": {},
           "asil_d": {},
           "static_analysis": {
-            "service_size": "PASS",
+            "service_size": "WARN",
             "kotlin": "SKIP (kotlinc validation not configured)"
           }
         }
@@ -64,9 +64,9 @@
         "phase_id": 5,
         "phase_name": "PACKAGING",
         "status": "SUCCESS",
-        "timestamp_start": "2026-02-17T11:21:18.442483+00:00",
-        "timestamp_end": "2026-02-17T11:22:58.758431+00:00",
-        "duration_ms": 100315,
+        "timestamp_start": "2026-02-26T10:46:09.175371+00:00",
+        "timestamp_end": "2026-02-26T10:47:50.339290+00:00",
+        "duration_ms": 101163,
         "details": {}
       }
     ],

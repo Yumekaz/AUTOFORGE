@@ -68,12 +68,16 @@ class Pipeline:
     def __init__(
         self,
         llm_provider: str = "gemini",
+        auditor_provider: Optional[str] = None,
+        architect_provider: Optional[str] = None,
         max_retries: int = 3,
         output_dir: str = "output",
     ):
         # CRITICAL: Use SEPARATE agents for adversarial governance
-        self.auditor = get_auditor(llm_provider)
-        self.architect = get_architect(llm_provider)
+        self.auditor_provider = auditor_provider or llm_provider
+        self.architect_provider = architect_provider or llm_provider
+        self.auditor = get_auditor(self.auditor_provider)
+        self.architect = get_architect(self.architect_provider)
         self.llm_provider = llm_provider
         
         self.max_retries = max_retries

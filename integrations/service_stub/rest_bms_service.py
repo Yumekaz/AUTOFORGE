@@ -20,6 +20,9 @@ from typing import Dict, Any
 def _evaluate_bms(signals: Dict[str, Any]) -> Dict[str, Any]:
     soc = float(signals.get("battery_soc", 0.0))
     temp = float(signals.get("battery_temperature", 0.0))
+    tire_pressure_fl = float(signals.get("tire_pressure_fl", 0.0))
+    vehicle_speed = float(signals.get("vehicle_speed", 0.0))
+    ml_score = float(signals.get("ml_inference_score", signals.get("failure_score", 0.0)))
     warnings = []
     health_status = 0
 
@@ -32,6 +35,24 @@ def _evaluate_bms(signals: Dict[str, Any]) -> Dict[str, Any]:
     if temp > 60.0:
         health_status = max(health_status, 2)
         warnings.append({"code": 0x0003, "message": "Critical temperature - shutdown required"})
+
+    if tire_pressure_fl < 2.0 and vehicle_speed > 80.0:
+        health_status = max(health_status, 2)
+        warnings.append(
+            {
+                "code": "0x0004",
+                "message": "Critical: Low tire pressure at high speed - failure risk detected",
+            }
+        )
+
+    if ml_score > 0.5:
+        health_status = max(health_status, 2)
+        warnings.append(
+            {
+                "code": "0x0005",
+                "message": "ML: Tire failure probability elevated (score > 0.5)",
+            }
+        )
 
     return {"health_status": health_status, "warnings": warnings}
 

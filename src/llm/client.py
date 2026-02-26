@@ -110,12 +110,19 @@ class OllamaClient(LLMClient):
         host: str = "http://localhost:11434",
         temperature: float = 0.2,
         max_tokens: int = 4096,
-        timeout_seconds: int = 180,
+        timeout_seconds: int = 420,
     ):
         self.model = model
         self.host = host.rstrip("/")
         self.temperature = temperature
         self.max_tokens = max_tokens
+        # Allow runtime override for slower local inference machines.
+        env_timeout = os.getenv("OLLAMA_TIMEOUT_SECONDS")
+        if env_timeout:
+            try:
+                timeout_seconds = int(env_timeout)
+            except ValueError:
+                pass
         self.timeout_seconds = timeout_seconds
     
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:

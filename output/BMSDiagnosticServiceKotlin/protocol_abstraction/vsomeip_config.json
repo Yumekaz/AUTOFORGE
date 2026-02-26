@@ -1,0 +1,21 @@
+{
+  "unicast": "127.0.0.1",
+  "applications": [
+    {
+      "name": "BMSDiagnosticServiceKotlin_app",
+      "id": "0x1313"
+    }
+  ],
+  "services": [
+    {
+      "service": "0x1001",
+      "instance": "0x1",
+      "unreliable": "30509",
+      "reliable": "30490",
+      "events": [
+        "0x8001"
+      ]
+    }
+  ],
+  "routing": "BMSDiagnosticServiceKotlin_app"
+}
