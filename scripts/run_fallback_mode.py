@@ -35,6 +35,31 @@ def run(cmd: list[str], env: dict[str, str] | None = None) -> None:
     subprocess.run(cmd, cwd=ROOT, env=env, check=True)
 
 
+def run_with_retries(
+    cmd: list[str],
+    env: dict[str, str] | None = None,
+    retries: int = 2,
+    delay_seconds: float = 4.0,
+    step_name: str = "step",
+) -> None:
+    """
+    Retry wrapper for flaky local LLM steps (e.g., transient Ollama timeouts).
+    """
+    attempts = retries + 1
+    for attempt in range(1, attempts + 1):
+        try:
+            run(cmd, env=env)
+            return
+        except subprocess.CalledProcessError as exc:
+            if attempt >= attempts:
+                raise
+            print(
+                f"[WARN] {step_name} failed on attempt {attempt}/{attempts} "
+                f"(exit={exc.returncode}). Retrying in {delay_seconds:.0f}s..."
+            )
+            time.sleep(delay_seconds)
+
+
 def ensure_replay_seed(path: Path) -> None:
     if path.exists():
         return
@@ -104,13 +129,19 @@ def main() -> int:
         print("[INFO] GOOGLE_API_KEY not set. Skipping Gemini run.")
 
     # 6) Java + Kotlin runs
-    run(
+    run_with_retries(
         [PY, "main.py", "--plain", "--requirement", "input/requirements/bms_diagnostic_java.yaml", "--provider", "ollama"],
         env=env,
+        retries=2,
+        delay_seconds=5.0,
+        step_name="Java requirement run",
     )
-    run(
+    run_with_retries(
         [PY, "main.py", "--plain", "--requirement", "input/requirements/bms_diagnostic_kotlin.yaml", "--provider", "ollama"],
         env=env,
+        retries=2,
+        delay_seconds=5.0,
+        step_name="Kotlin requirement run",
     )
 
     # 7) Replay mode with local REST stub

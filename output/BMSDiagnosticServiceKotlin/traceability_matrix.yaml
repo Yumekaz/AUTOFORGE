@@ -13,9 +13,11 @@
   - test_low_battery_warning
   code_artifacts: &id003
   - BMSDiagnosticServiceKotlin
+  - BatteryStatus
   - GetBatteryStatus
   - GetCellVoltages
   - GetEstimatedRange
+  - SystemExit
   aspice_reference: SWE.3
 - requirement_id: REQ-BMS-KOTLIN-001-API-002
   requirement_desc: Method GetCellVoltages
