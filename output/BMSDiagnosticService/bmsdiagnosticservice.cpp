@@ -1,55 +1,71 @@
-#include <someip_client.hpp>
-#include <iostream>
+#include <cstdint>
 #include <string>
-#include <array>
+#include <vector>
+#include <someip/someip.hpp>
 
-class BMSDiagnosticService {
+class BatteryManagementSystem {
 public:
-    void Initialize() {
-        // Lifecycle initialization
+    void set_battery_soc(float soc) { battery_soc_ = soc; }
+    void set_battery_voltage(float voltage) { battery_voltage_ = voltage; }
+    void set_battery_current(float current) { battery_current_ = current; }
+    void set_battery_temperature(float temperature) { battery_temperature_ = temperature; }
+
+    someip::message get_battery_status() const {
+        someip::message msg;
+        msg.set_service(4097);
+        msg.set_instance(1);
+        msg.set_method(1);
+        msg.set_payload(create_payload());
+        return msg;
     }
 
-    void Shutdown() {
-        // Lifecycle shutdown
+    someip::message get_cell_voltages() const {
+        someip::message msg;
+        msg.set_service(4097);
+        msg.set_instance(1);
+        msg.set_method(2);
+        msg.set_payload({});
+        return msg;
     }
 
-    std::map<uint32_t, float> GetBatteryStatus() const {
-        return battery_status_;
-    }
-
-    std::vector<float> GetCellVoltages() const {
-        return cell_voltages_;
-    }
-
-    float GetEstimatedRange(uint8_t driving_mode) const {
-        switch (driving_mode) {
-            case 0:
-                return 200.0;
-            case 1:
-                return 300.0;
-            case 2:
-                return 400.0;
-            default:
-                throw std::invalid_argument("Invalid driving mode");
-        }
+    someip::message get_estimated_range(uint8_t driving_mode) const {
+        someip::message msg;
+        msg.set_service(4097);
+        msg.set_instance(1);
+        msg.set_method(3);
+        msg.set_payload(create_payload(driving_mode));
+        return msg;
     }
 
 private:
-    std::map<uint32_t, float> battery_status_ = {
-        {1, 50.0}, {2, 420.0}, {3, 10.0}, {4, 30.0}, {5, 0}
-    };
-    std::vector<float> cell_voltages_ = {3.7, 3.8, 3.9};
+    float battery_soc_ = 0.0f;
+    float battery_voltage_ = 0.0f;
+    float battery_current_ = 0.0f;
+    float battery_temperature_ = 0.0f;
+
+    std::vector<uint8_t> create_payload(uint8_t driving_mode = 1) const {
+        someip::payload payload;
+        payload.reserve(24);
+        payload.push_back(static_cast<uint8_t>(battery_soc_));
+        payload.push_back(static_cast<uint8_t>(battery_voltage_ / 256.0f));
+        payload.push_back(static_cast<uint8_t>(battery_voltage_ % 256.0f));
+        payload.push_back(static_cast<uint8_t>(battery_current_));
+        payload.push_back(static_cast<uint8_t>(battery_temperature_));
+        payload.push_back(driving_mode);
+        return payload;
+    }
 };
 
 int main() {
-    BMSDiagnosticService service;
-    service.Initialize();
+    BatteryManagementSystem bms;
+    bms.set_battery_soc(50.0f);
+    bms.set_battery_voltage(420.0f);
+    bms.set_battery_current(10.0f);
+    bms.set_battery_temperature(30.0f);
 
-    // Test cases
-    assert(service.GetBatteryStatus()[1] == 50.0);
-    assert(service.GetCellVoltages()[0] == 3.7);
-    assert(service.GetEstimatedRange(0) == 200.0);
+    someip::message status_msg = bms.get_battery_status();
+    someip::message cell_voltages_msg = bms.get_cell_voltages();
+    someip::message estimated_range_msg = bms.get_estimated_range(1);
 
-    service.Shutdown();
     return 0;
 }

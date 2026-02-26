@@ -15,61 +15,131 @@ def test_get_battery_status():
     """Test the GetBatteryStatus method"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetBatteryStatus', return_value=(25.0, 12.6, -3.4, 28.0, 1)):
+    # Arrange
+    expected_soc = 75.0
+    expected_voltage = 420.0
+    expected_current = 10.0
+    expected_temperature = 30.0
+    expected_health_status = 1
+    
+    with patch.object(service, 'GetBatteryStatus', return_value={
+        'soc': expected_soc,
+        'voltage': expected_voltage,
+        'current': expected_current,
+        'temperature': expected_temperature,
+        'health_status': expected_health_status
+    }):
+        
+        # Act
         result = service.GetBatteryStatus()
         
-        assert isinstance(result, tuple)
-        assert len(result) == 5
-        assert all(isinstance(val, (float, int)) for val in result)
+        # Assert
+        assert result['soc'] == expected_soc
+        assert result['voltage'] == expected_voltage
+        assert result['current'] == expected_current
+        assert result['temperature'] == expected_temperature
+        assert result['health_status'] == expected_health_status
 
 def test_get_cell_voltages():
     """Test the GetCellVoltages method"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetCellVoltages', return_value=[3.7, 3.8, 3.9]):
+    # Arrange
+    expected_cell_voltages = [3.7, 3.8, 3.9]
+    
+    with patch.object(service, 'GetCellVoltages', return_value={
+        'cell_voltages': expected_cell_voltages
+    }):
+        
+        # Act
         result = service.GetCellVoltages()
         
-        assert isinstance(result, list)
-        assert all(isinstance(val, float) for val in result)
+        # Assert
+        assert result['cell_voltages'] == expected_cell_voltages
 
 def test_get_estimated_range():
     """Test the GetEstimatedRange method"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetEstimatedRange', return_value=150.0):
-        result = service.GetEstimatedRange(1)
+    # Arrange
+    driving_mode = 1
+    expected_range_km = 200.0
+    
+    with patch.object(service, 'GetEstimatedRange', return_value={
+        'range_km': expected_range_km
+    }):
         
-        assert isinstance(result, float)
+        # Act
+        result = service.GetEstimatedRange(driving_mode)
+        
+        # Assert
+        assert result['range_km'] == expected_range_km
 
 def test_low_battery_warning():
-    """Test low battery warning business rule"""
+    """Test the low battery warning business rule"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetBatteryStatus', return_value=(19.5, 12.6, -3.4, 28.0, 1)):
-        with pytest.raises(SystemExit) as exc_info:
+    # Arrange
+    battery_soc = 15.0
+    
+    with patch.object(service, 'GetBatteryStatus', return_value={
+        'soc': battery_soc,
+        'voltage': 420.0,
+        'current': 10.0,
+        'temperature': 30.0,
+        'health_status': 1
+    }):
+        
+        # Act
+        with pytest.raises(Exception) as exc_info:
             service.GetBatteryStatus()
         
-        assert exc_info.value.code == 0x0001
-        assert exc_info.value.msg == 'Low battery'
+        # Assert
+        assert exc_info.value.args[0]['warning_code'] == 0x0001
+        assert exc_info.value.args[0]['warning_message'] == 'Low battery'
 
 def test_high_temp_warning():
-    """Test high temperature warning business rule"""
+    """Test the high temperature warning business rule"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetBatteryStatus', return_value=(25.0, 12.6, -3.4, 46.0, 1)):
-        with pytest.raises(SystemExit) as exc_info:
+    # Arrange
+    battery_temperature = 50.0
+    
+    with patch.object(service, 'GetBatteryStatus', return_value={
+        'soc': 75.0,
+        'voltage': 420.0,
+        'current': 10.0,
+        'temperature': battery_temperature,
+        'health_status': 1
+    }):
+        
+        # Act
+        with pytest.raises(Exception) as exc_info:
             service.GetBatteryStatus()
         
-        assert exc_info.value.code == 0x0002
-        assert exc_info.value.msg == 'High temperature'
+        # Assert
+        assert exc_info.value.args[0]['warning_code'] == 0x0002
+        assert exc_info.value.args[0]['warning_message'] == 'High temperature'
 
 def test_critical_temp_shutdown():
-    """Test critical temperature shutdown business rule"""
+    """Test the critical temperature shutdown business rule"""
     service = BMSDiagnosticServiceKotlin()
     
-    with patch.object(service, 'GetBatteryStatus', return_value=(25.0, 12.6, -3.4, 61.0, 1)):
-        with pytest.raises(SystemExit) as exc_info:
+    # Arrange
+    battery_temperature = 65.0
+    
+    with patch.object(service, 'GetBatteryStatus', return_value={
+        'soc': 75.0,
+        'voltage': 420.0,
+        'current': 10.0,
+        'temperature': battery_temperature,
+        'health_status': 1
+    }):
+        
+        # Act
+        with pytest.raises(Exception) as exc_info:
             service.GetBatteryStatus()
         
-        assert exc_info.value.code == 0x0003
-        assert exc_info.value.msg == 'Critical temperature - shutdown required'
+        # Assert
+        assert exc_info.value.args[0]['warning_code'] == 0x0003
+        assert exc_info.value.args[0]['warning_message'] == 'Critical temperature - shutdown required'

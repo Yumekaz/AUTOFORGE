@@ -7,6 +7,10 @@ cd C:\Users\patha\Desktop\AUTOFORGE
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+$env:PYTHONIOENCODING="utf-8"
+$env:PYTHONUTF8="1"
+$env:OLLAMA_TIMEOUT_SECONDS="420"
 ```
 
 Create `.env` in repo root:
@@ -42,6 +46,56 @@ Live dashboard URL (when enabled):
 
 ```text
 http://127.0.0.1:30600
+```
+
+## Video Demo Runbook (Phase-by-Phase)
+
+Phase 1 - Adversarial pipeline proof (Auditor=Gemini, Architect=Ollama):
+
+```powershell
+python main.py --plain --demo bms --provider ollama --auditor-provider gemini --architect-provider ollama
+```
+
+Phase 2 - Open key generated artifacts:
+
+```powershell
+code output\BMSDiagnosticService\someip_service.json
+code output\BMSDiagnosticService\traceability_matrix.csv
+code output\BMSDiagnosticService\ota_manifest.yaml
+explorer output\BMSDiagnosticService\variants
+```
+
+Phase 3 - Live SIL run (CARLA must already be running):
+
+```powershell
+python scripts\run_live_mode.py --provider ollama --skip-gemini --with-hmi-dashboard --max-samples 200 --rate-hz 10
+```
+
+Phase 4 - Stress injection during live run (open second terminal):
+
+```powershell
+1..40 | ForEach-Object {
+  $body = @{
+    battery_soc = 55
+    battery_temperature = 25
+    vehicle_speed = 85
+    tire_pressure_fl = 1.6
+    tire_pressure_fr = 2.5
+    tire_pressure_rl = 2.4
+    tire_pressure_rr = 2.4
+  } | ConvertTo-Json
+  Invoke-RestMethod -Uri "http://localhost:30509/bms/diagnostics" -Method Post -ContentType "application/json" -Body $body | Out-Null
+  Start-Sleep -Milliseconds 150
+}
+Invoke-RestMethod -Uri "http://localhost:30509/bms/latest" -Method Get | ConvertTo-Json -Depth 6
+```
+
+Phase 5 - Show closing evidence files:
+
+```powershell
+code evidence\torture_log_real_50.json
+code benchmark_results_real.json
+code output\carla_live_validation.json
 ```
 
 ## Demo Runs

@@ -1,59 +1,86 @@
-import com.visteon.someip.Service;
-import com.visteon.someip.Method;
-import com.visteon.someip.Event;
-import com.visteon.someip.SomeIPService;
-import com.visteon.someip.SomeIPMethod;
-import com.visteon.someip.SomeIPEvent;
-import java.util.HashMap;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class BMSDiagnosticServiceJava implements SomeIPService {
-    private final Service service;
-    private final Method getBatteryStatusMethod;
-    private final Method getCellVoltagesMethod;
-    private final Method getEstimatedRangeMethod;
-    private final Event batteryWarningEvent;
-    private final Map<String, Object> batteryStatus;
+public class BMSDiagnosticServiceJava {
+    private static final Logger logger = LoggerFactory.getLogger(BMSDiagnosticServiceJava.class);
 
-    public BMSDiagnosticServiceJava() {
-        this.service = new Service(4097, 1);
-        this.getBatteryStatusMethod = new SomeIPMethod(1, service);
-        this.getCellVoltagesMethod = new SomeIPMethod(2, service);
-        this.getEstimatedRangeMethod = new SomeIPMethod(3, service);
-        this.batteryWarningEvent = new SomeIPEvent(32769, service);
-
-        this.batteryStatus = new HashMap<>();
-        batteryStatus.put("soc", 0.0f);
-        batteryStatus.put("voltage", 0.0f);
-        batteryStatus.put("current", 0.0f);
-        batteryStatus.put("temperature", 0.0f);
-        batteryStatus.put("health_status", (byte) 0);
-
-        service.registerMethod(getBatteryStatusMethod, this::getBatteryStatus);
-        service.registerMethod(getCellVoltagesMethod, this::getCellVoltages);
-        service.registerMethod(getEstimatedRangeMethod, this::getEstimatedRange);
-        service.registerEvent(batteryWarningEvent, this::emitWarning);
-    }
-
-    public Map<String, Object> getBatteryStatus() {
-        float soc = (float) batteryStatus.get("soc");
-        if (soc < 20.0f) {
-            emitWarning(0x0001, "Low battery");
+    public float GetBatteryStatus() {
+        // Simulate getting battery status from some source
+        BatteryStatus status = getBatteryStatusFromSource();
+        
+        if (status.getSoc() < 20) {
+            throw new RuntimeException("Low battery");
         }
-        return batteryStatus;
+        
+        if (status.getTemperature() > 45) {
+            throw new RuntimeException("High temperature");
+        }
+        
+        if (status.getTemperature() > 60) {
+            throw new RuntimeException("Critical temperature - shutdown required");
+        }
+        
+        return status.getSoc();
     }
 
-    public float[] getCellVoltages() {
-        // Implement logic to get cell voltages
+    public float[] GetCellVoltages() {
+        // Simulate getting cell voltages from some source
+        return getCellVoltagesFromSource();
+    }
+
+    public float GetEstimatedRange(int driving_mode) {
+        // Simulate getting estimated range based on driving mode
+        return getEstimatedRangeFromSource(driving_mode);
+    }
+
+    private BatteryStatus getBatteryStatusFromSource() {
+        // Placeholder for actual implementation
+        return new BatteryStatus(25.0f, 420.0f, 10.0f, 30.0f, 1);
+    }
+
+    private float[] getCellVoltagesFromSource() {
+        // Placeholder for actual implementation
         return new float[]{420.5f, 421.0f, 421.5f};
     }
 
-    public Map<String, Object> getEstimatedRange(int driving_mode) {
-        // Implement logic to estimate range based on driving mode
-        return Map.of("range_km", 150.0f);
+    private float getEstimatedRangeFromSource(int driving_mode) {
+        // Placeholder for actual implementation
+        return 150.0f;
+    }
+}
+
+class BatteryStatus {
+    private float soc;
+    private float voltage;
+    private float current;
+    private float temperature;
+    private int health_status;
+
+    public BatteryStatus(float soc, float voltage, float current, float temperature, int health_status) {
+        this.soc = soc;
+        this.voltage = voltage;
+        this.current = current;
+        this.temperature = temperature;
+        this.health_status = health_status;
     }
 
-    private void emitWarning(int code, String message) {
-        batteryWarningEvent.emit(Map.of("warning_code", code, "warning_message", message));
+    public float getSoc() {
+        return soc;
+    }
+
+    public float getVoltage() {
+        return voltage;
+    }
+
+    public float getCurrent() {
+        return current;
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public int getHealthStatus() {
+        return health_status;
     }
 }

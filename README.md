@@ -12,6 +12,9 @@ AUTOFORGE is an adversarial, test-first GenAI pipeline for automotive SDV servic
 2. `pip install -r requirements.txt`
 3. `python scripts/run_fallback_mode.py`
 
+Live demo command (CARLA + HMI):
+- `python scripts/run_live_mode.py --provider ollama --skip-gemini --with-hmi-dashboard --max-samples 200 --rate-hz 10`
+
 ## What Gets Generated
 | Input YAML | Output artifacts |
 |---|---|
@@ -58,6 +61,7 @@ AUTOFORGE is an adversarial, test-first GenAI pipeline for automotive SDV servic
 - **Fallback full run:** `python scripts/run_fallback_mode.py`
 - **Live run (CARLA required):** `python scripts/run_live_mode.py --provider ollama --skip-gemini --with-hmi-dashboard --max-samples 200 --rate-hz 10`
 - **Mixed-agent run (Auditor=Gemini, Architect=Ollama):** `python main.py --plain --demo bms --provider ollama --auditor-provider gemini --architect-provider ollama`
+- **Note:** `--skip-gemini` skips only the extra standalone Gemini demo step inside `run_live_mode.py`. It does not disable split-agent runs from `main.py`.
 
 ## Case Study 2 Coverage
 | Case Study requirement | Status |
@@ -73,7 +77,6 @@ AUTOFORGE is an adversarial, test-first GenAI pipeline for automotive SDV servic
 
 ## Full Documentation
 All setup, pipeline, integration, validation, and benchmark commands are documented in [`COMMANDS.md`](COMMANDS.md).
-
 
 
 
