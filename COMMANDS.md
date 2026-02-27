@@ -3,7 +3,6 @@
 ## Environment Setup
 
 ```powershell
-cd C:\Users\patha\Desktop\AUTOFORGE
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
