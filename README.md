@@ -23,7 +23,7 @@ Live demo command (CARLA + HMI):
 ## Evidence Summary
 - **Torture test:** 50 runs, 78% pass rate ([`evidence/torture_log_real_50.json`](evidence/torture_log_real_50.json))
 - **Benchmark:** Gemini average 39.2s generation latency, 100% success ([`benchmark_results_real.json`](benchmark_results_real.json))
-- **ML separation:** Healthy 0.107 vs Degraded 0.626 failure score ([`output/ml/carla_inference_bar_stress_summary.json`](output/ml/carla_inference_bar_stress_summary.json))
+- **ML separation:** Healthy baseline mean 0.107 vs. Degraded subset mean 0.626 (Overall stress-batch mean: 0.210) ([`output/ml/carla_inference_bar_stress_summary.json`](output/ml/carla_inference_bar_stress_summary.json))
 - **CARLA validation:** 200-sample live validation log ([`output/carla_live_validation.json`](output/carla_live_validation.json))
 
 ## Evidence Index (Judge Quick-View)
@@ -77,6 +77,5 @@ Live demo command (CARLA + HMI):
 
 ## Full Documentation
 All setup, pipeline, integration, validation, and benchmark commands are documented in [`COMMANDS.md`](COMMANDS.md).
-
 
 
