@@ -29,8 +29,8 @@ For a SOME/IP requirement, AUTOFORGE now produces:
 ```powershell
 python src/codegen/protocol_adapter.py `
   --requirement input/requirements/bms_diagnostic.yaml `
-  --output output/someip_service.json `
-  --abstraction-dir output/someip_abstraction
+  --output output/BMSDiagnosticService/someip_service.json `
+  --abstraction-dir output/BMSDiagnosticService/protocol_abstraction
 ```
 
 ## Transport adapters
