@@ -1,4 +1,17 @@
-# AUTOFORGE
+<p align="center">
+  <img src="https://img.shields.io/badge/TELIPORT-Season%203-blue?style=for-the-badge" alt="TELIPORT Season 3"/>
+  <img src="https://img.shields.io/badge/Case%20Study-2-green?style=for-the-badge" alt="Case Study 2"/>
+  <img src="https://img.shields.io/badge/Status-Competition%20Ready-success?style=for-the-badge" alt="Status"/>
+</p>
+
+<h1 align="center">🚗 AUTOFORGE</h1>
+<h3 align="center">Adversarial GenAI Pipeline for Automotive SDV Code Generation</h3>
+
+<p align="center">
+  <strong>Test-First • Self-Healing • ASPICE/MISRA-Aligned </strong>
+</p>
+
+---
 
 AUTOFORGE is an adversarial, test-first GenAI pipeline for automotive SDV service generation. It converts requirement YAML into implementation code and evidence artifacts with deterministic validation gates. The practical difference from raw one-shot GenAI is governance: separate Auditor/Architect roles, hard validation before acceptance, and traceable outputs for review.
 
@@ -25,6 +38,11 @@ Live demo command (CARLA + HMI):
 - **Benchmark:** Gemini average 39.2s generation latency, 100% success ([`benchmark_results_real.json`](benchmark_results_real.json))
 - **ML separation:** Healthy baseline mean 0.107 vs. Degraded subset mean 0.626 (Overall stress-batch mean: 0.210) ([`output/ml/carla_inference_bar_stress_summary.json`](output/ml/carla_inference_bar_stress_summary.json))
 - **CARLA validation:** 200-sample live validation log ([`output/carla_live_validation.json`](output/carla_live_validation.json))
+
+## Raw Data Sources
+To guarantee reproducibility and transparent ML training, the raw telemetry logs extracted from our CARLA simulations are provided here:
+- **Healthy baseline dataset (200 rows):** [input/vehicle_data_carla.csv](input/vehicle_data_carla.csv)
+- **Degraded/Stress dataset (200 rows):** [input/vehicle_data_carla_stress.csv](input/vehicle_data_carla_stress.csv)
 
 ## Evidence Index (Judge Quick-View)
 ### Reliability + Performance
@@ -77,5 +95,3 @@ Live demo command (CARLA + HMI):
 
 ## Full Documentation
 All setup, pipeline, integration, validation, and benchmark commands are documented in [`COMMANDS.md`](COMMANDS.md).
-
-
