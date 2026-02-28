@@ -62,6 +62,11 @@ def main() -> int:
     out_csv.parent.mkdir(parents=True, exist_ok=True)
     out_df.to_csv(out_csv, index=False)
 
+    degraded_threshold = 0.2
+    degraded_mask = preds >= degraded_threshold
+    degraded_count = int(np.sum(degraded_mask))
+    degraded_mean = float(np.mean(preds[degraded_mask])) if degraded_count else None
+
     summary = {
         "model": str(model_path),
         "input_csv": str(csv_path),
@@ -69,6 +74,10 @@ def main() -> int:
         "pred_min": float(np.min(preds)),
         "pred_max": float(np.max(preds)),
         "pred_mean": float(np.mean(preds)),
+        "overall_pred_mean": float(np.mean(preds)),
+        "degraded_subset_threshold": degraded_threshold,
+        "degraded_subset_count": degraded_count,
+        "degraded_subset_mean": degraded_mean,
         "output_csv": str(out_csv),
     }
     out_json = Path(args.out_json)
@@ -78,6 +87,18 @@ def main() -> int:
     print(f"[INFER] Samples: {summary['samples']}")
     print(f"[INFER] Pred range: {summary['pred_min']:.6f} .. {summary['pred_max']:.6f}")
     print(f"[INFER] Pred mean: {summary['pred_mean']:.6f}")
+    if summary["degraded_subset_count"] > 0:
+        print(
+            "[INFER] Degraded subset "
+            f"(score >= {summary['degraded_subset_threshold']:.1f}): "
+            f"{summary['degraded_subset_count']} samples, "
+            f"mean={summary['degraded_subset_mean']:.6f}"
+        )
+    else:
+        print(
+            "[INFER] Degraded subset "
+            f"(score >= {summary['degraded_subset_threshold']:.1f}): 0 samples"
+        )
     print(f"[INFER] Saved predictions: {out_csv}")
     print(f"[INFER] Saved summary: {out_json}")
     return 0
